@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#f3edf7">
   <meta name="robots" content="noindex,nofollow">
-  <meta name="description" content="乘风去往回忆里：滑动翻阅一段关于羽毛球的快乐回忆。">
-  <title>乘风去往回忆里 · 交互样片</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta name="description" content="走过十段日常，收藏一路回忆。一本可以滑动翻阅的生活绘本。">
+  <title>乘风去往回忆里</title>
+  <link rel="stylesheet" href="styles.css?v=2">
   <link rel="preload" href="assets/cover.jpg" as="image">
 </head>
 <body>
@@ -35,11 +35,17 @@
       <img id="flying-badge" class="flying-badge" src="assets/badminton-badge.png" alt="羽毛球纪念勋章" hidden draggable="false">
       <p id="road-copy" class="road-copy">每一小步，都离回忆近一点。</p>
     </section>
-    <section id="story" class="story layer" hidden aria-label="羽毛球回忆分镜">
+    <section id="story" class="story layer" hidden aria-label="回忆分镜">
       <div id="story-wash" class="story-wash" aria-hidden="true"></div>
-      <header class="story-heading"><p>记忆里的羽毛球场</p><span id="panel-number">01 / 04</span></header>
+      <header class="story-heading"><p id="story-title">记忆里的时光</p><span id="panel-number">01 / 04</span></header>
       <div class="panel-art"><img id="panel-image" alt="羽毛球分镜" draggable="false"></div>
       <div class="caption-wrap"><p id="caption" class="caption"></p></div>
+    </section>
+    <div id="finale-overlay" class="finale-overlay" hidden aria-label="收藏的回忆勋章"></div>
+    <section id="branch-choice" class="branch-choice" hidden aria-labelledby="branch-title">
+      <div class="branch-card"><p class="branch-eyebrow">夜深了，留一点时间给自己</p><h2 id="branch-title">如果今天，可以早点下班呢？</h2>
+        <button id="choose-if" type="button">走进童年的回忆</button><button id="choose-reality" type="button">继续现实中的这一晚</button>
+      </div>
     </section>
     <p id="gesture-hint" class="gesture-hint"><span class="down-mark" aria-hidden="true">⌄</span><span id="hint-copy">手指向下划，开启回忆</span></p>
     <p id="announcement" class="sr-only" aria-live="polite"></p>
@@ -47,6 +53,6 @@
     <aside id="debug" class="debug" hidden><output id="debug-state"></output><button id="reset" type="button">重置进度</button></aside>
     <noscript><p class="asset-error">请开启 JavaScript，以翻阅这本互动绘本。</p></noscript>
   </main>
-  <script type="module" src="src/main.js"></script>
+  <script type="module" src="src/main.js?v=2"></script>
 </body>
 </html>

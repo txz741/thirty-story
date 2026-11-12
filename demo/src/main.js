@@ -1,2 +1,2 @@
-import {mountStorybook} from './app.js';
+import {mountStorybook} from './journey.js';
 mountStorybook();
