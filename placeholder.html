@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f3f9">
+  <meta name="description" content="她走过的日子，一本关于生活与回忆的互动绘本。故事从这里开始。">
+  <meta name="robots" content="noindex, nofollow">
+  <title>她走过的日子 · 故事从这里开始</title>
+  <style>
+    :root { color-scheme: light; --ink:#4b3d54; --muted:#8b7c91; --purple:#9475a9; }
+    * { box-sizing:border-box; }
+    html { min-width:280px; background:#f7f3f9; }
+    body { margin:0; color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; -webkit-font-smoothing:antialiased; }
+    main { min-height:100vh; min-height:100svh; max-width:760px; margin:auto; padding:clamp(28px,7vw,64px) 24px 28px; display:flex; flex-direction:column; }
+    header { display:flex; align-items:center; gap:10px; font-size:14px; letter-spacing:.12em; }
+    .mark { display:grid; place-items:center; width:30px; height:30px; border:1px solid #d4c1de; border-radius:50%; color:#9776ac; font-family:Georgia,serif; font-size:21px; font-style:italic; letter-spacing:0; }
+    .story { flex:1; padding:clamp(48px,10vh,100px) 0 38px; }
+    .eyebrow { margin:0 0 22px; color:var(--purple); font-size:12px; letter-spacing:.18em; }
+    h1 { margin:0; font-family:"Songti SC","Noto Serif CJK SC",SimSun,serif; font-weight:500; font-size:clamp(38px,8vw,64px); line-height:1.4; letter-spacing:.05em; }
+    .intro { max-width:350px; margin:24px 0 0; font-size:15px; line-height:2; color:var(--muted); }
+    .path { width:100%; height:190px; display:block; margin:30px 0 8px; }
+    .status { display:inline-flex; align-items:center; gap:9px; margin:0; padding:10px 15px; border:1px solid #e3d7ea; border-radius:30px; background:#ffffff70; font-size:12px; color:#806b8d; letter-spacing:.06em; }
+    .status::before { content:""; width:6px; height:6px; border-radius:50%; background:#b69ac8; }
+    footer { border-top:1px solid #e6dce9; padding-top:20px; display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; color:var(--muted); font-size:11px; line-height:1.9; }
+    footer p { margin:0; }
+    @media (max-width:360px) { main { padding-inline:20px; } .path { height:150px; } }
+    @media (prefers-reduced-motion:no-preference) { .story { animation:appear .7s ease-out both; } @keyframes appear { from { opacity:0; transform:translateY(7px); } to { opacity:1; transform:translateY(0); } } }
+  </style>
+</head>
+<body>
+  <main>
+    <header><span class="mark" aria-hidden="true">j</span><span>她走过的日子</span></header>
+    <section class="story" aria-labelledby="title">
+      <p class="eyebrow">序章 / 一段新的旅程</p>
+      <h1 id="title">故事，<br>从这里开始。</h1>
+      <p class="intro">把平凡日子里的小小闪光，<br>收进一本慢慢长大的绘本。</p>
+      <svg class="path" viewBox="0 0 640 190" fill="none" aria-hidden="true">
+        <path d="M-30 164C92 164 166 164 212 133C253 105 198 84 264 62C333 39 356 83 419 64C471 48 506 20 658 26" stroke="#ece3f1" stroke-width="34" stroke-linecap="round"/>
+        <path d="M-30 164C92 164 166 164 212 133C253 105 198 84 264 62C333 39 356 83 419 64C471 48 506 20 658 26" stroke="#d8c6e3" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3 9"/>
+        <circle cx="115" cy="161" r="8" fill="#b69ac8" stroke="#f7f3f9" stroke-width="4"/>
+        <circle cx="322" cy="62" r="5" fill="#d9c7e5" stroke="#f7f3f9" stroke-width="3"/>
+        <circle cx="510" cy="34" r="5" fill="#d9c7e5" stroke="#f7f3f9" stroke-width="3"/>
+        <path d="M159 117V103M152 110H166M482 95V85M477 90H487" stroke="#c7aed8" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <p class="status">故事正在准备，下一章即将启程</p>
+    </section>
+    <footer><p>走过的每一段路，都值得被好好收藏。</p><p>TO BE CONTINUED</p></footer>
+  </main>
+</body>
+</html>
