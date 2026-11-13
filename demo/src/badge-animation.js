@@ -1,9 +1,10 @@
 import {badgeGeometry} from './badge-presentation.js';
+export const BAG_OPEN_PROGRESS=.82;
 export function bagPosition(book,character,anchor) {
   const stage=book.getBoundingClientRect(),body=character.getBoundingClientRect();
   return {x:body.left-stage.left+body.width*anchor.x,y:body.top-stage.top+body.height*anchor.y};
 }
-export async function flyBadge({book,character,badge,anchor,reduced,isCurrent=()=>true}) {
+export async function flyBadge({book,character,badge,anchor,reduced,isCurrent=()=>true,onApproach=()=>{},requestFrame=globalThis.requestAnimationFrame,cancelFrame=globalThis.cancelAnimationFrame}) {
   const p=bagPosition(book,character,anchor),rect=book.getBoundingClientRect();
   const {size,start}=badgeGeometry(book);
   badge.style.width=`${size}px`;badge.style.height=`${size}px`;badge.hidden=false;
@@ -14,7 +15,22 @@ export async function flyBadge({book,character,badge,anchor,reduced,isCurrent=()
     const y=reduced?p.y-size/2:u*u*start.y+2*u*t*rect.height*.48+t*t*(p.y-size/2);
     frames.push({transform:`translate(${x}px,${y}px) rotate(${reduced?0:-6*Math.sin(Math.PI*t)}deg) scale(${scale})`,opacity:t>.82?(1-t)/.18:1,offset:t});
   }
-  try { await badge.animate(frames,{duration:reduced?220:1200,easing:'cubic-bezier(.32,.1,.35,1)',fill:'forwards'}).finished; }
+  const animation=badge.animate(frames,{duration:reduced?220:1200,easing:'cubic-bezier(.32,.1,.35,1)',fill:'forwards'});
+  let opened=false,settled=false,frame=null,completed=false;
+  const approach=()=>{if(!opened&&isCurrent()){opened=true;onApproach();}};
+  const watch=()=>{
+    if(settled||!isCurrent())return;
+    const progress=animation.effect?.getComputedTiming?.().progress;
+    if(progress!==null&&progress>=BAG_OPEN_PROGRESS)approach();
+    if(!opened&&animation.effect?.getComputedTiming&&requestFrame)frame=requestFrame(watch);
+  };
+  watch();
+  try { await animation.finished;completed=true; }
   catch { /* Cancellation during a reset is expected. */ }
-  finally {if(isCurrent()){badge.hidden=true;badge.getAnimations().forEach(a=>a.cancel());}}
+  finally {
+    settled=true;if(frame!==null)cancelFrame?.(frame);
+    if(completed&&isCurrent())approach();
+    if(isCurrent()){badge.hidden=true;badge.getAnimations().forEach(a=>a.cancel());}
+  }
+  return completed&&isCurrent();
 }

@@ -14,7 +14,7 @@ export const events=[
 ];
 export const finale={title:'乘风去往回忆里',panels:panels('finale',['最后一枚勋章','打开包，回忆飞来','一路收藏的星光','大鹅的邀请','带着回忆，继续向前。'])};
 export const badges=Object.fromEntries([...events.map(e=>[e.badge,{title:e.title==='红灯遇鹅'?'乘风之翼':e.title,image:`assets/badges/${e.badge}.png`}]),['paper-plane',{title:'童年的纸飞机',image:'assets/badges/paper-plane.png'}]]);
-export const character={idle:'assets/idle.png',stepLeft:'assets/step-left.png',stepRight:'assets/step-right.png',curious:'assets/curious.png',expect:'assets/expect.png',wink:'assets/wink.png',bagMouth:{x:.354,y:.46}};
+export const character={idle:'assets/idle.png',stepLeft:'assets/step-left.png',stepRight:'assets/step-right.png',curious:'assets/curious.png',expect:'assets/expect.png',bagOpen:'assets/expect-bag-open.png',wink:'assets/wink.png',bagMouth:{x:.354,y:.46},openBagMouth:{x:.354,y:.474}};
 export const eventFor=state=>events[state.eventIndex]||events[0];
 export function panelsFor(state){
   if(state.phase==='finale'||state.phase==='finished')return finale.panels;
