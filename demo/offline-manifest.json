@@ -1,6 +1,6 @@
 {
-  "version": "v13-e3e9991ec24f",
-  "totalBytes": 39054475,
+  "version": "v13-f4a7055f431a",
+  "totalBytes": 39055535,
   "files": [
     {
       "path": "demo/assets/audio/badge-collect.wav",
@@ -688,14 +688,14 @@
     },
     {
       "path": "demo/src/offline-app.js",
-      "bytes": 5288,
-      "sha256": "77f8e01015742147546741f78e70e3dbf1ac25158ffe8f15689af5dfa905b605",
+      "bytes": 5337,
+      "sha256": "32b3fd8b0035786b3d01f0e521e25fcbc49e3a69dbff4a3b6f7e457d637228c5",
       "shell": true
     },
     {
       "path": "demo/src/offline-cache.js",
-      "bytes": 5493,
-      "sha256": "d69c351d34255d39bfc631acf395af43516be4e4f81bf0990e3d6269e0369069",
+      "bytes": 6504,
+      "sha256": "00b6a4350e16f6d519eaf69b9b3e3b2ffa57a19284edb1e52916433ee641bed1",
       "shell": true
     },
     {

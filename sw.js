@@ -1,5 +1,5 @@
 import {createOfflineCache} from './demo/src/offline-cache.js?v=13';
-const RELEASE='v13-e3e9991ec24f';
+const RELEASE='v13-f4a7055f431a';
 const ROOT=new URL('./',self.location.href),META='memory-story-manifest-'+RELEASE;
 let enginePromise=null;
 function engine(){
