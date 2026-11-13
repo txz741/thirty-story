@@ -19,7 +19,7 @@ export class WheelGesture {
 export function bindInput(element,consume) {
   let start=null; const wheel=new WheelGesture();
   const down=e=>{
-    if(e.target.closest('button,a,input') || (e.pointerType==='mouse' && e.button!==0))return;
+    if(e.target.closest('button,a,input,[data-ui]') || (e.pointerType==='mouse' && e.button!==0))return;
     if(start){start=null;return;}
     start={x:e.clientX,y:e.clientY,id:e.pointerId};
     element.setPointerCapture?.(e.pointerId);
@@ -31,6 +31,7 @@ export function bindInput(element,consume) {
   };
   const cancel=()=>{start=null;};
   const scroll=e=>{
+    if(e.target.closest?.('[data-ui]'))return;
     if(e.ctrlKey)return;
     e.preventDefault();
     if(Math.abs(e.deltaX)>Math.abs(e.deltaY))return;

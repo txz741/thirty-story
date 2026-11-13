@@ -5,7 +5,7 @@ import {bagPosition,flyBadge} from './badge-animation.js';
 import {presentBadge} from './badge-presentation.js';
 import {renderFinale} from './finale.js';
 
-export function mountStorybook({document=globalThis.document,window=globalThis.window,location=globalThis.location,Image=globalThis.Image,requestAnimationFrame=globalThis.requestAnimationFrame,delay=ms=>new Promise(resolve=>setTimeout(resolve,ms))}={}){
+export function mountStorybook({document=globalThis.document,window=globalThis.window,location=globalThis.location,Image=globalThis.Image,requestAnimationFrame=globalThis.requestAnimationFrame,delay=ms=>new Promise(resolve=>setTimeout(resolve,ms)),audio={play(){},stopGroup(){},stopEffects(){}}}={}){
   const $=id=>document.getElementById(id),book=$('book');
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const debug=new URLSearchParams(location.search).get('debug')==='1';
@@ -66,7 +66,14 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
     if(['roadIdle','discovered'].includes(state.phase))preload(event.panels[0].image);
     if(state.phase==='collecting')requestAnimationFrame(positionGlow);
   }
-  function commit(action){state=transition(state,action);render();}
+  function commit(action){
+    const previous=state;state=transition(state,action);render();
+    if(previous.phase==='walking'&&state.phase==='discovered')audio.play('discovery',{group:'discovery',replace:true});
+    if(previous.phase==='discovered'&&state.phase==='story')audio.play('memory-enter',{group:'memory-enter',replace:true});
+    if(action.type==='SELECT_BRANCH'&&state.phase==='story')audio.play('memory-enter',{group:'memory-enter',replace:true});
+    if(isFinale(state)&&[1,2].includes(state.panelIndex)&&(!isFinale(previous)||previous.panelIndex!==state.panelIndex))audio.play('finale-sparkle',{group:'finale'});
+    if(isFinale(previous)&&[1,2].includes(previous.panelIndex)&&(!isFinale(state)||![1,2].includes(state.panelIndex)))audio.stopGroup('finale');
+  }
   async function motion(){
     if(activeMotion)return;activeMotion=true;const token=generation;
     try{
@@ -84,7 +91,9 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
           const current=()=>token===generation;
           if(!await presentBadge({book,badge:$('flying-badge'),delay,isCurrent:current}))return;
           commit({type:'COLLECTION_STAGE',stage:'bag-light'});positionGlow();$('bag-glow').classList.add('visible');
+          audio.play('badge-fly',{group:'badge-flight',replace:true,maxDuration:reduced ? .22 : 1.2});
           await flyBadge({book,character:$('character'),badge:$('flying-badge'),anchor:character.bagMouth,reduced,isCurrent:current});if(token!==generation)return;
+          audio.stopGroup('badge-flight');audio.play('badge-collect',{group:'badge-reward',replace:true});
           await delay(reduced?40:160);if(token!==generation)return;
         }
         commit({type:'COLLECTION_STAGE',stage:'closed'});await delay(reduced?80:280);if(token!==generation)return;
@@ -119,6 +128,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   window.addEventListener('resize',()=>{if(state.phase==='collecting')positionGlow();drawFinale();});
   $('debug').hidden=!debug;
   function reset(){generation++;activeMotion=false;flipLock=false;shownKey='';overlayKey='';
+    audio.stopEffects();
     $('flying-badge').getAnimations().forEach(a=>a.cancel());$('flying-badge').classList.remove('badge-presenting');$('flying-badge').hidden=true;$('bag-glow').classList.remove('visible');$('asset-error').hidden=true;
     state=initialState();render();}
   $('reset').addEventListener('click',reset);
