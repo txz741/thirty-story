@@ -1,0 +1,738 @@
+{
+  "version": "v13-e3e9991ec24f",
+  "totalBytes": 39054475,
+  "files": [
+    {
+      "path": "demo/assets/audio/badge-collect.wav",
+      "bytes": 148220,
+      "sha256": "2de20ba527f78326d391534e440798bdb75bff6be811f13e25e272ce69308ea3",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/audio/badge-fly.wav",
+      "bytes": 180404,
+      "sha256": "d0d1e5d885ac7b7ad5058b7bbea991323c6a5d468a970bc4576b209491299807",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/audio/badge-shimmer.wav",
+      "bytes": 507684,
+      "sha256": "e726eaef67d44c49c85494870bd2a922fa5fbeffd30f8f63d89eae9b442f9ba4",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/audio/discovery.wav",
+      "bytes": 127052,
+      "sha256": "4de71e4a061dc655f74af9a50f645537c666eb7984c0de35f4a2f87d32622c78",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/audio/finale-sparkle.wav",
+      "bytes": 441044,
+      "sha256": "a178e0282223002dcf13ec8ba17bc650b2f74cc68989a9d80fee8037188a0ff6",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/audio/manifest.json",
+      "bytes": 3392,
+      "sha256": "9fcec259dddcb2f31c90af07541eefdccdd2ca361c5f58300cd2dcd4eea20b8f",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/audio/memory-enter.wav",
+      "bytes": 124012,
+      "sha256": "85ba6b32c2580bca840366044a5fe4079586a5e26c5398ee39968c414548d93d",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/badges/badminton.png",
+      "bytes": 156759,
+      "sha256": "a77e29a5b13c9ce03b9a63ee4b0cd086b52d9d57560739c1e61d97ca5be3f5a9",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/badges/bow.png",
+      "bytes": 157774,
+      "sha256": "eba8302b5b753043172a123ee03882e3a4b875a70df519f10ca1ef6235619f7a",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/badges/cooking.png",
+      "bytes": 159548,
+      "sha256": "290eaaf30829e464a1dcee1ddb5a686fd7041b233a8f8fbc5de0703b90cef469",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/badges/crabs.png",
+      "bytes": 167496,
+      "sha256": "25c18b87e91c1910529df32bcc948071dbe68c1ea9bbfc5edfed3ad5ad63dea7",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/badges/dinner-with-mom.png",
+      "bytes": 167110,
+      "sha256": "7a4b26ebcbb07a4786d85db847a0f6a6dd390e50393af93db795447ec535cb56",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/badges/graduation.png",
+      "bytes": 159567,
+      "sha256": "79d9cf20c776b9f1ef4900d8467dfefc3245c61c742b73969fc07a27c851831b",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/badges/karaoke.png",
+      "bytes": 164444,
+      "sha256": "8283d50d12b9ddc0cfa39e3b4434468810d100b49502ee30a182d30faa3c6005",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/badges/market-goose.png",
+      "bytes": 161370,
+      "sha256": "ddfd8c7e6ed0883ae0a1c318ec2c8de7b31243207e60901f1212b958cbec170b",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/badges/overtime.png",
+      "bytes": 154961,
+      "sha256": "aa4c65252ce82aa9fecc07a8147e46a3910c9837dac160f682aebcd2bb4f1f85",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/badges/paper-plane.png",
+      "bytes": 154634,
+      "sha256": "e38c59131b2312e2b944d75abc17974cb63cccd97f7f5d45acfcc2406d6128e9",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/badges/wings.png",
+      "bytes": 158968,
+      "sha256": "3c75f0f8bb031db8607dd5cac60192587a1999c139f594c02a93a65c43c47626",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/badminton-1.jpg",
+      "bytes": 378793,
+      "sha256": "3d115fbe9f4e7b7351551b12e26a6779d84289087ceb4da22cba10b498a67a70",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/badminton-2.jpg",
+      "bytes": 374461,
+      "sha256": "2edc817216154a2a4357f7f282defde303a97902bddf2ec4775066b0305f7ea3",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/badminton-3.jpg",
+      "bytes": 317291,
+      "sha256": "01b632c91835dbb011dc48d430bdc3d4d3d44a52f37cfd30f9b7faf57cbbb026",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/badminton-4.jpg",
+      "bytes": 330860,
+      "sha256": "7d10792c33e4ff4de47f75356c8d21150b7e50275a3ba5c738bdaab0795de5eb",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/badminton-badge.png",
+      "bytes": 156759,
+      "sha256": "a77e29a5b13c9ce03b9a63ee4b0cd086b52d9d57560739c1e61d97ca5be3f5a9",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/bgm/1Everyday Adventures.mp3",
+      "bytes": 2600398,
+      "sha256": "323e43a47b4d0a87579854ecaae3d165db64206ee74f919a2cd25c0aa123a27e",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/bgm/2Autumn Afternoon.mp3",
+      "bytes": 2129491,
+      "sha256": "5af43b23c0d7d84c916972cfd6bd9985d45b1baba63d9123105a052c86b4742c",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/bgm/3Soft Welcome.mp3",
+      "bytes": 2518019,
+      "sha256": "13f49e0c02bcc2715496ab41b18abea70205e02461f99859846480d8bfa320c9",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/bgm/4Un Voyage Lumineux.mp3",
+      "bytes": 1282741,
+      "sha256": "55e4cb775e0f78e793c8d1e3a594e530cfa1c4b67c17335cd2105cdcde376946",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/bgm/manifest.json",
+      "bytes": 2676,
+      "sha256": "bc939fa96c5d4fcca5472cbb4d75e2e977cf68d68d1fca3a33d391f367f2c791",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/cover.jpg",
+      "bytes": 445179,
+      "sha256": "cb87134030adda78cf9e55271d5091dd91a32825e7a3df2b10cb35b9eb862f26",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/curious.png",
+      "bytes": 408259,
+      "sha256": "791e175c7e0c67251a6b8474e27550f20952eb8388af437ed5cd57fbca2c801a",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/expect-bag-open.png",
+      "bytes": 383172,
+      "sha256": "ee54e1b39431931e51950b21aca0f01f0c7c428cfe0449be8c4a2e47f9f6f863",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/expect.png",
+      "bytes": 367878,
+      "sha256": "1381938b1c309a8fdf7211afdc6f765d40e0152de4dce14eee33610614f6da93",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/icons/icon-192.png",
+      "bytes": 38148,
+      "sha256": "312775164484cdd646851f0b3ae656911a21c343ad6d468bc74779776d61c0dc",
+      "shell": true
+    },
+    {
+      "path": "demo/assets/icons/icon-512.png",
+      "bytes": 254197,
+      "sha256": "9824968787986e667cf7666a5772f670904ed0f4e38da9f865a6d205f49d33b2",
+      "shell": true
+    },
+    {
+      "path": "demo/assets/idle.png",
+      "bytes": 356882,
+      "sha256": "5a93c3d961ecde217ab44666c3aa3e3d124f6cede3509114421f404fa322426c",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/step-left.png",
+      "bytes": 448434,
+      "sha256": "4a9d9e72459f397b7402f250ec2069fd0def33a9ac134d56215641d0781d9c68",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/step-right.png",
+      "bytes": 412681,
+      "sha256": "c67b2a8c041e61f97728c115775b36c7a19c80731f60bdd9c5dee29d7858cf84",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/badminton/01.jpg",
+      "bytes": 378793,
+      "sha256": "3d115fbe9f4e7b7351551b12e26a6779d84289087ceb4da22cba10b498a67a70",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/badminton/02.jpg",
+      "bytes": 374461,
+      "sha256": "2edc817216154a2a4357f7f282defde303a97902bddf2ec4775066b0305f7ea3",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/badminton/03.jpg",
+      "bytes": 317291,
+      "sha256": "01b632c91835dbb011dc48d430bdc3d4d3d44a52f37cfd30f9b7faf57cbbb026",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/badminton/04.jpg",
+      "bytes": 330860,
+      "sha256": "7d10792c33e4ff4de47f75356c8d21150b7e50275a3ba5c738bdaab0795de5eb",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/bow/01.jpg",
+      "bytes": 363354,
+      "sha256": "9932461414bfff2cf86212c913d3f715cb557b83c7b6cc09612ae508b95eb634",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/bow/02.jpg",
+      "bytes": 268445,
+      "sha256": "faa1971867c6d366b5bef54d824c36648dc6f391d5b88c851de6faf314798fec",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/bow/03.jpg",
+      "bytes": 302266,
+      "sha256": "aac5f436697a92ece18a88d632decec47e67ef04bf2087221aef7ba9dbab86e3",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/bow/04.jpg",
+      "bytes": 300573,
+      "sha256": "99779f1f49a7ec0c9ef5451ae6cffbd12cc90b5b46d235477e2dbc1b8df5017d",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/cooking/01.jpg",
+      "bytes": 409393,
+      "sha256": "09d016e8db25f52bd774186eeae07523351bf767aff0197efc3b85154bcc36e8",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/cooking/02.jpg",
+      "bytes": 374264,
+      "sha256": "b514c7f082ec31f5f0609fe818e77f1ccb85ebf4cb1690f80bd728beebfc1c70",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/cooking/03.jpg",
+      "bytes": 400498,
+      "sha256": "0dba660c53b53ca8c2177c901cf676189f03ba8d473b33a178049d91e0e69411",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/cooking/04.jpg",
+      "bytes": 370461,
+      "sha256": "8b68b873ada3296e714b49872a4208ee9ef4087ed40bae57b105436398b1f178",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/cooking/05.jpg",
+      "bytes": 402150,
+      "sha256": "f23115dbff896fcec5df0628e0afea917b8811dc25351d6dbad6eb9df0de5f2c",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/crabs/01.jpg",
+      "bytes": 618891,
+      "sha256": "39f1a34befc4f2de533ccab4e2ef43e97af71a3b87949874d794f3c5bb983ba1",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/crabs/02.jpg",
+      "bytes": 621835,
+      "sha256": "05a1818e672f79ed756ebe8bc5a308d445361feb897cac457b67385a8f18ea79",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/crabs/03.jpg",
+      "bytes": 636985,
+      "sha256": "459eb48c2fa5af587977ff4c5da3e265722b1da8877eef9c2eaa8d1cf65bd0d5",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/crabs/04.jpg",
+      "bytes": 484288,
+      "sha256": "de131562f4a6d66f1c455a8156d85666321660d716d0c46931e265705f789490",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/crabs/05.jpg",
+      "bytes": 572223,
+      "sha256": "34b4cd72aa5aec02bd0a9790ed3aa04d03f34d85418e41e5d62e22be509c1895",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/dinner-with-mom/01.jpg",
+      "bytes": 397416,
+      "sha256": "20b09d964a59c554ec73bb80561909960cf97507d441211d37ef9956a8a6e3c3",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/dinner-with-mom/02.jpg",
+      "bytes": 472621,
+      "sha256": "02910f710ed21f44ac8fde17aef81f6e415834c89d659287ea22dade3d737a28",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/dinner-with-mom/03.jpg",
+      "bytes": 500072,
+      "sha256": "40b9eff3b5a53b477859945f4b1ff77bbed38cf84ed682ae2e6a3aa7707c9e5c",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/dinner-with-mom/04.jpg",
+      "bytes": 507133,
+      "sha256": "92d8b11a0b5d8991e13c8a7cc99a70cbb78ec60ec11d930a4962c70309d69925",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/finale/01.jpg",
+      "bytes": 455334,
+      "sha256": "faad9e1aba42bf3814d01b56bf1d070924ab374b7eb50bbe9015c38e15c39d4d",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/finale/02.jpg",
+      "bytes": 440689,
+      "sha256": "0b91012b78a01ddb74db1afe6aa7058e553c5a8515c3f988fd8238a1826d589c",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/finale/03.jpg",
+      "bytes": 305941,
+      "sha256": "6907e1ff0b6a4679293da1140cb9dfe234b1b535c957596648b83b161eaf9993",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/finale/04.jpg",
+      "bytes": 466490,
+      "sha256": "9437438165b87b3d3aa3795a6baa0d4357cade6c40460036f06603851ccadf32",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/finale/05.jpg",
+      "bytes": 500153,
+      "sha256": "b62d0a9964806997107588e52efc43639a313a0224105240a3917592a3bb4119",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/graduation/01.jpg",
+      "bytes": 443803,
+      "sha256": "a2bb60c4421e978692688a790eb18268879a32ffb4d5b55d230f82ebb6a24572",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/graduation/02.jpg",
+      "bytes": 387024,
+      "sha256": "87221d66f9b67989d09dc870b1c851898ffbb5c2deb2da99a9b3f7bdaffb6165",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/graduation/03.jpg",
+      "bytes": 435021,
+      "sha256": "72ed54bdb277f4180f5fe6b06f2bebbc8805099487d49cd068cd3d301ceb4097",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/graduation/04.jpg",
+      "bytes": 415306,
+      "sha256": "bb7fa3232581003c8bfcee35bac713649b205df7ce845bd5b1df2cfe067a9a82",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/karaoke/01.jpg",
+      "bytes": 373721,
+      "sha256": "7c49a85c147920d69fd92c210fc11847b8f4abd592a387b229064e8289f7af8a",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/karaoke/02.jpg",
+      "bytes": 278315,
+      "sha256": "b43a28c7e1529e78bee264b65a1ba0c23f1ef8ecd7561f01fc43b9a39ac2d9aa",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/karaoke/03.jpg",
+      "bytes": 384699,
+      "sha256": "fe1bebccbe0407cb979e6c65399014c021281ed4f272fb60a209d65fed3e6a00",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/karaoke/04.jpg",
+      "bytes": 367930,
+      "sha256": "cb41ed5814a20612b6af15e3f42717167a8167b090a75902f71ce1861f2bd33a",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/karaoke/05.jpg",
+      "bytes": 319736,
+      "sha256": "11035f3d21504bc80cae555bdef0a94882ac5c12a279be86b36139654faaee92",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/market-goose/01.jpg",
+      "bytes": 501618,
+      "sha256": "fc1c3dcd75cbfb2feb6326699745926e2373e50205ba7beefdb894ecb977c67f",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/market-goose/02.jpg",
+      "bytes": 551333,
+      "sha256": "58e22de724e24c678756bec287a8e2f1feab22192aae57856afef6ea5f90242e",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/market-goose/03.jpg",
+      "bytes": 297988,
+      "sha256": "103e4b48259b6f7f5cc12fe2ee3009c2c18aea1d85e716cf2dae7e91cae0d459",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/market-goose/04.jpg",
+      "bytes": 533264,
+      "sha256": "998ec002463be75e35e340d78420908c3b17255325608fae555aef3f92a18b5e",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/overtime-if/01.jpg",
+      "bytes": 408443,
+      "sha256": "b1f1363bd788b589b9dae31aa4294d814fda5f77ea5e82999b67c711752c5ca4",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/overtime-if/02.jpg",
+      "bytes": 491431,
+      "sha256": "e0e71fa77c2c075ce8de3da93c13b732f2119b8e78cb3b3d200d4b85d6120481",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/overtime-if/03.jpg",
+      "bytes": 441521,
+      "sha256": "0e9f7a15da7e8a656cac30961289936f93ebff8f817148410103b5c1fcae9fd3",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/overtime/01.jpg",
+      "bytes": 389122,
+      "sha256": "ced30f7a9e9e89e095bb6e7860a856c9bb85214bea55037d818e76d340e10870",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/overtime/02.jpg",
+      "bytes": 378996,
+      "sha256": "239310e7a9b5b4b6160bdb8afb334923b7258957f3b8da7c4a4728592c890198",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/overtime/03.jpg",
+      "bytes": 392449,
+      "sha256": "84e09ee569c7e88605f29fdac49cd0a5a54dafe5d3baf55443b6983f8d5b5f94",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/overtime/04.jpg",
+      "bytes": 378566,
+      "sha256": "707c81ff5bf44652ccb97862646696ad33c3958308b5b65db60d016e1469442a",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/overtime/05.jpg",
+      "bytes": 408151,
+      "sha256": "0322238af6d7c0cd05860ae151cf648efcfa176b5fb7d9e3215f3ea89a995dcc",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/red-light-goose/01.jpg",
+      "bytes": 475119,
+      "sha256": "9a49714169daa928c5cdd920d8eebc1fa780fe6917e200f47c6c795011e7bbe8",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/red-light-goose/02.jpg",
+      "bytes": 447741,
+      "sha256": "20a478e873439dc5b3ea4c34fbdb0cd4e696f699ed82bbf9d4638ef380ec7712",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/red-light-goose/03.jpg",
+      "bytes": 466426,
+      "sha256": "ae451c7fd4aa64d1b574d50b7b95fa3ce2b1e132e5661318a53d594e6efa956f",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/stories/red-light-goose/04.jpg",
+      "bytes": 488490,
+      "sha256": "478b542749118f669aa3a33e37b4e124ec802c97cce58750d51ba6bbdac8c7a1",
+      "shell": false
+    },
+    {
+      "path": "demo/assets/wink.png",
+      "bytes": 397621,
+      "sha256": "c40b095c987b97d89ce212d6aa3c4dfbb96a0256b400558b2f1817a0440c5711",
+      "shell": false
+    },
+    {
+      "path": "demo/audio-preview.html",
+      "bytes": 3599,
+      "sha256": "a7db54d61563217edf3641f359f36f9ae66c16f9e68abe869809f64f551815a5",
+      "shell": false
+    },
+    {
+      "path": "demo/effects-preview.html",
+      "bytes": 2997,
+      "sha256": "30fc040506652e80c61ba89d4580f95809b139b88e28e08a18fd329997c0c356",
+      "shell": false
+    },
+    {
+      "path": "demo/index.html",
+      "bytes": 8013,
+      "sha256": "7001d51b74a5fc1997b908bc817a46b7a9268fe7a3411c97d547ca5fe72f8fff",
+      "shell": true
+    },
+    {
+      "path": "demo/manifest.webmanifest",
+      "bytes": 525,
+      "sha256": "fe2dec32ab02445e08b0ecd979334fd8bc07758105c63583afeabcd57d2016a6",
+      "shell": true
+    },
+    {
+      "path": "demo/music-preview.html",
+      "bytes": 3261,
+      "sha256": "ffb0cf5146512dd0c40aaf019045e5e6a99d2d2a2cea5627de5b92a4f8c8366d",
+      "shell": false
+    },
+    {
+      "path": "demo/src/app.js",
+      "bytes": 7869,
+      "sha256": "3504fde798e2d947731746a55e1f89f94d4fb61b6de10a5efafb81109f63cabd",
+      "shell": true
+    },
+    {
+      "path": "demo/src/asset-loader.js",
+      "bytes": 2718,
+      "sha256": "24ec0a50345ade1cb9914592145d37d660e50fcb412d134118674f55453a9bfc",
+      "shell": true
+    },
+    {
+      "path": "demo/src/audio-config.js",
+      "bytes": 669,
+      "sha256": "76a32c56c6a56878264416d6bdd1ab7a0276298a81d92341917dabdd5856e393",
+      "shell": true
+    },
+    {
+      "path": "demo/src/audio-controls.js",
+      "bytes": 1899,
+      "sha256": "2f799a44bd7a83137718c13648514fe79555a7acc284bbfd7dd3e053c6948fde",
+      "shell": true
+    },
+    {
+      "path": "demo/src/audio-preview.js",
+      "bytes": 4346,
+      "sha256": "5b99270a0861c6ed40c4065eeff0dda010bbd3cfee264308a11f1533bb5864af",
+      "shell": true
+    },
+    {
+      "path": "demo/src/audio-system.js",
+      "bytes": 9097,
+      "sha256": "1f32de62fa38ff28d610340eb82c0de9b4e3855306d1648c1da2297fa5fac011",
+      "shell": true
+    },
+    {
+      "path": "demo/src/badge-animation.js",
+      "bytes": 2049,
+      "sha256": "8c8b8c048729ed18f1c942f436bf2b215687a99c5cfe09939d0c4c58bdf88a44",
+      "shell": true
+    },
+    {
+      "path": "demo/src/badge-presentation.js",
+      "bytes": 836,
+      "sha256": "1f1a89814c3b952b2c0ffc99f9450851dc0d6408ac22055df63bac57cfbe809f",
+      "shell": true
+    },
+    {
+      "path": "demo/src/bgm-player.js",
+      "bytes": 9004,
+      "sha256": "aa9607a74dd6da8573996c5a7adf8bd5d9cf2162d7a5a1a443f05c7a97e98202",
+      "shell": true
+    },
+    {
+      "path": "demo/src/effects-preview.js",
+      "bytes": 3654,
+      "sha256": "4f839344b6ccf001f938e533793cee82838f221f3089e36ca1601c95c6e85653",
+      "shell": true
+    },
+    {
+      "path": "demo/src/finale.js",
+      "bytes": 4497,
+      "sha256": "5cb679e2d8bd1cfe3a4d5b02d6691e1bf0484dea3c30db4f63a35951b6928e0a",
+      "shell": true
+    },
+    {
+      "path": "demo/src/input.js",
+      "bytes": 2093,
+      "sha256": "dace1b5a21b2537b4f248fbea8648fab99889d755cc1bcb528c02fbfb4c0fc00",
+      "shell": true
+    },
+    {
+      "path": "demo/src/journey-data.js",
+      "bytes": 3762,
+      "sha256": "1b0680e2249fa85b52ac8518e800ac1bb8c02d2240000bca1e40212fc3c099b4",
+      "shell": true
+    },
+    {
+      "path": "demo/src/journey-state.js",
+      "bytes": 3653,
+      "sha256": "fe02b1fbbb0e862d2bf99fec4c6fc09a6cca9f20bfc1fe340bab4f847bbfa272",
+      "shell": true
+    },
+    {
+      "path": "demo/src/journey.js",
+      "bytes": 14888,
+      "sha256": "fbdc1e70149bea6e036a75674094ea712c336dd5366ea141f4da68ae2f24607a",
+      "shell": true
+    },
+    {
+      "path": "demo/src/main.js",
+      "bytes": 471,
+      "sha256": "f03fe089ba9c3b9b8c539de607b5b214c47652529df2c0db21ea3e625c81cb20",
+      "shell": true
+    },
+    {
+      "path": "demo/src/music-config.js",
+      "bytes": 500,
+      "sha256": "95c9b182059b1dade2987a0b3616ce9cd9bc45e9ccc035542cc1722f9dc30fe9",
+      "shell": true
+    },
+    {
+      "path": "demo/src/music-manager.js",
+      "bytes": 1451,
+      "sha256": "cbb4a32781b190e103d566fd965b6bb6056075868999d1fdae9b4a253b326906",
+      "shell": true
+    },
+    {
+      "path": "demo/src/music-preview.js",
+      "bytes": 3115,
+      "sha256": "bda0b75016064387b3f628195b0037406cbb1c2cdec56801b393b36d811c975d",
+      "shell": true
+    },
+    {
+      "path": "demo/src/offline-app.js",
+      "bytes": 5288,
+      "sha256": "77f8e01015742147546741f78e70e3dbf1ac25158ffe8f15689af5dfa905b605",
+      "shell": true
+    },
+    {
+      "path": "demo/src/offline-cache.js",
+      "bytes": 5493,
+      "sha256": "d69c351d34255d39bfc631acf395af43516be4e4f81bf0990e3d6269e0369069",
+      "shell": true
+    },
+    {
+      "path": "demo/src/persistence.js",
+      "bytes": 411,
+      "sha256": "bb849fed5c907a77bc425b1b4889cab59d34ba6b00eb988e23ce6dc4b86853ff",
+      "shell": true
+    },
+    {
+      "path": "demo/src/progress.js",
+      "bytes": 389,
+      "sha256": "b6abf6021c0efee2ca2d37c3fec4ca8f286bee174473db73664c571f87d5d833",
+      "shell": true
+    },
+    {
+      "path": "demo/src/state-machine.js",
+      "bytes": 2228,
+      "sha256": "699450cff45e6d851ebda0397261af5e100a885837612c7b41f135a8bb019196",
+      "shell": true
+    },
+    {
+      "path": "demo/src/story-data.js",
+      "bytes": 1312,
+      "sha256": "7ff90fca9777c997b3a3476104ae7e019673ae8e3114f848827b6929410f1096",
+      "shell": true
+    },
+    {
+      "path": "demo/styles.css",
+      "bytes": 12757,
+      "sha256": "87a2a797b8a400a6e7999834cb44aa41de2a94a12c4d1b45737c90703aec0a52",
+      "shell": true
+    },
+    {
+      "path": "index.html",
+      "bytes": 4159,
+      "sha256": "bd22566fe9b0ead575b547ad699cd45b25250544fe4f74049ea39f27d46643ca",
+      "shell": true
+    }
+  ]
+}
