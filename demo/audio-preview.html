@@ -9,18 +9,18 @@
 </head>
 <body><main>
 <h1>听见，回忆里的小小星光</h1>
-<p>五个原创代码合成音效。建议先调低设备音量，再逐个试听。</p>
+<p>六个原创代码合成音效。建议先调低设备音量，再逐个试听。</p>
 <section class="panel" aria-label="试听控制">
-  <div class="buttons"><button id="enable" type="button">开启声音／播放自检</button><button id="mute" type="button">静音全部</button><button id="play-all" type="button">按顺序试听五个音效</button><button id="stop" type="button">停止试听</button></div>
+  <div class="buttons"><button id="enable" type="button">开启声音／播放自检</button><button id="mute" type="button">静音全部</button><button id="play-all" type="button">按顺序试听六个音效</button><button id="stop" type="button">停止试听</button></div>
   <label for="sfx-volume">音效音量 <output id="sfx-value">55%</output></label><input id="sfx-volume" type="range" min="0" max="100" value="55">
   <label for="bgm-volume">背景音乐音量 <output id="bgm-value">22%</output></label><input id="bgm-volume" type="range" min="0" max="100" value="22">
   <label for="bgm-file">可选：本机音乐混音测试</label><input id="bgm-file" type="file" accept="audio/*"><small>仅在当前设备播放，不上传文件。绘本目前只播放音效。</small>
   <output id="status" class="status" aria-live="polite">请轻触上方按钮，开启浏览器声音。</output>
 </section>
 <div id="sounds"></div>
-<p><a href="./?v=6">返回互动绘本</a> · <a href="assets/audio/manifest.json">音效参数与制作记录</a></p>
+<p><a href="./?v=7">返回互动绘本</a> · <a href="assets/audio/manifest.json">音效参数与制作记录</a></p>
 <small>自检会确认本机音频解锁、文件解码和播放调度；是否从扬声器听到声音，仍需你实际试听确认。</small>
 </main>
-<script type="importmap">{"imports":{"./src/audio-system.js":"./src/audio-system.js?v=6","./src/audio-config.js":"./src/audio-config.js?v=6"}}</script>
-<script type="module" src="src/audio-preview.js?v=6"></script>
+<script type="importmap">{"imports":{"./src/audio-system.js":"./src/audio-system.js?v=7","./src/audio-config.js":"./src/audio-config.js?v=7"}}</script>
+<script type="module" src="src/audio-preview.js?v=7"></script>
 </body></html>

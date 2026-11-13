@@ -3,13 +3,13 @@ import {transition,initialState} from './journey-state.js';
 import {bindInput} from './input.js';
 import {bagPosition,flyBadge} from './badge-animation.js';
 import {presentBadge} from './badge-presentation.js';
-import {renderFinale} from './finale.js';
+import {renderFinale,FINALE_GATHER_START_MS} from './finale.js';
 
 export function mountStorybook({document=globalThis.document,window=globalThis.window,location=globalThis.location,Image=globalThis.Image,requestAnimationFrame=globalThis.requestAnimationFrame,delay=ms=>new Promise(resolve=>setTimeout(resolve,ms)),audio={play(){},stopGroup(){},stopEffects(){}}}={}){
   const $=id=>document.getElementById(id),book=$('book');
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const debug=new URLSearchParams(location.search).get('debug')==='1';
-  let state=initialState(),generation=0,flipLock=false,shownKey='',shownLayer='',overlayKey='',activeMotion=false;
+  let state=initialState(),generation=0,flipLock=false,shownKey='',shownLayer='',overlayKey='',activeMotion=false,finaleSoundToken=0;
   const imagePromises=new Map();
   const isFinale=s=>['finale','finished'].includes(s.phase);
   const pose=name=>{$('character').src=character[name]||character.idle;};
@@ -71,8 +71,16 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
     if(previous.phase==='walking'&&state.phase==='discovered')audio.play('discovery',{group:'discovery',replace:true});
     if(previous.phase==='discovered'&&state.phase==='story')audio.play('memory-enter',{group:'memory-enter',replace:true});
     if(action.type==='SELECT_BRANCH'&&state.phase==='story')audio.play('memory-enter',{group:'memory-enter',replace:true});
-    if(isFinale(state)&&[1,2].includes(state.panelIndex)&&(!isFinale(previous)||previous.panelIndex!==state.panelIndex))audio.play('finale-sparkle',{group:'finale'});
-    if(isFinale(previous)&&[1,2].includes(previous.panelIndex)&&(!isFinale(state)||![1,2].includes(state.panelIndex)))audio.stopGroup('finale');
+    if((isFinale(state)||isFinale(previous))&&(state.phase!==previous.phase||state.panelIndex!==previous.panelIndex)){
+      const token=++finaleSoundToken;audio.stopGroup('finale');audio.stopGroup('final-badge');
+      if(isFinale(state)&&state.panelIndex===0)audio.play('badge-shimmer',{group:'final-badge',replace:true});
+      if(isFinale(state)&&state.panelIndex===1)audio.play('finale-sparkle',{group:'finale',replace:true});
+      if(isFinale(state)&&state.panelIndex===2){
+        void delay(reduced?0:FINALE_GATHER_START_MS).then(()=>{
+          if(token===finaleSoundToken&&isFinale(state)&&state.panelIndex===2)audio.play('finale-sparkle',{group:'finale',replace:true});
+        });
+      }
+    }
   }
   async function motion(){
     if(activeMotion)return;activeMotion=true;const token=generation;
@@ -89,7 +97,8 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
           $('bag-glow').classList.remove('visible');commit({type:'COLLECTION_STAGE',stage:'showcase'});
           $('flying-badge').src=badges[id].image;$('flying-badge').alt=badges[id].title+'纪念勋章';
           const current=()=>token===generation;
-          if(!await presentBadge({book,badge:$('flying-badge'),delay,isCurrent:current}))return;
+          if(!await presentBadge({book,badge:$('flying-badge'),delay,isCurrent:current,onPresent:()=>audio.play('badge-shimmer',{group:'badge-showcase',replace:true,maxDuration:3})}))return;
+          audio.stopGroup('badge-showcase');
           commit({type:'COLLECTION_STAGE',stage:'bag-light'});positionGlow();$('bag-glow').classList.add('visible');
           audio.play('badge-fly',{group:'badge-flight',replace:true,maxDuration:reduced ? .22 : 1.2});
           await flyBadge({book,character:$('character'),badge:$('flying-badge'),anchor:character.bagMouth,reduced,isCurrent:current});if(token!==generation)return;
@@ -127,7 +136,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   for(const src of Object.values(character).filter(v=>typeof v==='string'))preload(src);
   window.addEventListener('resize',()=>{if(state.phase==='collecting')positionGlow();drawFinale();});
   $('debug').hidden=!debug;
-  function reset(){generation++;activeMotion=false;flipLock=false;shownKey='';overlayKey='';
+  function reset(){generation++;finaleSoundToken++;activeMotion=false;flipLock=false;shownKey='';overlayKey='';
     audio.stopEffects();
     $('flying-badge').getAnimations().forEach(a=>a.cancel());$('flying-badge').classList.remove('badge-presenting');$('flying-badge').hidden=true;$('bag-glow').classList.remove('visible');$('asset-error').hidden=true;
     state=initialState();render();}

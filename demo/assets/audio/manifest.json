@@ -53,6 +53,22 @@
       "clippedSamples": 0
     },
     {
+      "id": "badge-shimmer",
+      "title": "勋章的温柔星光",
+      "duration": 2.8777777777777778,
+      "description": "Two gentle breathing swells of warm celesta and airy golden shimmer during the three-second badge showcase.",
+      "file": "badge-shimmer.wav",
+      "sampleRate": 44100,
+      "channels": 2,
+      "bits": 16,
+      "bytes": 507684,
+      "peakDBFS": -12.348537370029328,
+      "activeRmsDBFS": -24.04020468226672,
+      "leadingBelowMinus60Ms": 18.140589569160998,
+      "trailingBelowMinus60Ms": 17.75510204081633,
+      "clippedSamples": 0
+    },
+    {
       "id": "badge-collect",
       "title": "把回忆收藏",
       "duration": 0.84,
