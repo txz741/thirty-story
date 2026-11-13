@@ -1,0 +1,118 @@
+{
+  "method": "Original user-supplied MP3 files, copied without transcoding or alteration",
+  "files": [
+    {
+      "name": "1Everyday Adventures.mp3",
+      "source": "material/bgm/1Everyday Adventures.mp3",
+      "publicPath": "demo/assets/bgm/1Everyday Adventures.mp3",
+      "bytes": 2600398,
+      "format": "MPEG-1 Layer III",
+      "sampleRates": [
+        48000
+      ],
+      "bitRatesKbps": [
+        64,
+        256,
+        160,
+        128,
+        192,
+        320,
+        224,
+        96,
+        32
+      ],
+      "channels": [
+        2
+      ],
+      "frames": 4580,
+      "durationSeconds": 109.92000000000327,
+      "formatVerified": true,
+      "sha256": "323e43a47b4d0a87579854ecaae3d165db64206ee74f919a2cd25c0aa123a27e"
+    },
+    {
+      "name": "2Autumn Afternoon.mp3",
+      "source": "material/bgm/2Autumn Afternoon.mp3",
+      "publicPath": "demo/assets/bgm/2Autumn Afternoon.mp3",
+      "bytes": 2129491,
+      "format": "MPEG-1 Layer III",
+      "sampleRates": [
+        48000
+      ],
+      "bitRatesKbps": [
+        64,
+        256,
+        128,
+        112,
+        160,
+        224,
+        320,
+        192,
+        96,
+        32
+      ],
+      "channels": [
+        2
+      ],
+      "frames": 3748,
+      "durationSeconds": 89.95200000000251,
+      "formatVerified": true,
+      "sha256": "5af43b23c0d7d84c916972cfd6bd9985d45b1baba63d9123105a052c86b4742c"
+    },
+    {
+      "name": "3Soft Welcome.mp3",
+      "source": "material/bgm/3Soft Welcome.mp3",
+      "publicPath": "demo/assets/bgm/3Soft Welcome.mp3",
+      "bytes": 2518019,
+      "format": "MPEG-1 Layer III",
+      "sampleRates": [
+        48000
+      ],
+      "bitRatesKbps": [
+        64,
+        224,
+        160,
+        128,
+        192,
+        320,
+        256,
+        96,
+        32
+      ],
+      "channels": [
+        2
+      ],
+      "frames": 4581,
+      "durationSeconds": 109.94400000000327,
+      "formatVerified": true,
+      "sha256": "13f49e0c02bcc2715496ab41b18abea70205e02461f99859846480d8bfa320c9"
+    },
+    {
+      "name": "4Un Voyage Lumineux.mp3",
+      "source": "material/bgm/4Un Voyage Lumineux.mp3",
+      "publicPath": "demo/assets/bgm/4Un Voyage Lumineux.mp3",
+      "bytes": 1282741,
+      "format": "MPEG-1 Layer III",
+      "sampleRates": [
+        48000
+      ],
+      "bitRatesKbps": [
+        64,
+        256,
+        112,
+        128,
+        160,
+        320,
+        192,
+        224,
+        32
+      ],
+      "channels": [
+        2
+      ],
+      "frames": 2286,
+      "durationSeconds": 54.86400000000119,
+      "formatVerified": true,
+      "sha256": "55e4cb775e0f78e793c8d1e3a594e530cfa1c4b67c17335cd2105cdcde376946"
+    }
+  ]
+}

@@ -5,7 +5,7 @@ import {bagPosition,flyBadge} from './badge-animation.js';
 import {presentBadge} from './badge-presentation.js';
 import {renderFinale,FINALE_GATHER_START_MS} from './finale.js';
 
-export function mountStorybook({document=globalThis.document,window=globalThis.window,location=globalThis.location,Image=globalThis.Image,requestAnimationFrame=globalThis.requestAnimationFrame,delay=ms=>new Promise(resolve=>setTimeout(resolve,ms)),audio={play(){},stopGroup(){},stopEffects(){}}}={}){
+export function mountStorybook({document=globalThis.document,window=globalThis.window,location=globalThis.location,Image=globalThis.Image,requestAnimationFrame=globalThis.requestAnimationFrame,delay=ms=>new Promise(resolve=>setTimeout(resolve,ms)),audio={play(){},stopGroup(){},stopEffects(){}},onStateChange=()=>{}}={}){
   const $=id=>document.getElementById(id),book=$('book');
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const debug=new URLSearchParams(location.search).get('debug')==='1';
@@ -68,6 +68,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   }
   function commit(action){
     const previous=state;state=transition(state,action);render();
+    onStateChange(state,action,previous);
     if(previous.phase==='walking'&&state.phase==='discovered')audio.play('discovery',{group:'discovery',replace:true});
     if(previous.phase==='discovered'&&state.phase==='story')audio.play('memory-enter',{group:'memory-enter',replace:true});
     if(action.type==='SELECT_BRANCH'&&state.phase==='story')audio.play('memory-enter',{group:'memory-enter',replace:true});
@@ -138,7 +139,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   function reset(){generation++;finaleSoundToken++;activeMotion=false;flipLock=false;shownKey='';overlayKey='';
     audio.stopEffects();
     $('flying-badge').getAnimations().forEach(a=>a.cancel());$('flying-badge').classList.remove('badge-presenting');$('flying-badge').hidden=true;$('bag-glow').classList.remove('visible');$('asset-error').hidden=true;
-    state=initialState();render();}
+    state=initialState();render();onStateChange(state,{type:'RESET'});}
   $('reset').addEventListener('click',reset);
   $('choose-reality').addEventListener('click',()=>perform({type:'SELECT_BRANCH',choice:'reality'}));
   $('choose-if').addEventListener('click',()=>perform({type:'SELECT_BRANCH',choice:'if'}));
