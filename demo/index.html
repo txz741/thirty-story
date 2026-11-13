@@ -7,12 +7,8 @@
   <meta name="robots" content="noindex,nofollow">
   <meta name="description" content="走过十段日常，收藏一路回忆。一本可以滑动翻阅的生活绘本。">
   <title>乘风去往回忆里</title>
-  <link rel="stylesheet" href="styles.css?v=13">
+  <link rel="stylesheet" href="styles.css?v=14">
   <link rel="preload" href="assets/cover.jpg" as="image">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="乘风回忆">
 </head>
 <body>
   <main id="book" class="book" aria-label="乘风去往回忆里，滑动翻页绘本">
@@ -56,15 +52,6 @@
     <p id="announcement" class="sr-only" aria-live="polite"></p>
     <div id="asset-error" class="asset-error" role="alert" hidden>这张回忆暂时未能载入。<button id="retry-assets" type="button" data-ui>重试加载</button></div>
     <aside id="debug" class="debug" hidden><output id="debug-state"></output><button id="reset" type="button">重置进度</button></aside>
-    <aside class="offline-controls" data-ui>
-      <button id="offline-toggle" type="button" aria-expanded="false" aria-controls="offline-panel">离线安装</button>
-      <section id="offline-panel" class="offline-panel" hidden aria-label="保存完整绘本">
-        <h2>把回忆留在手机里</h2><p>可先添加到主屏幕，再从桌面图标打开并下载全部画面、四首音乐与音效。保存完成后可断网翻阅，刷新仍从封面开始。</p>
-        <progress id="offline-progress" max="100" value="0" hidden aria-label="离线内容下载进度"></progress><p id="offline-status" aria-live="polite">正在准备离线功能…</p>
-        <button id="offline-download" type="button" disabled>下载完整绘本</button><button id="offline-install" type="button" disabled>添加到主屏幕</button>
-        <p id="offline-help">安装需要你主动确认；首次下载仍需联网。</p><button id="offline-close" class="offline-close" type="button">继续翻阅</button>
-      </section>
-    </aside>
     <aside class="audio-controls" data-ui data-audio-controls aria-label="声音控制">
       <button id="audio-toggle" class="audio-toggle" type="button" aria-label="打开声音设置" aria-expanded="false" aria-controls="audio-panel"><span aria-hidden="true">♫</span></button>
       <section id="audio-panel" class="audio-panel" hidden aria-label="音量设置">
@@ -79,25 +66,24 @@
   <script type="importmap">
 {
   "imports": {
-    "./src/journey.js": "./src/journey.js?v=13",
-    "./src/journey-data.js": "./src/journey-data.js?v=13",
-    "./src/journey-state.js": "./src/journey-state.js?v=13",
-    "./src/finale.js": "./src/finale.js?v=13",
-    "./src/input.js": "./src/input.js?v=13",
-    "./src/badge-animation.js": "./src/badge-animation.js?v=13",
-    "./src/badge-presentation.js": "./src/badge-presentation.js?v=13",
-    "./src/audio-system.js": "./src/audio-system.js?v=13",
-    "./src/audio-config.js": "./src/audio-config.js?v=13",
-    "./src/audio-controls.js": "./src/audio-controls.js?v=13",
-    "./src/bgm-player.js": "./src/bgm-player.js?v=13",
-    "./src/music-manager.js": "./src/music-manager.js?v=13",
-    "./src/music-config.js": "./src/music-config.js?v=13",
-    "./src/asset-loader.js": "./src/asset-loader.js?v=13",
-    "./src/offline-app.js": "./src/offline-app.js?v=13",
-    "./src/offline-cache.js": "./src/offline-cache.js?v=13"
+    "./src/journey.js": "./src/journey.js?v=14",
+    "./src/journey-data.js": "./src/journey-data.js?v=14",
+    "./src/journey-state.js": "./src/journey-state.js?v=14",
+    "./src/finale.js": "./src/finale.js?v=14",
+    "./src/input.js": "./src/input.js?v=14",
+    "./src/badge-animation.js": "./src/badge-animation.js?v=14",
+    "./src/badge-presentation.js": "./src/badge-presentation.js?v=14",
+    "./src/audio-system.js": "./src/audio-system.js?v=14",
+    "./src/audio-config.js": "./src/audio-config.js?v=14",
+    "./src/audio-controls.js": "./src/audio-controls.js?v=14",
+    "./src/bgm-player.js": "./src/bgm-player.js?v=14",
+    "./src/music-manager.js": "./src/music-manager.js?v=14",
+    "./src/music-config.js": "./src/music-config.js?v=14",
+    "./src/asset-loader.js": "./src/asset-loader.js?v=14",
+    "./src/retire-offline.js": "./src/retire-offline.js?v=14"
   }
 }
 </script>
-  <script type="module" src="src/main.js?v=13"></script>
+  <script type="module" src="src/main.js?v=14"></script>
 </body>
 </html>
