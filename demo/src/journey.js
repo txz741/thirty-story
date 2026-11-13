@@ -1,22 +1,27 @@
-import {events,eventFor,panelsFor,pendingBadges,badges,character,finale} from './journey-data.js';
+import {events,eventFor,panelsFor,pendingBadges,badges,character,finale,allAssets} from './journey-data.js';
 import {transition,initialState} from './journey-state.js';
 import {bindInput} from './input.js';
 import {bagPosition,flyBadge} from './badge-animation.js';
 import {presentBadge} from './badge-presentation.js';
 import {renderFinale,FINALE_GATHER_START_MS} from './finale.js';
+import {createAssetLoader} from './asset-loader.js';
 
-export function mountStorybook({document=globalThis.document,window=globalThis.window,location=globalThis.location,Image=globalThis.Image,requestAnimationFrame=globalThis.requestAnimationFrame,delay=ms=>new Promise(resolve=>setTimeout(resolve,ms)),audio={play(){},stopGroup(){},stopEffects(){}},onStateChange=()=>{}}={}){
+export function mountStorybook({document=globalThis.document,window=globalThis.window,location=globalThis.location,Image=globalThis.Image,requestAnimationFrame=globalThis.requestAnimationFrame,delay=ms=>new Promise(resolve=>setTimeout(resolve,ms)),audio={play(){},stopGroup(){},stopEffects(){}},onStateChange=()=>{},assetLoader}={}){
   const $=id=>document.getElementById(id),book=$('book');
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const debug=new URLSearchParams(location.search).get('debug')==='1';
-  let state=initialState(),generation=0,flipLock=false,shownKey='',shownLayer='',overlayKey='',activeMotion=false,finaleSoundToken=0;
-  const imagePromises=new Map();
+  let state=initialState(),generation=0,flipLock=false,shownKey='',shownLayer='',overlayKey='',activeMotion=false,finaleSoundToken=0,waitingAssets=false,queuedAction=null,failedAction=null;
+  const assets=assetLoader||createAssetLoader({Image,concurrency:window.navigator?.connection?.saveData?2:3});
   const isFinale=s=>['finale','finished'].includes(s.phase);
   const pose=name=>{$('character').src=character[name]||character.idle;};
   const announce=text=>{$('announcement').textContent=text;};
-  function preload(src){
-    if(!imagePromises.has(src))imagePromises.set(src,new Promise(resolve=>{const image=new Image();image.onload=()=>resolve(true);image.onerror=()=>resolve(false);image.src=src;}));
-    return imagePromises.get(src);
+  const preload=src=>assets.load(src);
+  async function requireAssets(sources){
+    const token=generation;
+    const missing=sources.some(src=>!assets.isReady(src));
+    if(missing){waitingAssets=true;book.setAttribute('aria-busy','true');$('hint-copy').textContent='正在准备下一幕，请稍等，不必重复滑动…';$('gesture-hint').classList.add('loading');}
+    try{return (await Promise.all(sources.map(src=>assets.load(src,{urgent:true})))).every(Boolean);}
+    finally{if(token===generation){waitingAssets=false;$('gesture-hint').classList.remove('loading');}}
   }
   function positionGlow(){const p=bagPosition(book,$('character'),state.collectionStage==='bag-open'?character.openBagMouth:character.bagMouth);$('bag-glow').style.left=p.x+'px';$('bag-glow').style.top=p.y+'px';}
   function drawFinale(){if(isFinale(state))renderFinale({book,image:$('panel-image'),overlay:$('finale-overlay'),state,reduced});}
@@ -91,8 +96,8 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
         commit({type:'WALK_DONE'});if(state.phase==='discovered')announce('发现一段回忆：'+eventFor(state).title);
       }else if(state.phase==='collecting'){
         const queue=pendingBadges(state);
-        const ready=(await Promise.all([...queue.map(id=>badges[id].image),character.expect,character.bagOpen,character.wink].map(preload))).every(Boolean);
-        if(token!==generation)return;if(!ready){$('asset-error').hidden=false;return;}
+        const ready=await requireAssets([...queue.map(id=>badges[id].image),character.expect,character.bagOpen,character.wink]);
+        if(token!==generation)return;if(!ready){render();$('asset-error').hidden=false;book.setAttribute('aria-busy','false');return;}
         await delay(reduced?100:350);if(token!==generation)return;
         for(const id of queue){
           $('bag-glow').classList.remove('visible');commit({type:'COLLECTION_STAGE',stage:'showcase'});
@@ -115,7 +120,8 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
     }finally{if(token===generation)activeMotion=false;}
   }
   async function perform(action){
-    if(flipLock||activeMotion||['walking','collecting'].includes(state.phase))return;
+    if(activeMotion||['walking','collecting'].includes(state.phase))return;
+    if(flipLock){if(!waitingAssets&&state.phase!=='branchChoice'&&['ADVANCE','BACK'].includes(action.type))queuedAction=action;return;}
     if(state.phase==='branchChoice'&&action.type!=='SELECT_BRANCH')return;
     const next=transition(state,action);
     if(next.phase===state.phase&&next.panelIndex===state.panelIndex&&next.eventIndex===state.eventIndex&&next.branchChoice===state.branchChoice)return;
@@ -126,25 +132,39 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
     if(next.phase==='collecting')required=[character.expect,character.bagOpen,character.wink,...pendingBadges(next).map(id=>badges[id].image)];
     if(isFinale(next))required.push(...next.badges.map(id=>badges[id].image));
     if(required.length){
-      book.setAttribute('aria-busy','true');const ready=(await Promise.all(required.map(preload))).every(Boolean);
-      if(token!==generation)return;if(!ready){$('asset-error').hidden=false;book.setAttribute('aria-busy','false');flipLock=false;return;}
+      const ready=await requireAssets(required);
+      if(token!==generation)return;if(!ready){failedAction=action;queuedAction=null;render();$('asset-error').hidden=false;book.setAttribute('aria-busy','false');flipLock=false;return;}
     }
-    commit(action);motion();await delay(reduced?70:300);if(token===generation)flipLock=false;
+    failedAction=null;$('asset-error').hidden=true;commit(action);motion();await delay(reduced?70:300);
+    if(token===generation){flipLock=false;const queued=queuedAction;queuedAction=null;if(queued)void perform(queued);}
   }
   bindInput(book,type=>perform({type}));
-  for(const image of document.querySelectorAll('img'))image.addEventListener('error',()=>{$('asset-error').hidden=false;});
+  for(const image of document.querySelectorAll('img'))image.addEventListener('error',()=>{assets.invalidate(image.getAttribute?.('src')||image.src);$('asset-error').hidden=false;});
   $('panel-image').addEventListener('load',drawFinale);
-  for(const src of Object.values(character).filter(v=>typeof v==='string'))preload(src);
+  const initialAssets=[...Object.values(character).filter(v=>typeof v==='string'),...events[0].panels.map(panel=>panel.image),badges[events[0].badge].image];
+  const warming=assets.warm([...initialAssets,...allAssets]);
+  assets.subscribe(progress=>{
+    const percent=progress.total?Math.round(progress.loaded/progress.total*100):0;
+    $('preload-status').textContent=progress.loaded===progress.total?'回忆已准备好，向上划开启':progress.active===0&&progress.queued===0?'大部分回忆已准备好，可向上划开始':`正在提前准备回忆 ${percent}% · 可以上划开始`;
+  });
   window.addEventListener('resize',()=>{if(state.phase==='collecting')positionGlow();drawFinale();});
   $('debug').hidden=!debug;
-  function reset(){generation++;finaleSoundToken++;activeMotion=false;flipLock=false;shownKey='';overlayKey='';
+  function reset(){generation++;finaleSoundToken++;activeMotion=false;flipLock=false;waitingAssets=false;queuedAction=null;failedAction=null;shownKey='';overlayKey='';
     audio.stopEffects();
+    $('gesture-hint').classList.remove('loading');
     $('flying-badge').getAnimations().forEach(a=>a.cancel());$('flying-badge').classList.remove('badge-presenting');$('flying-badge').hidden=true;$('bag-glow').classList.remove('visible');$('asset-error').hidden=true;
     state=initialState();render();onStateChange(state,{type:'RESET'});}
   $('reset').addEventListener('click',reset);
+  $('retry-assets').addEventListener('click',async()=>{
+    if(waitingAssets||activeMotion)return;$('asset-error').hidden=true;
+    if(state.phase==='collecting'){void motion();return;}
+    if(failedAction){const action=failedAction;failedAction=null;void perform(action);return;}
+    const required=['story','finale','finished'].includes(state.phase)?[panelsFor(state)[state.panelIndex].image]:[character.idle];
+    if(await requireAssets(required)){shownKey='';render();}else $('asset-error').hidden=false;
+  });
   $('choose-reality').addEventListener('click',()=>perform({type:'SELECT_BRANCH',choice:'reality'}));
   $('choose-if').addEventListener('click',()=>perform({type:'SELECT_BRANCH',choice:'if'}));
-  const controls={get state(){return structuredClone(state);},advance:()=>perform({type:'ADVANCE'}),back:()=>perform({type:'BACK'}),selectBranch:choice=>perform({type:'SELECT_BRANCH',choice}),reset};
+  const controls={get state(){return structuredClone(state);},get loading(){return assets.state;},ready:warming,advance:()=>perform({type:'ADVANCE'}),back:()=>perform({type:'BACK'}),selectBranch:choice=>perform({type:'SELECT_BRANCH',choice}),reset};
   if(debug)window.storyDebug=controls;
   render();motion();return controls;
 }

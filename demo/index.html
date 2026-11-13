@@ -7,7 +7,7 @@
   <meta name="robots" content="noindex,nofollow">
   <meta name="description" content="走过十段日常，收藏一路回忆。一本可以滑动翻阅的生活绘本。">
   <title>乘风去往回忆里</title>
-  <link rel="stylesheet" href="styles.css?v=11">
+  <link rel="stylesheet" href="styles.css?v=12">
   <link rel="preload" href="assets/cover.jpg" as="image">
 </head>
 <body>
@@ -16,6 +16,7 @@
       <div class="cover-wash" aria-hidden="true"></div>
       <header class="cover-heading"><p>一本关于日子与回忆的绘本</p><h1>乘风去往回忆里</h1></header>
       <img class="cover-art" src="assets/cover.jpg" alt="女孩骑着大白鹅，飞过河流、桥和小镇" draggable="false">
+      <p id="preload-status" class="preload-status" aria-live="polite">正在提前准备回忆，可以上划开始</p>
     </section>
     <section id="road" class="road layer" hidden aria-label="回忆之间的小路">
       <div id="road-scenery" class="road-scenery" aria-hidden="true">
@@ -49,7 +50,7 @@
     </section>
     <p id="gesture-hint" class="gesture-hint"><span class="gesture-arrow" aria-hidden="true">⌃</span><span id="hint-copy">手指向上划，开启回忆</span></p>
     <p id="announcement" class="sr-only" aria-live="polite"></p>
-    <div id="asset-error" class="asset-error" role="alert" hidden>这张回忆暂时未能载入，请刷新重试。</div>
+    <div id="asset-error" class="asset-error" role="alert" hidden>这张回忆暂时未能载入。<button id="retry-assets" type="button" data-ui>重试加载</button></div>
     <aside id="debug" class="debug" hidden><output id="debug-state"></output><button id="reset" type="button">重置进度</button></aside>
     <aside class="audio-controls" data-ui data-audio-controls aria-label="声音控制">
       <button id="audio-toggle" class="audio-toggle" type="button" aria-label="打开声音设置" aria-expanded="false" aria-controls="audio-panel"><span aria-hidden="true">♫</span></button>
@@ -65,22 +66,23 @@
   <script type="importmap">
 {
   "imports": {
-    "./src/journey.js": "./src/journey.js?v=11",
-    "./src/journey-data.js": "./src/journey-data.js?v=11",
-    "./src/journey-state.js": "./src/journey-state.js?v=11",
-    "./src/finale.js": "./src/finale.js?v=11",
-    "./src/input.js": "./src/input.js?v=11",
-    "./src/badge-animation.js": "./src/badge-animation.js?v=11",
-    "./src/badge-presentation.js": "./src/badge-presentation.js?v=11",
-    "./src/audio-system.js": "./src/audio-system.js?v=11",
-    "./src/audio-config.js": "./src/audio-config.js?v=11",
-    "./src/audio-controls.js": "./src/audio-controls.js?v=11",
-    "./src/bgm-player.js": "./src/bgm-player.js?v=11",
-    "./src/music-manager.js": "./src/music-manager.js?v=11",
-    "./src/music-config.js": "./src/music-config.js?v=11"
+    "./src/journey.js": "./src/journey.js?v=12",
+    "./src/journey-data.js": "./src/journey-data.js?v=12",
+    "./src/journey-state.js": "./src/journey-state.js?v=12",
+    "./src/finale.js": "./src/finale.js?v=12",
+    "./src/input.js": "./src/input.js?v=12",
+    "./src/badge-animation.js": "./src/badge-animation.js?v=12",
+    "./src/badge-presentation.js": "./src/badge-presentation.js?v=12",
+    "./src/audio-system.js": "./src/audio-system.js?v=12",
+    "./src/audio-config.js": "./src/audio-config.js?v=12",
+    "./src/audio-controls.js": "./src/audio-controls.js?v=12",
+    "./src/bgm-player.js": "./src/bgm-player.js?v=12",
+    "./src/music-manager.js": "./src/music-manager.js?v=12",
+    "./src/music-config.js": "./src/music-config.js?v=12",
+    "./src/asset-loader.js": "./src/asset-loader.js?v=12"
   }
 }
 </script>
-  <script type="module" src="src/main.js?v=11"></script>
+  <script type="module" src="src/main.js?v=12"></script>
 </body>
 </html>
