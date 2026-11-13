@@ -1,7 +1,7 @@
-// Physical down-swipe and wheel-down both mean ADVANCE. Never native scrolling.
+// Physical up-swipe advances; wheel-down keeps the familiar desktop direction.
 export function swipeDirection(dx,dy) {
   if(Math.abs(dy)<56 || Math.abs(dy)<Math.abs(dx)*1.35)return null;
-  return dy>0?'ADVANCE':'BACK';
+  return dy<0?'ADVANCE':'BACK';
 }
 export class WheelGesture {
   constructor(){this.last=-Infinity;this.total=0;this.latched=false;this.sign=0;}

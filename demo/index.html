@@ -7,7 +7,7 @@
   <meta name="robots" content="noindex,nofollow">
   <meta name="description" content="走过十段日常，收藏一路回忆。一本可以滑动翻阅的生活绘本。">
   <title>乘风去往回忆里</title>
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=3">
   <link rel="preload" href="assets/cover.jpg" as="image">
 </head>
 <body>
@@ -47,12 +47,20 @@
         <button id="choose-if" type="button">走进童年的回忆</button><button id="choose-reality" type="button">继续现实中的这一晚</button>
       </div>
     </section>
-    <p id="gesture-hint" class="gesture-hint"><span class="down-mark" aria-hidden="true">⌄</span><span id="hint-copy">手指向下划，开启回忆</span></p>
+    <p id="gesture-hint" class="gesture-hint"><span class="gesture-arrow" aria-hidden="true">⌃</span><span id="hint-copy">手指向上划，开启回忆</span></p>
     <p id="announcement" class="sr-only" aria-live="polite"></p>
     <div id="asset-error" class="asset-error" role="alert" hidden>这张回忆暂时未能载入，请刷新重试。</div>
     <aside id="debug" class="debug" hidden><output id="debug-state"></output><button id="reset" type="button">重置进度</button></aside>
     <noscript><p class="asset-error">请开启 JavaScript，以翻阅这本互动绘本。</p></noscript>
   </main>
-  <script type="module" src="src/main.js?v=2"></script>
+  <script type="importmap">
+    {"imports":{
+      "./src/journey.js":"./src/journey.js?v=3",
+      "./src/input.js":"./src/input.js?v=3",
+      "./src/badge-animation.js":"./src/badge-animation.js?v=3",
+      "./src/badge-presentation.js":"./src/badge-presentation.js?v=3"
+    }}
+  </script>
+  <script type="module" src="src/main.js?v=3"></script>
 </body>
 </html>

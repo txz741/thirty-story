@@ -1,16 +1,15 @@
 import {events,eventFor,panelsFor,pendingBadges,badges,character,finale} from './journey-data.js';
 import {transition,initialState} from './journey-state.js';
-import {loadProgress,saveProgress} from './progress.js';
 import {bindInput} from './input.js';
 import {bagPosition,flyBadge} from './badge-animation.js';
+import {presentBadge} from './badge-presentation.js';
 import {renderFinale} from './finale.js';
 
 export function mountStorybook({document=globalThis.document,window=globalThis.window,location=globalThis.location,Image=globalThis.Image,requestAnimationFrame=globalThis.requestAnimationFrame,delay=ms=>new Promise(resolve=>setTimeout(resolve,ms))}={}){
   const $=id=>document.getElementById(id),book=$('book');
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const debug=new URLSearchParams(location.search).get('debug')==='1';
-  let storage;try{storage=window.localStorage;}catch{storage=null;}
-  let state=loadProgress(storage),generation=0,flipLock=false,shownKey='',shownLayer='',overlayKey='',activeMotion=false;
+  let state=initialState(),generation=0,flipLock=false,shownKey='',shownLayer='',overlayKey='',activeMotion=false;
   const imagePromises=new Map();
   const isFinale=s=>['finale','finished'].includes(s.phase);
   const pose=name=>{$('character').src=character[name]||character.idle;};
@@ -53,20 +52,21 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
     const busy=['walking','collecting'].includes(state.phase);book.setAttribute('aria-busy',String(busy));
     $('gesture-hint').classList.toggle('busy',busy);
     const touch=window.matchMedia('(pointer: coarse)').matches;
-    let hint=touch?'手指向下划，继续前进':'滚轮向下，继续前进';
-    if(state.phase==='cover')hint=touch?'手指向下划，开启回忆':'滚轮向下，开启回忆';
-    if(state.phase==='discovered')hint=touch?'再向下划，走进这段回忆':'再向下滚，走进这段回忆';
-    if(state.phase==='story')hint=state.panelIndex===list.length-1?(event.exit==='finale'?'下划，迎接最后的惊喜':'上划回看 · 下划收藏这段回忆'):'下划翻页 · 上划回看';
-    if(final)hint=state.panelIndex===finale.panels.length-1?'带着回忆，继续向前 · 上划可回看':'下划翻页 · 上划回看';
+    const forward=touch?'上划':'向下滚动',back=touch?'下划':'向上滚动';
+    let hint=touch?'手指向上划，继续前进':'滚轮向下，继续前进';
+    if(state.phase==='cover')hint=touch?'手指向上划，开启回忆':'滚轮向下，开启回忆';
+    if(state.phase==='discovered')hint=touch?'再向上划，走进这段回忆':'再向下滚，走进这段回忆';
+    if(state.phase==='story')hint=state.panelIndex===list.length-1?(event.exit==='finale'?`${forward}，迎接最后的惊喜`:`${back}回看 · ${forward}收藏这段回忆`):`${forward}翻页 · ${back}回看`;
+    if(final)hint=state.panelIndex===finale.panels.length-1?`带着回忆，继续向前 · ${back}可回看`:`${forward}翻页 · ${back}回看`;
     if(state.phase==='walking')hint='她正在向前走…';
-    if(state.phase==='collecting')hint=state.collectionStage==='wink'?'又收藏了一份快乐':'让快乐，成为一枚纪念';
+    if(state.phase==='collecting')hint=state.collectionStage==='wink'?'又收藏了一份快乐':state.collectionStage==='showcase'?'让这一刻，闪闪发光':'让快乐，成为一枚纪念';
     if(state.phase==='branchChoice')hint='这一次，想走进哪一种可能？';
     $('hint-copy').textContent=hint;
     $('debug-state').textContent=`${state.phase} · 故事${state.eventIndex+1}/10 · ${state.distance}步 · 幕${state.panelIndex+1} · 勋章${state.badges.length}`;
     if(['roadIdle','discovered'].includes(state.phase))preload(event.panels[0].image);
     if(state.phase==='collecting')requestAnimationFrame(positionGlow);
   }
-  function commit(action){state=transition(state,action);saveProgress(storage,state);render();}
+  function commit(action){state=transition(state,action);render();}
   async function motion(){
     if(activeMotion)return;activeMotion=true;const token=generation;
     try{
@@ -78,11 +78,13 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
         const ready=(await Promise.all([...queue.map(id=>badges[id].image),character.expect,character.wink].map(preload))).every(Boolean);
         if(token!==generation)return;if(!ready){$('asset-error').hidden=false;return;}
         await delay(reduced?100:350);if(token!==generation)return;
-        commit({type:'COLLECTION_STAGE',stage:'bag-light'});positionGlow();$('bag-glow').classList.add('visible');
-        await delay(reduced?90:350);if(token!==generation)return;
         for(const id of queue){
+          $('bag-glow').classList.remove('visible');commit({type:'COLLECTION_STAGE',stage:'showcase'});
           $('flying-badge').src=badges[id].image;$('flying-badge').alt=badges[id].title+'纪念勋章';
-          await flyBadge({book,character:$('character'),badge:$('flying-badge'),anchor:character.bagMouth,reduced});if(token!==generation)return;
+          const current=()=>token===generation;
+          if(!await presentBadge({book,badge:$('flying-badge'),delay,isCurrent:current}))return;
+          commit({type:'COLLECTION_STAGE',stage:'bag-light'});positionGlow();$('bag-glow').classList.add('visible');
+          await flyBadge({book,character:$('character'),badge:$('flying-badge'),anchor:character.bagMouth,reduced,isCurrent:current});if(token!==generation)return;
           await delay(reduced?40:160);if(token!==generation)return;
         }
         commit({type:'COLLECTION_STAGE',stage:'closed'});await delay(reduced?80:280);if(token!==generation)return;
@@ -117,8 +119,8 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   window.addEventListener('resize',()=>{if(state.phase==='collecting')positionGlow();drawFinale();});
   $('debug').hidden=!debug;
   function reset(){generation++;activeMotion=false;flipLock=false;shownKey='';overlayKey='';
-    $('flying-badge').getAnimations().forEach(a=>a.cancel());$('flying-badge').hidden=true;$('bag-glow').classList.remove('visible');$('asset-error').hidden=true;
-    state=initialState();saveProgress(storage,state);render();}
+    $('flying-badge').getAnimations().forEach(a=>a.cancel());$('flying-badge').classList.remove('badge-presenting');$('flying-badge').hidden=true;$('bag-glow').classList.remove('visible');$('asset-error').hidden=true;
+    state=initialState();render();}
   $('reset').addEventListener('click',reset);
   $('choose-reality').addEventListener('click',()=>perform({type:'SELECT_BRANCH',choice:'reality'}));
   $('choose-if').addEventListener('click',()=>perform({type:'SELECT_BRANCH',choice:'if'}));
