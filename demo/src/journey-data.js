@@ -19,7 +19,7 @@ export const eventFor=state=>events[state.eventIndex]||events[0];
 export function panelsFor(state){
   if(state.phase==='finale'||state.phase==='finished')return finale.panels;
   const event=eventFor(state);
-  if(event.branch&&state.branchChoice==='if')return [...event.panels.slice(0,event.branch.afterPanel+1),...event.branch.panels];
+  if(event.branch&&state.branchChoice==='if')return [...event.panels.slice(0,event.branch.afterPanel+1),...event.branch.panels,...event.panels.slice(event.branch.afterPanel+1)];
   return event.panels;
 }
 export function pendingBadges(state){const event=eventFor(state);return [event.badge,...(event.branch&&state.branchChoice==='if'?[event.branch.hiddenBadge]:[])].filter(id=>!state.badges.includes(id));}
