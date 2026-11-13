@@ -6,4 +6,4 @@ export const SOUND_FILES={
   'badge-collect':{src:'assets/audio/badge-collect.wav',title:'把回忆收藏',duration:.84},
   'finale-sparkle':{src:'assets/audio/finale-sparkle.wav',title:'星光汇聚',duration:2.5},
 };
-export const AUDIO_DEFAULTS={muted:false,sfxVolume:.55,bgmVolume:.22,bgmSrc:null};
+export const AUDIO_DEFAULTS={muted:false,sfxVolume:.8,bgmVolume:.22,bgmSrc:null};

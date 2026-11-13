@@ -1,4 +1,4 @@
-export const MUSIC_SETTINGS={crossfadeSeconds:2.5,finaleFadeSeconds:2.5};
+export const MUSIC_SETTINGS={fadeOutSeconds:2,fadeInSeconds:1,finaleFadeSeconds:2.5};
 export const MUSIC_TRACKS=[
   {id:'chapter1',src:'assets/bgm/1Everyday%20Adventures.mp3',title:'Everyday Adventures',loop:true},
   {id:'chapter2',src:'assets/bgm/2Autumn%20Afternoon.mp3',title:'Autumn Afternoon',loop:true},

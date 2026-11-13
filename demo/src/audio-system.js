@@ -5,6 +5,7 @@ export function createAudioSystem({window=globalThis.window,document=globalThis.
   let context=null,master=null,sfx=null,bgm=null,duck=null,music=null,musicDefinitions=[],muted=!!defaults.muted,sfxVolume=defaults.sfxVolume,bgmVolume=defaults.bgmVolume,bgmSrc=defaults.bgmSrc;
   let unlockPromise=null,error='',destroyed=false,bound=false,hidden=!!document?.hidden,lastPlayed=null;
   let bgmSelection=bgmSrc?{id:bgmSrc,src:bgmSrc,loop:true}:null;
+  let pendingMusicFade=null;
   const raw=new Map(),buffers=new Map(),fetching=new Map(),decoding=new Map(),voices=new Set(),subscribers=new Set();
   const Context=window?.AudioContext||window?.webkitAudioContext;
   const snapshot=()=>({supported:!!Context,contextState:context?.state||'locked',sampleRate:context?.sampleRate||null,ready:context?.state==='running',muted,sfxVolume,bgmVolume,bgmAvailable:!!bgmSrc||musicDefinitions.length>0,bgm:music?.state||{status:'locked',id:null},loaded:buffers.size,total:Object.keys(files).length,error:error||music?.state.error||'',lastPlayed});
@@ -20,6 +21,7 @@ export function createAudioSystem({window=globalThis.window,document=globalThis.
       if(context.createDynamicsCompressor){const limiter=context.createDynamicsCompressor();limiter.threshold.value=-6;limiter.knee.value=4;limiter.ratio.value=12;limiter.attack.value=.005;limiter.release.value=.12;master.connect(limiter);limiter.connect(context.destination);}else master.connect(context.destination);
       music=createBgmPlayer({context,destination:bgm,Audio:window?.Audio,notify});music.prepare(musicDefinitions);
       if(bgmSelection)music.choose(bgmSelection);
+      if(pendingMusicFade&&pendingMusicFade.id===bgmSelection?.id)music.fadeOut(pendingMusicFade.seconds);
       context.onstatechange=()=>{syncMusic();notify();};return true;
     }catch{error='此浏览器暂时无法开启声音';context=null;notify();return false;}
   }
@@ -72,8 +74,10 @@ export function createAudioSystem({window=globalThis.window,document=globalThis.
   function setSfxVolume(value){sfxVolume=clamp(value);gain(sfx?.gain,sfxVolume);notify();}
   function setBgmVolume(value){bgmVolume=clamp(value);gain(bgm?.gain,bgmVolume);notify();}
   function prepareBgm(tracks){musicDefinitions=tracks.map(track=>({...track}));music?.prepare(musicDefinitions);notify();}
+  function fadeOutBgm(seconds=2){pendingMusicFade={id:bgmSelection?.id,seconds};music?.fadeOut(seconds);notify();}
   function setBgmSource(value,options={}){
     bgmSrc=value||null;
+    pendingMusicFade=null;
     bgmSelection=bgmSrc?{id:options.id||value,src:value,loop:true,...options}:null;
     if(!bgmSrc)music?.clear(options);
     else music?.choose(bgmSelection);
@@ -84,5 +88,5 @@ export function createAudioSystem({window=globalThis.window,document=globalThis.
   function bindUnlock(){if(bound||!document)return;bound=true;for(const event of ['pointerdown','pointerup','touchend','keydown'])document.addEventListener(event,gesture,{capture:true,passive:true});document.addEventListener('visibilitychange',visibility);}
   function subscribe(fn){subscribers.add(fn);fn(snapshot());return ()=>subscribers.delete(fn);}
   async function destroy(){destroyed=true;stopEffects();music?.destroy();if(bound){for(const event of ['pointerdown','pointerup','touchend','keydown'])document.removeEventListener(event,gesture,{capture:true});document.removeEventListener('visibilitychange',visibility);}subscribers.clear();try{await context?.close();}catch{}}
-  return {prime,unlock,play,stopGroup,stopEffects,setMuted,setSfxVolume,setBgmVolume,prepareBgm,setBgmSource,bindUnlock,subscribe,destroy,get state(){return snapshot();}};
+  return {prime,unlock,play,stopGroup,stopEffects,setMuted,setSfxVolume,setBgmVolume,prepareBgm,setBgmSource,fadeOutBgm,bindUnlock,subscribe,destroy,get state(){return snapshot();}};
 }

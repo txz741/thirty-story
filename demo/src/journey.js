@@ -107,6 +107,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
           audio.stopGroup('badge-flight');$('bag-glow').classList.remove('visible');
           commit({type:'COLLECTION_STAGE',stage:'wink'});audio.play('badge-collect',{group:'badge-reward',replace:true});
           await delay(reduced?160:650);if(token!==generation)return;
+          if(id===queue.at(-1))onStateChange(state,{type:'COLLECTION_WINK_DONE'});
         }
         commit({type:'COLLECTION_STAGE',stage:'idle'});await delay(reduced?80:250);if(token!==generation)return;
         commit({type:'COLLECT_DONE'});announce('这段回忆已收藏，继续沿着小路往前走。');
