@@ -19,7 +19,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   const assets=assetLoader||createAssetLoader({Image,concurrency:window.navigator?.connection?.saveData?2:3});
   const chapterRoad=createChapterRoad({document,book});
   const chapterTransition=createChapterTransition({document,window,book});
-  const endingFrames=createEndingFrames({canvas:$('ending-frames'),button:$('retry-ending-frames'),document,music:()=>audio.state?.bgm,requestFrame:requestAnimationFrame,onShow:drawFinale,onFrame:syncEndingBadges});
+  const endingFrames=createEndingFrames({canvas:$('ending-frames'),button:$('retry-ending-frames'),document,music:()=>audio.state?.bgm,requestFrame:requestAnimationFrame,onShow:drawFinale,onFrame:syncEndingBadges,onStill:clock=>syncEndingBadges(-1,clock)});
   const isFinale=s=>['finale','finished'].includes(s.phase);
   const pose=name=>{$('character').src=character[name]||character.idle;};
   const announce=text=>{$('announcement').textContent=text;};
@@ -33,10 +33,10 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   }
   function positionGlow(){const p=bagPosition(book,$('character'),state.collectionStage==='bag-open'?character.openBagMouth:character.bagMouth);$('bag-glow').style.left=p.x+'px';$('bag-glow').style.top=p.y+'px';}
   function drawFinale(){if(isFinale(state))renderFinale({book,image:$('ending-frames').hidden?$('panel-image'):$('ending-frames'),overlay:$('finale-overlay'),state,reduced});}
-  function syncEndingBadges(frame){
+  function syncEndingBadges(frame,clock){
     const overlay=$('finale-overlay');
     if(frame<0&&(!isFinale(state)||state.panelIndex!==4)){overlay._endingFrameIndex=-1;overlay.style.setProperty?.('--ending-bag-opacity','0');return;}
-    positionEndingBadges(overlay,frame);
+    positionEndingBadges(overlay,frame,clock);
   }
   function render(){
     chapterTransition(state);

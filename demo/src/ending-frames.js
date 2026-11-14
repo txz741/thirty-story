@@ -21,10 +21,10 @@ async function decodeFrame(blob){
   const url=URL.createObjectURL(blob),image=new Image();
   try{await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=reject;image.src=url;});return image;}finally{URL.revokeObjectURL(url);}
 }
-export function createEndingFrames({canvas,button,music,document,requestFrame=globalThis.requestAnimationFrame,fetcher=globalThis.fetch,decode=decodeFrame,onShow=()=>{},onFrame=()=>{},source=ENDING_FRAME_SOURCE}){
+export function createEndingFrames({canvas,button,music,document,requestFrame=globalThis.requestAnimationFrame,fetcher=globalThis.fetch,decode=decodeFrame,onShow=()=>{},onFrame=()=>{},onStill=()=>{},source=ENDING_FRAME_SOURCE}){
   const context=canvas.getContext?.('2d');if(!context)return {setActive(){},warm:()=>Promise.resolve(false)};
   canvas.width=source.width;canvas.height=source.height;canvas.hidden=true;button.hidden=true;
-  let active=false,epoch=0,manifest=null,download=null,failed=false,target=0,drawn=-1,decoding=0;
+  let active=false,epoch=0,manifest=null,download=null,failed=false,target=0,drawn=-1,decoding=0,stillSample=null;
   const frames=Array(source.count).fill(null);
   const cache=new Map(),pending=new Set(),queue=[];
   function trim(){for(const [index,bitmap] of cache)if(index<target||index>=target+6){bitmap.close?.();cache.delete(index);}}
@@ -54,17 +54,18 @@ export function createEndingFrames({canvas,button,music,document,requestFrame=gl
   function tick(token){
     if(!active||token!==epoch)return;
     if(!document.hidden){
-      const index=frameForMusic(music(),source.count,source.seconds);prepare(Math.max(0,index));
-      if(index<0){const changed=drawn!==-1||!canvas.hidden;canvas.hidden=true;button.hidden=true;drawn=-1;if(changed)onFrame(-1);}
+      const clock=music(),index=frameForMusic(clock,source.count,source.seconds);prepare(Math.max(0,index));
+      if(index<0){const changed=drawn!==-1||!canvas.hidden;canvas.hidden=true;button.hidden=true;drawn=-1;if(changed)onFrame(-1,clock);const sample=Math.floor((clock?.currentTime||0)*24);if(sample!==stillSample){stillSample=sample;onStill(clock);}}
       else{
+        stillSample=null;
         button.hidden=!failed;
         const bitmap=cache.get(index);
-        if(bitmap&&drawn!==index){context.drawImage(bitmap,0,0,source.width,source.height);drawn=index;onFrame(index);if(canvas.hidden){canvas.hidden=false;onShow();}}
+        if(bitmap&&drawn!==index){context.drawImage(bitmap,0,0,source.width,source.height);drawn=index;onFrame(index,clock);if(canvas.hidden){canvas.hidden=false;onShow();}}
       }
     }
     requestFrame(()=>tick(token));
   }
   button.addEventListener('click',()=>void warm());
   void warm();
-  return {warm,setActive(value){value=!!value;if(value===active)return;active=value;epoch++;button.hidden=true;if(!active){canvas.hidden=true;drawn=-1;onFrame(-1);return;}void warm();tick(epoch);}};
+  return {warm,setActive(value){value=!!value;if(value===active)return;active=value;epoch++;stillSample=null;button.hidden=true;if(!active){canvas.hidden=true;drawn=-1;onFrame(-1);return;}void warm();tick(epoch);}};
 }
