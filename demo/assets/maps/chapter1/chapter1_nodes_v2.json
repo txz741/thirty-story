@@ -2,14 +2,14 @@
   "version": 2,
   "title": "第一乐章 · 青春之路",
   "width": 720,
-  "height": 12160,
+  "height": 14720,
   "viewport": {
     "width": 720,
     "height": 1280
   },
   "stepPixels": 640,
   "stepsPerEvent": 4,
-  "lastStep": 16,
+  "lastStep": 20,
   "sceneAnchorY": 640,
   "roadWidth": 174,
   "road": [
@@ -202,7 +202,379 @@
       11946.666666666666,
       359.16141235397464,
       12160
+    ],
+    [
+      359.16141235397464,
+      12160,
+      366.597805003996,
+      12373.333333333334,
+      374.43790939335577,
+      12586.666666666666,
+      379.01169010442936,
+      12800
+    ],
+    [
+      379.01169010442936,
+      12800,
+      383.58547081550296,
+      13013.333333333334,
+      384.72492490646,
+      13226.666666666666,
+      381.6054838420473,
+      13440
+    ],
+    [
+      381.6054838420473,
+      13440,
+      378.4860427776346,
+      13653.333333333334,
+      371.174067829228,
+      13866.666666666666,
+      362.50695095080306,
+      14080
+    ],
+    [
+      362.50695095080306,
+      14080,
+      353.8398340723781,
+      14293.333333333334,
+      344.06006770149975,
+      14506.666666666666,
+      337.1912709320861,
+      14720
     ]
+  ],
+  "decorations": [
+    {
+      "kind": "daisies",
+      "side": "left",
+      "x": 66,
+      "y": 155,
+      "width": 120,
+      "height": 120,
+      "opacity": 0.72,
+      "flip": false
+    },
+    {
+      "kind": "lavender",
+      "side": "right",
+      "x": 570,
+      "y": 670,
+      "width": 104,
+      "height": 104,
+      "opacity": 0.58,
+      "flip": true
+    },
+    {
+      "kind": "foliage",
+      "side": "left",
+      "x": 92,
+      "y": 1185,
+      "width": 92,
+      "height": 92,
+      "opacity": 0.66,
+      "flip": false
+    },
+    {
+      "kind": "daisies",
+      "side": "right",
+      "x": 532,
+      "y": 1565,
+      "width": 112,
+      "height": 112,
+      "opacity": 0.62,
+      "flip": false
+    },
+    {
+      "kind": "lavender",
+      "side": "left",
+      "x": 110,
+      "y": 2080,
+      "width": 120,
+      "height": 120,
+      "opacity": 0.72,
+      "flip": true
+    },
+    {
+      "kind": "foliage",
+      "side": "right",
+      "x": 522,
+      "y": 2595,
+      "width": 104,
+      "height": 104,
+      "opacity": 0.58,
+      "flip": false
+    },
+    {
+      "kind": "foliage",
+      "side": "left",
+      "x": 92,
+      "y": 4005,
+      "width": 120,
+      "height": 120,
+      "opacity": 0.72,
+      "flip": false
+    },
+    {
+      "kind": "daisies",
+      "side": "right",
+      "x": 532,
+      "y": 4385,
+      "width": 104,
+      "height": 104,
+      "opacity": 0.58,
+      "flip": false
+    },
+    {
+      "kind": "lavender",
+      "side": "left",
+      "x": 112,
+      "y": 4900,
+      "width": 92,
+      "height": 92,
+      "opacity": 0.66,
+      "flip": true
+    },
+    {
+      "kind": "lavender",
+      "side": "right",
+      "x": 570,
+      "y": 6310,
+      "width": 104,
+      "height": 104,
+      "opacity": 0.58,
+      "flip": true
+    },
+    {
+      "kind": "foliage",
+      "side": "left",
+      "x": 92,
+      "y": 6825,
+      "width": 92,
+      "height": 92,
+      "opacity": 0.66,
+      "flip": false
+    },
+    {
+      "kind": "daisies",
+      "side": "right",
+      "x": 532,
+      "y": 7205,
+      "width": 112,
+      "height": 112,
+      "opacity": 0.62,
+      "flip": false
+    },
+    {
+      "kind": "lavender",
+      "side": "left",
+      "x": 110,
+      "y": 7720,
+      "width": 120,
+      "height": 120,
+      "opacity": 0.72,
+      "flip": true
+    },
+    {
+      "kind": "lavender",
+      "side": "right",
+      "x": 570,
+      "y": 9130,
+      "width": 112,
+      "height": 112,
+      "opacity": 0.62,
+      "flip": true
+    },
+    {
+      "kind": "foliage",
+      "side": "left",
+      "x": 92,
+      "y": 9645,
+      "width": 120,
+      "height": 120,
+      "opacity": 0.72,
+      "flip": false
+    },
+    {
+      "kind": "daisies",
+      "side": "right",
+      "x": 532,
+      "y": 10025,
+      "width": 104,
+      "height": 104,
+      "opacity": 0.58,
+      "flip": false
+    },
+    {
+      "kind": "daisies",
+      "side": "left",
+      "x": 66,
+      "y": 11435,
+      "width": 120,
+      "height": 120,
+      "opacity": 0.72,
+      "flip": false
+    },
+    {
+      "kind": "lavender",
+      "side": "right",
+      "x": 570,
+      "y": 11950,
+      "width": 104,
+      "height": 104,
+      "opacity": 0.58,
+      "flip": true
+    },
+    {
+      "kind": "foliage",
+      "side": "left",
+      "x": 92,
+      "y": 12465,
+      "width": 92,
+      "height": 92,
+      "opacity": 0.66,
+      "flip": false
+    },
+    {
+      "kind": "daisies",
+      "side": "right",
+      "x": 532,
+      "y": 12845,
+      "width": 112,
+      "height": 112,
+      "opacity": 0.62,
+      "flip": false
+    },
+    {
+      "kind": "lavender",
+      "side": "left",
+      "x": 110,
+      "y": 13360,
+      "width": 120,
+      "height": 120,
+      "opacity": 0.72,
+      "flip": true
+    },
+    {
+      "kind": "foliage",
+      "side": "right",
+      "x": 522,
+      "y": 13875,
+      "width": 104,
+      "height": 104,
+      "opacity": 0.58,
+      "flip": false
+    },
+    {
+      "kind": "daisies",
+      "side": "left",
+      "x": 66,
+      "y": 14255,
+      "width": 92,
+      "height": 92,
+      "opacity": 0.66,
+      "flip": false
+    },
+    {
+      "kind": "petals",
+      "side": "left",
+      "x": 154,
+      "y": 2410,
+      "width": 66,
+      "height": 66,
+      "opacity": 0.58,
+      "flip": false
+    },
+    {
+      "kind": "petals",
+      "side": "left",
+      "x": 128,
+      "y": 3670,
+      "width": 72,
+      "height": 72,
+      "opacity": 0.58,
+      "flip": false
+    },
+    {
+      "kind": "petals",
+      "side": "left",
+      "x": 154,
+      "y": 6190,
+      "width": 66,
+      "height": 66,
+      "opacity": 0.58,
+      "flip": false
+    },
+    {
+      "kind": "petals",
+      "side": "right",
+      "x": 626,
+      "y": 6820,
+      "width": 84,
+      "height": 84,
+      "opacity": 0.58,
+      "flip": true
+    },
+    {
+      "kind": "petals",
+      "side": "left",
+      "x": 128,
+      "y": 7450,
+      "width": 72,
+      "height": 72,
+      "opacity": 0.58,
+      "flip": false
+    },
+    {
+      "kind": "petals",
+      "side": "left",
+      "x": 34,
+      "y": 8710,
+      "width": 84,
+      "height": 84,
+      "opacity": 0.58,
+      "flip": false
+    },
+    {
+      "kind": "petals",
+      "side": "left",
+      "x": 154,
+      "y": 9970,
+      "width": 66,
+      "height": 66,
+      "opacity": 0.58,
+      "flip": false
+    },
+    {
+      "kind": "petals",
+      "side": "right",
+      "x": 566,
+      "y": 13120,
+      "width": 72,
+      "height": 72,
+      "opacity": 0.58,
+      "flip": true
+    },
+    {
+      "kind": "petals",
+      "side": "left",
+      "x": 154,
+      "y": 13750,
+      "width": 66,
+      "height": 66,
+      "opacity": 0.58,
+      "flip": false
+    },
+    {
+      "kind": "petals",
+      "side": "right",
+      "x": 626,
+      "y": 14380,
+      "width": 84,
+      "height": 84,
+      "opacity": 0.58,
+      "flip": true
+    }
   ],
   "background": {
     "left": "#f6f0f7",
@@ -219,7 +591,7 @@
       "side": "right",
       "curiousScaleX": 1,
       "centerY": 3200,
-      "centerRatio": 0.2631578947368421,
+      "centerRatio": 0.21739130434782608,
       "triggerCameraY": 2560,
       "triggerStep": 4,
       "art": {
@@ -246,7 +618,7 @@
       "side": "left",
       "curiousScaleX": -1,
       "centerY": 5760,
-      "centerRatio": 0.47368421052631576,
+      "centerRatio": 0.391304347826087,
       "triggerCameraY": 5120,
       "triggerStep": 8,
       "art": {
@@ -273,7 +645,7 @@
       "side": "right",
       "curiousScaleX": 1,
       "centerY": 8320,
-      "centerRatio": 0.6842105263157895,
+      "centerRatio": 0.5652173913043478,
       "triggerCameraY": 7680,
       "triggerStep": 12,
       "art": {
@@ -300,7 +672,7 @@
       "side": "left",
       "curiousScaleX": -1,
       "centerY": 10880,
-      "centerRatio": 0.8947368421052632,
+      "centerRatio": 0.7391304347826086,
       "triggerCameraY": 10240,
       "triggerStep": 16,
       "art": {
@@ -323,7 +695,7 @@
     }
   ],
   "assets": {
-    "background": "chapter1_scroll_v2.jpg",
-    "fullResolution": "chapter1_scroll_v2.png"
+    "background": "chapter1_scroll_v2.jpg?v=17",
+    "fullResolution": "chapter1_scroll_v2.png?v=17"
   }
 }

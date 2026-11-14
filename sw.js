@@ -19,7 +19,7 @@ self.addEventListener('activate',event=>event.waitUntil((async()=>{
   await Promise.allSettled(windows.map(client=>{
     const url=new URL(client.url);
     if(url.origin!==ROOT.origin||!url.pathname.startsWith(ROOT.pathname))return;
-    url.searchParams.set('v','14');
+    url.searchParams.set('v','17');
     return client.navigate(url.href);
   }));
 })()));

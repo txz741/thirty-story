@@ -1,3 +1,4 @@
+import {CHAPTERS} from './chapter-config.js';
 const panels=(id,captions)=>captions.map((caption,index)=>({image:`assets/stories/${id}/${String(index+1).padStart(2,'0')}.jpg`,caption}));
 export const events=[
   {id:'graduation',title:'毕业',badge:'graduation',panels:panels('graduation',['校园草坪','树荫下的时光','走向校门','从校园出发'])},
@@ -23,4 +24,4 @@ export function panelsFor(state){
   return event.panels;
 }
 export function pendingBadges(state){const event=eventFor(state);return [event.badge,...(event.branch&&state.branchChoice==='if'?[event.branch.hiddenBadge]:[])].filter(id=>!state.badges.includes(id));}
-export const allAssets=[...new Set(['assets/cover.jpg',...Object.values(character).filter(v=>typeof v==='string'),...events.flatMap(e=>[...e.panels,...(e.branch?.panels||[])]).map(p=>p.image),...finale.panels.map(p=>p.image),...Object.values(badges).map(b=>b.image)])];
+export const allAssets=[...new Set(['assets/cover.jpg',...CHAPTERS.map(c=>c.background).filter(Boolean),...Object.values(character).filter(v=>typeof v==='string'),...events.flatMap(e=>[...e.panels,...(e.branch?.panels||[])]).map(p=>p.image),...finale.panels.map(p=>p.image),...Object.values(badges).map(b=>b.image)])];

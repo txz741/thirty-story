@@ -7,7 +7,8 @@
   <meta name="robots" content="noindex,nofollow">
   <meta name="description" content="走过十段日常，收藏一路回忆。一本可以滑动翻阅的生活绘本。">
   <title>乘风去往回忆里</title>
-  <link rel="stylesheet" href="styles.css?v=14">
+  <link rel="stylesheet" href="styles.css?v=17">
+  <link rel="stylesheet" href="chapter-road.css?v=17">
   <link rel="preload" href="assets/cover.jpg" as="image">
 </head>
 <body>
@@ -19,7 +20,7 @@
       <p id="preload-status" class="preload-status" aria-live="polite">正在提前准备回忆，可以上划开始</p>
     </section>
     <section id="road" class="road layer" hidden aria-label="回忆之间的小路">
-      <div id="road-scenery" class="road-scenery" aria-hidden="true">
+      <div id="road-scenery" class="road-scenery" aria-hidden="true"><img id="chapter-map-image" class="chapter-map-image" alt="" hidden draggable="false">
         <div class="sunlight"></div>
         <svg class="road-drawing" viewBox="0 0 400 800" preserveAspectRatio="none" fill="none">
           <path d="M115 880C110 720 307 699 271 545C247 442 181 428 212 320C242 219 315 175 283 83C269 44 252 12 249-50" stroke="#e3d9ed" stroke-width="114"/>
@@ -30,7 +31,7 @@
         </svg>
       </div>
       <header class="road-heading"><p>乘风去往回忆里</p><h2 id="road-title">沿着日子，慢慢走</h2></header>
-      <div id="beacon" class="beacon" aria-hidden="true"><span class="beacon-halo"></span><svg viewBox="0 0 60 60"><path d="M30 5C32 23 37 28 55 30C37 32 32 37 30 55C28 37 23 32 5 30C23 28 28 23 30 5Z" fill="#fff3c2" stroke="#dab476" stroke-width="1"/></svg></div>
+      <div id="beacon" class="beacon" aria-hidden="true"><span class="beacon-halo"></span><svg viewBox="0 0 60 60" aria-hidden="true"><defs><radialGradient id="beacon-gold"><stop stop-color="#fffef3"/><stop offset=".55" stop-color="#fff0b4"/><stop offset="1" stop-color="#eac06b"/></radialGradient></defs><path d="M30 5C32 23 37 28 55 30C37 32 32 37 30 55C28 37 23 32 5 30C23 28 28 23 30 5Z" fill="url(#beacon-gold)" stroke="#bf934b" stroke-width="1.5"/></svg><span class="node-sparkle node-sparkle-a" aria-hidden="true"></span><span class="node-sparkle node-sparkle-b" aria-hidden="true"></span><span class="node-sparkle node-sparkle-c" aria-hidden="true"></span></div>
       <div id="character-box" class="character-box"><img id="character" src="assets/idle.png" alt="淡紫色上衣、深色长裤的小姑娘" draggable="false"></div>
       <div id="bag-glow" class="bag-glow" aria-hidden="true"></div>
       <img id="flying-badge" class="flying-badge" src="assets/badminton-badge.png" alt="羽毛球纪念勋章" hidden draggable="false">
@@ -66,24 +67,26 @@
   <script type="importmap">
 {
   "imports": {
-    "./src/journey.js": "./src/journey.js?v=14",
-    "./src/journey-data.js": "./src/journey-data.js?v=14",
-    "./src/journey-state.js": "./src/journey-state.js?v=14",
-    "./src/finale.js": "./src/finale.js?v=14",
-    "./src/input.js": "./src/input.js?v=14",
-    "./src/badge-animation.js": "./src/badge-animation.js?v=14",
-    "./src/badge-presentation.js": "./src/badge-presentation.js?v=14",
-    "./src/audio-system.js": "./src/audio-system.js?v=14",
-    "./src/audio-config.js": "./src/audio-config.js?v=14",
-    "./src/audio-controls.js": "./src/audio-controls.js?v=14",
-    "./src/bgm-player.js": "./src/bgm-player.js?v=14",
-    "./src/music-manager.js": "./src/music-manager.js?v=14",
-    "./src/music-config.js": "./src/music-config.js?v=14",
-    "./src/asset-loader.js": "./src/asset-loader.js?v=14",
-    "./src/retire-offline.js": "./src/retire-offline.js?v=14"
+    "./src/journey.js": "./src/journey.js?v=17",
+    "./src/journey-data.js": "./src/journey-data.js?v=17",
+    "./src/journey-state.js": "./src/journey-state.js?v=17",
+    "./src/finale.js": "./src/finale.js?v=17",
+    "./src/input.js": "./src/input.js?v=17",
+    "./src/badge-animation.js": "./src/badge-animation.js?v=17",
+    "./src/badge-presentation.js": "./src/badge-presentation.js?v=17",
+    "./src/audio-system.js": "./src/audio-system.js?v=17",
+    "./src/audio-config.js": "./src/audio-config.js?v=17",
+    "./src/audio-controls.js": "./src/audio-controls.js?v=17",
+    "./src/bgm-player.js": "./src/bgm-player.js?v=17",
+    "./src/music-manager.js": "./src/music-manager.js?v=17",
+    "./src/music-config.js": "./src/music-config.js?v=17",
+    "./src/asset-loader.js": "./src/asset-loader.js?v=17",
+    "./src/chapter-config.js": "./src/chapter-config.js?v=17",
+    "./src/chapter-road.js": "./src/chapter-road.js?v=17",
+    "./src/retire-offline.js": "./src/retire-offline.js?v=17"
   }
 }
 </script>
-  <script type="module" src="src/main.js?v=14"></script>
+  <script type="module" src="src/main.js?v=17"></script>
 </body>
 </html>

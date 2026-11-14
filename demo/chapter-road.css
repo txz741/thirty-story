@@ -1,0 +1,22 @@
+.chapter-map-image{position:absolute;left:0;top:0;width:100%;height:auto;display:block;will-change:transform}
+.road.chapter-map .road-drawing,.road.chapter-map .sunlight{display:none}
+.road.chapter-map .road-scenery{animation:none!important}
+.road.chapter-map .character-box{top:38.5%;bottom:auto;height:35%}
+.road.chapter-map .character-box.walking{animation:chapter-road-step .6s ease-in-out both}
+.road.chapter-map .beacon{z-index:6;width:14%;height:auto;aspect-ratio:1;min-width:40px;max-width:64px;opacity:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,#fffdf5f5 0 19%,#fff2c6db 37%,#f5d38f66 58%,transparent 74%)}
+.road.chapter-map .beacon.near{transform:translate(-50%,-50%)}
+.road.chapter-map .beacon-halo{inset:-35%;border-radius:50%;background:radial-gradient(circle,#fff4c6b8 0 20%,#f3d38e70 43%,#edc8751c 61%,transparent 74%);animation:chapter-beacon-halo 2.6s ease-in-out infinite}
+.road.chapter-map .beacon svg{filter:drop-shadow(0 0 4px #fff8db) drop-shadow(0 0 11px #eac07199);animation:chapter-beacon-core 2.6s ease-in-out infinite}
+.road{transition:opacity 2s ease}.road.chapter-fading{opacity:0;animation:none;pointer-events:none}.road.chapter-entering{animation:chapter-road-in 1s ease both}
+@keyframes chapter-road-in{from{opacity:0}to{opacity:1}}
+@keyframes chapter-road-step{25%{transform:translate(calc(-50% - 2px),-3px)}75%{transform:translate(calc(-50% + 2px),-3px)}}
+@keyframes chapter-beacon-core{0%,100%{opacity:.8;transform:scale(.94)}50%{opacity:1;transform:scale(1.1);filter:brightness(1.12) drop-shadow(0 0 6px #fffbea) drop-shadow(0 0 17px #edc56ecc)}}
+@keyframes chapter-beacon-halo{0%,100%{opacity:.32;transform:scale(.88)}50%{opacity:.9;transform:scale(1.18)}}
+@media(prefers-reduced-motion:reduce){.road.chapter-map .character-box.walking,.road.chapter-map .beacon svg,.road.chapter-map .beacon-halo{animation:none}.chapter-map-image{transition:none!important}}
+
+.road.chapter-map .node-sparkle{position:absolute;width:5px;height:5px;z-index:1;background:#fff9d9;border:1px solid #d9ae5b;box-shadow:0 0 7px #ffe1a8;border-radius:1px;opacity:.8;transform:rotate(45deg);animation:beacon-twinkle 3.2s ease-in-out infinite;pointer-events:none}
+.road.chapter-map .node-sparkle-a{left:-5%;top:24%;animation-delay:-.2s}
+.road.chapter-map .node-sparkle-b{right:0;top:4%;width:4px;height:4px;animation-delay:-1.25s}
+.road.chapter-map .node-sparkle-c{right:-3%;bottom:13%;animation-delay:-2.1s}
+@keyframes beacon-twinkle{0%,100%{opacity:.18;transform:rotate(45deg) scale(.6)}50%{opacity:1;transform:rotate(45deg) scale(1.25)}}
+@media(prefers-reduced-motion:reduce){.road.chapter-map .node-sparkle{animation:none}}

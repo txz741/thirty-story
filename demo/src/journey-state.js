@@ -1,6 +1,7 @@
 import {events,badges,eventFor,panelsFor,pendingBadges,finale} from './journey-data.js';
+import {endsChapter,CHAPTER_TRANSITION} from './chapter-config.js';
 export const SCHEMA=2;
-export const initialState=()=>({schema:SCHEMA,phase:'cover',eventIndex:0,distance:0,panelIndex:0,badges:[],branchChoice:null,collectionStage:'expect'});
+export const initialState=()=>({schema:SCHEMA,phase:'cover',eventIndex:0,distance:0,panelIndex:0,badges:[],branchChoice:null,collectionStage:'expect',chapterExit:false});
 export function transition(state,action){
   const s={...state,badges:[...state.badges]},event=eventFor(s);
   switch(action.type){
@@ -29,23 +30,31 @@ export function transition(state,action){
       if(s.phase!=='branchChoice'||!event.branch||s.branchChoice||!['if','reality'].includes(action.choice))return state;
       s.branchChoice=action.choice;s.phase='story';s.panelIndex=event.branch.afterPanel+1;return s;
     case 'WALK_DONE':
-      if(s.phase!=='walking')return state;s.distance++;s.phase=s.distance>=4?'discovered':'roadIdle';return s;
+      if(s.phase!=='walking')return state;s.distance++;s.phase=s.distance>=(s.chapterExit?CHAPTER_TRANSITION.exitSteps:4)?(s.chapterExit?'chapterTransition':'discovered'):'roadIdle';return s;
+    case 'CHAPTER_FADE_DONE':
+      if(s.phase!=='chapterTransition'||!s.chapterExit||s.distance<CHAPTER_TRANSITION.exitSteps)return state;
+      s.eventIndex++;s.distance=0;s.panelIndex=0;s.chapterExit=false;s.phase='chapterEntering';return s;
+    case 'CHAPTER_ENTER_DONE':
+      if(s.phase!=='chapterEntering')return state;s.phase='roadIdle';return s;
     case 'COLLECTION_STAGE':
       if(s.phase!=='collecting')return state;s.collectionStage=action.stage;return s;
     case 'COLLECT_DONE':
       if(s.phase!=='collecting'||event.exit==='finale')return state;
-      s.badges.push(...pendingBadges(s));s.eventIndex=Math.min(events.length-1,s.eventIndex+1);
+      s.badges.push(...pendingBadges(s));
+      if(endsChapter(s.eventIndex)){s.chapterExit=true;s.phase='roadIdle';s.distance=0;s.panelIndex=0;s.collectionStage='expect';return s;}
+      s.eventIndex=Math.min(events.length-1,s.eventIndex+1);
       s.phase='roadIdle';s.distance=0;s.panelIndex=0;s.collectionStage='expect';return s;
     default:return state;
   }
 }
 export function restoreState(value){
   if(!value||value.schema!==SCHEMA)return initialState();
-  const phases=['cover','roadIdle','walking','discovered','story','branchChoice','collecting','finale','finished'];
+  const phases=['cover','roadIdle','walking','discovered','story','branchChoice','collecting','finale','finished','chapterTransition','chapterEntering'];
   if(!phases.includes(value.phase))return initialState();
   const s={...initialState(),...value};
   s.eventIndex=Number.isInteger(s.eventIndex)?Math.min(events.length-1,Math.max(0,s.eventIndex)):0;
   s.distance=Number.isInteger(s.distance)?Math.min(4,Math.max(0,s.distance)):0;
+  s.chapterExit=!!s.chapterExit&&endsChapter(s.eventIndex)&&['roadIdle','walking','chapterTransition'].includes(s.phase);
   s.branchChoice=['if','reality'].includes(s.branchChoice)?s.branchChoice:null;
   s.badges=[...new Set(Array.isArray(s.badges)?s.badges.filter(id=>Object.hasOwn(badges,id)):[])];
   if(s.branchChoice!=='if')s.badges=s.badges.filter(id=>id!=='paper-plane');

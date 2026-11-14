@@ -5,6 +5,8 @@ import {bagPosition,flyBadge} from './badge-animation.js';
 import {presentBadge} from './badge-presentation.js';
 import {renderFinale,FINALE_GATHER_START_MS} from './finale.js';
 import {createAssetLoader} from './asset-loader.js';
+import {createChapterRoad} from './chapter-road.js';
+import {chapterForEvent,CHAPTER_TRANSITION} from './chapter-config.js';
 
 export function mountStorybook({document=globalThis.document,window=globalThis.window,location=globalThis.location,Image=globalThis.Image,requestAnimationFrame=globalThis.requestAnimationFrame,delay=ms=>new Promise(resolve=>setTimeout(resolve,ms)),audio={play(){},stopGroup(){},stopEffects(){}},onStateChange=()=>{},assetLoader}={}){
   const $=id=>document.getElementById(id),book=$('book');
@@ -12,6 +14,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   const debug=new URLSearchParams(location.search).get('debug')==='1';
   let state=initialState(),generation=0,flipLock=false,shownKey='',shownLayer='',overlayKey='',activeMotion=false,finaleSoundToken=0,waitingAssets=false,queuedAction=null,failedAction=null;
   const assets=assetLoader||createAssetLoader({Image,concurrency:window.navigator?.connection?.saveData?2:3});
+  const chapterRoad=createChapterRoad({document,book});
   const isFinale=s=>['finale','finished'].includes(s.phase);
   const pose=name=>{$('character').src=character[name]||character.idle;};
   const announce=text=>{$('announcement').textContent=text;};
@@ -27,14 +30,15 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   function drawFinale(){if(isFinale(state))renderFinale({book,image:$('panel-image'),overlay:$('finale-overlay'),state,reduced});}
   function render(){
     const event=eventFor(state),list=panelsFor(state),final=isFinale(state);
+    const roadFrame=chapterRoad(state);
     const storyVisible=['story','branchChoice','finale','finished'].includes(state.phase);
     const layer=state.phase==='cover'?'cover':storyVisible?'story':'road';
     for(const id of ['cover','road','story'])$(id).hidden=id!==layer;
     if(layer!==shownLayer){$(layer).classList.remove('enter');void $(layer).offsetWidth;$(layer).classList.add('enter');shownLayer=layer;}
     $('road').classList.toggle('walking',state.phase==='walking');$('character-box').classList.toggle('walking',state.phase==='walking');
     $('beacon').classList.toggle('near',state.phase==='discovered');$('beacon').classList.toggle('spent',state.phase==='collecting');
-    $('road-title').textContent=state.phase==='discovered'?event.title:state.phase==='collecting'?'把这一刻，好好收藏':'沿着日子，慢慢走';
-    $('road-copy').textContent=state.phase==='discovered'?'她停下来，望向右侧的一束金光。':state.phase==='collecting'?'把这一刻，轻轻收进包里。':'每一小步，都离回忆近一点。';
+    $('road-title').textContent=state.chapterExit?'带着回忆，继续向前':state.phase==='chapterEntering'?roadFrame.chapter.title:state.phase==='discovered'?event.title:state.phase==='collecting'?'把这一刻，好好收藏':'沿着日子，慢慢走';
+    $('road-copy').textContent=state.chapterExit?`再走 ${Math.max(0,4-state.distance)} 步，去往下一段旅程。`:state.phase==='discovered'?`她停下来，望向${roadFrame.side==='left'?'左':'右'}侧的一束金光。`:state.phase==='collecting'?'把这一刻，轻轻收进包里。':'每一小步，都离回忆近一点。';
     if(state.phase==='discovered')pose('curious');
     else if(state.phase==='collecting')pose(state.collectionStage==='wink'?'wink':state.collectionStage==='idle'?'idle':state.collectionStage==='bag-open'?'bagOpen':'expect');
     else if(state.phase!=='walking')pose('idle');
@@ -54,7 +58,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
     $('finale-overlay').hidden=!final;
     const nextOverlay=final?`${state.panelIndex}:${state.badges.join(',')}`:'';
     if(nextOverlay!==overlayKey){overlayKey=nextOverlay;if(final)requestAnimationFrame(drawFinale);else $('finale-overlay').innerHTML='';}
-    const busy=['walking','collecting'].includes(state.phase);book.setAttribute('aria-busy',String(busy));
+    const busy=['walking','collecting','chapterTransition','chapterEntering'].includes(state.phase);book.setAttribute('aria-busy',String(busy));
     $('gesture-hint').classList.toggle('busy',busy);
     const touch=window.matchMedia('(pointer: coarse)').matches;
     const forward=touch?'上划':'向下滚动',back=touch?'下划':'向上滚动';
@@ -64,6 +68,9 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
     if(state.phase==='story')hint=state.panelIndex===list.length-1?(event.exit==='finale'?`${forward}，迎接最后的惊喜`:`${back}回看 · ${forward}收藏这段回忆`):`${forward}翻页 · ${back}回看`;
     if(final)hint=state.panelIndex===finale.panels.length-1?`带着回忆，继续向前 · ${back}可回看`:`${forward}翻页 · ${back}回看`;
     if(state.phase==='walking')hint='她正在向前走…';
+    if(state.chapterExit&&state.phase==='roadIdle')hint=`${forward}，继续走向下一乐章 · ${state.distance}/4`;
+    if(state.phase==='chapterTransition')hint='这一段回忆，慢慢收进心里…';
+    if(state.phase==='chapterEntering')hint=roadFrame.chapter.title;
     if(state.phase==='collecting')hint=state.collectionStage==='wink'?'又收藏了一份快乐':state.collectionStage==='showcase'?'让这一刻，闪闪发光':'让快乐，成为一枚纪念';
     if(state.phase==='branchChoice')hint='这一次，想走进哪一种可能？';
     $('hint-copy').textContent=hint;
@@ -117,17 +124,25 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
         commit({type:'COLLECTION_STAGE',stage:'idle'});await delay(reduced?80:250);if(token!==generation)return;
         commit({type:'COLLECT_DONE'});announce('这段回忆已收藏，继续沿着小路往前走。');
       }
+      if(state.phase==='chapterTransition'){
+        for(let remaining=CHAPTER_TRANSITION.fadeOutMs;remaining>0;){const hidden=!!document.hidden;await delay(100);if(token!==generation)return;if(!hidden&&!document.hidden)remaining-=100;}
+        const background=chapterForEvent(state.eventIndex+1).background;
+        if(background&&!await requireAssets([background])){$('asset-error').hidden=false;return;}
+        if(token!==generation)return;commit({type:'CHAPTER_FADE_DONE'});
+        for(let remaining=CHAPTER_TRANSITION.fadeInMs;remaining>0;){const hidden=!!document.hidden;await delay(100);if(token!==generation)return;if(!hidden&&!document.hidden)remaining-=100;}
+        commit({type:'CHAPTER_ENTER_DONE'});announce(chapterForEvent(state.eventIndex).title);
+      }
     }finally{if(token===generation)activeMotion=false;}
   }
   async function perform(action){
-    if(activeMotion||['walking','collecting'].includes(state.phase))return;
+    if(activeMotion||['walking','collecting','chapterTransition','chapterEntering'].includes(state.phase))return;
     if(flipLock){if(!waitingAssets&&state.phase!=='branchChoice'&&['ADVANCE','BACK'].includes(action.type))queuedAction=action;return;}
     if(state.phase==='branchChoice'&&action.type!=='SELECT_BRANCH')return;
     const next=transition(state,action);
     if(next.phase===state.phase&&next.panelIndex===state.panelIndex&&next.eventIndex===state.eventIndex&&next.branchChoice===state.branchChoice)return;
     flipLock=true;const token=generation;let required=[];
     if(['story','branchChoice','finale','finished'].includes(next.phase))required=[panelsFor(next)[next.panelIndex].image];
-    if(next.phase==='roadIdle')required=[character.idle];
+    if(next.phase==='roadIdle')required=[character.idle,chapterForEvent(next.eventIndex).background].filter(Boolean);
     if(next.phase==='walking')required=[character.stepLeft,character.stepRight,character.idle,character.curious];
     if(next.phase==='collecting')required=[character.expect,character.bagOpen,character.wink,...pendingBadges(next).map(id=>badges[id].image)];
     if(isFinale(next))required.push(...next.badges.map(id=>badges[id].image));
@@ -147,7 +162,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
     const percent=progress.total?Math.round(progress.loaded/progress.total*100):0;
     $('preload-status').textContent=progress.loaded===progress.total?'回忆已准备好，向上划开启':progress.active===0&&progress.queued===0?'大部分回忆已准备好，可向上划开始':`正在提前准备回忆 ${percent}% · 可以上划开始`;
   });
-  window.addEventListener('resize',()=>{if(state.phase==='collecting')positionGlow();drawFinale();});
+  window.addEventListener('resize',()=>{chapterRoad(state);if(state.phase==='collecting')positionGlow();drawFinale();});
   $('debug').hidden=!debug;
   function reset(){generation++;finaleSoundToken++;activeMotion=false;flipLock=false;waitingAssets=false;queuedAction=null;failedAction=null;shownKey='';overlayKey='';
     audio.stopEffects();
@@ -157,7 +172,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   $('reset').addEventListener('click',reset);
   $('retry-assets').addEventListener('click',async()=>{
     if(waitingAssets||activeMotion)return;$('asset-error').hidden=true;
-    if(state.phase==='collecting'){void motion();return;}
+    if(['collecting','chapterTransition'].includes(state.phase)){void motion();return;}
     if(failedAction){const action=failedAction;failedAction=null;void perform(action);return;}
     const required=['story','finale','finished'].includes(state.phase)?[panelsFor(state)[state.panelIndex].image]:[character.idle];
     if(await requireAssets(required)){shownKey='';render();}else $('asset-error').hidden=false;
