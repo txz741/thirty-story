@@ -1,8 +1,8 @@
 export const CHAPTER_TRANSITION={exitSteps:4,fadeOutMs:2000,fadeInMs:1000};
 export const CHAPTERS=[
-  {id:'chapter1',number:1,title:'第一乐章 · 青春之路',firstEvent:0,lastEvent:3,background:'assets/maps/chapter1/chapter1_scroll_v2.jpg?v=17',map:{width:720,viewportHeight:1280,step:640,sceneAnchor:640}},
-  {id:'chapter2',number:2,title:'第二乐章',firstEvent:4,lastEvent:6,background:null},
-  {id:'chapter3',number:3,title:'第三乐章',firstEvent:7,lastEvent:9,background:null},
+  {id:'chapter1',number:1,title:'第一乐章 · 青春之路',firstEvent:0,lastEvent:3,background:'assets/maps/chapter1/chapter1_scroll_v2.jpg?v=18',map:{width:720,viewportHeight:1280,step:640,sceneAnchor:640}},
+  {id:'chapter2',number:2,title:'第二乐章',firstEvent:4,lastEvent:6,background:'assets/maps/chapter2/chapter2_scroll_v2.jpg?v=18',map:{width:720,viewportHeight:1280,step:640,sceneAnchor:640}},
+  {id:'chapter3',number:3,title:'第三乐章',firstEvent:7,lastEvent:9,background:'assets/maps/chapter3/chapter3_scroll_v2.jpg?v=18',map:{width:720,viewportHeight:1280,step:640,sceneAnchor:640}},
 ];
 export const chapterForEvent=index=>CHAPTERS.find(c=>index>=c.firstEvent&&index<=c.lastEvent)||CHAPTERS[0];
 export const endsChapter=index=>CHAPTERS.some(c=>c.lastEvent===index&&c.number<3);

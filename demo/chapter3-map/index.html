@@ -1,0 +1,121 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>第三乐章 · 滚动地图预览</title><style>
+  :root{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#65516d;background:#f1ebf3}*{box-sizing:border-box}body{margin:0;min-height:100svh;display:grid;grid-template-columns:300px minmax(0,1fr);gap:40px;padding:32px;align-items:center;max-width:1120px;margin:auto}h1{font:400 28px/1.6 "Songti SC",SimSun,serif;margin:6px 0 18px}p{line-height:1.9;font-size:13px;color:#927f9c}.eyebrow{letter-spacing:.14em;font-size:11px;color:#9a7cac}.card{padding:20px;border:1px solid #e0d2e7;border-radius:20px;background:#fffcf6d9;margin-top:18px}.card p{margin:10px 0}label{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;line-height:2}select{max-width:165px;padding:7px;border:1px solid #d8c5e1;border-radius:8px;background:#fffaf4;color:#745b80}button,a.download{font:inherit;font-size:12px;color:#715480;border:1px solid #d8c5e1;background:#fffaf4;border-radius:10px;padding:10px 12px;cursor:pointer;text-decoration:none}button:disabled{opacity:.35;cursor:default}button.selected{background:#e9dbf1;border-color:#b69ac6}.buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}#position{width:100%;accent-color:#ad8ac2;margin:15px 0 7px}#status{font-size:12px;color:#73577f}#coordinate{font-size:10px;color:#a18aaa}.stage-wrap{display:grid;place-items:center}.phone{position:relative;overflow:hidden;isolation:isolate;width:min(100%,calc((100svh - 64px)*9/16));aspect-ratio:9/16;max-width:440px;background:#f8f3f5;border-radius:24px;box-shadow:0 20px 70px #6d50752b;touch-action:none;user-select:none}.map{position:absolute;left:0;top:0;width:100%;height:auto;display:block;will-change:transform;pointer-events:none}.heading{position:absolute;top:5%;left:8%;z-index:4;pointer-events:none}.heading p{font-size:9px;letter-spacing:.15em;margin:0 0 7px;color:#ac95b4}.heading h2{font:400 18px/1.6 "Songti SC",SimSun,serif;margin:0;color:#7a6287}.character{position:absolute;left:50%;bottom:8%;height:35%;aspect-ratio:2/3;transform:translateX(-50%);z-index:3;pointer-events:none}.character img{display:block;width:100%;height:100%;object-fit:contain}.node{position:absolute;z-index:2;width:32px;height:32px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(#fff5c4a0,transparent 70%);pointer-events:none;filter:drop-shadow(0 0 7px #ead187)}.node::before{content:"";position:absolute;inset:-12px;background:radial-gradient(#fff2b260,transparent 68%)}.node svg{position:absolute;inset:3px;width:26px;height:26px;animation:breath 2.7s ease-in-out infinite}.direction{position:absolute;bottom:3.5%;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.05em;color:#947a9f;pointer-events:none}.step-caption{position:absolute;top:13%;left:8%;font-size:9px;color:#aa96b1;z-index:4;pointer-events:none}.asset-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.footnote{font-size:11px;line-height:1.8;color:#a18ba8}input[type=checkbox]{accent-color:#a07bb7}@keyframes breath{50%{transform:scale(1.12);opacity:.65}}@media(prefers-reduced-motion:reduce){.node svg{animation:none}.map{transition:none!important}}@media(max-width:720px){body{display:flex;flex-direction:column;padding:16px;gap:16px;align-items:stretch}.intro h1{font-size:21px;margin:3px 0}.intro>p:not(.eyebrow){margin:5px 0}.intro .eyebrow{font-size:9px;margin:0}.stage-wrap{order:2}.controls{order:3}.phone{width:min(100%,calc(76svh*9/16));border-radius:18px}.card{margin-top:0;padding:16px}.desktop-controls{display:contents}.intro{order:1}.footnote{margin:10px 0 0}}
+  /* Scene center is at 50% of the viewport. Keep the girl's center just 6% lower. */
+.character{top:38.5%;bottom:auto;height:35%}
+.character.walking{animation:chapter1-walk .92s ease-in-out both}
+@keyframes chapter1-walk{0%,50%,100%{transform:translateX(-50%)}25%{transform:translate(calc(-50% - 2px),-3px)}75%{transform:translate(calc(-50% + 2px),-3px)}}
+@media(prefers-reduced-motion:reduce){.character.walking{animation:none}}
+
+/* A luminous backing and a gold edge keep the star readable over pale scenery. */
+.node{z-index:6;width:14%;height:auto;aspect-ratio:1;min-width:40px;max-width:64px;isolation:isolate;filter:none;background:radial-gradient(circle,#fffdf5f5 0 19%,#fff2c6db 37%,#f5d38f66 58%,transparent 74%)}
+.node::before{inset:-35%;z-index:-1;border-radius:50%;background:radial-gradient(circle,#fff4c6b8 0 20%,#f3d38e70 43%,#edc8751c 61%,transparent 74%);box-shadow:0 0 22px #edcc8838;opacity:.65;animation:beacon-halo 2.6s ease-in-out infinite}
+.node svg{inset:0;width:100%;height:100%;overflow:visible;transform-origin:50% 50%;filter:drop-shadow(0 0 3px #fff9df) drop-shadow(0 0 11px #eac07199);animation:beacon-core 2.6s ease-in-out infinite}
+.node-sparkle{position:absolute;width:5px;height:5px;z-index:1;background:#fff9d9;border:1px solid #d9ae5b;box-shadow:0 0 7px #ffe1a8;border-radius:1px;opacity:.8;transform:rotate(45deg);animation:beacon-twinkle 3.2s ease-in-out infinite;pointer-events:none}
+.node-sparkle-a{left:-5%;top:24%;animation-delay:-.2s}
+.node-sparkle-b{right:0;top:4%;width:4px;height:4px;animation-delay:-1.25s}
+.node-sparkle-c{right:-3%;bottom:13%;animation-delay:-2.1s}
+@keyframes beacon-core{0%,100%{opacity:.8;transform:scale(.94);filter:brightness(1) drop-shadow(0 0 3px #fff9df) drop-shadow(0 0 7px #eac07185)}50%{opacity:1;transform:scale(1.1);filter:brightness(1.12) drop-shadow(0 0 6px #fffbea) drop-shadow(0 0 17px #edc56ecc)}}
+@keyframes beacon-halo{0%,100%{opacity:.32;transform:scale(.88)}50%{opacity:.9;transform:scale(1.18)}}
+@keyframes beacon-twinkle{0%,100%{opacity:.18;transform:rotate(45deg) scale(.6)}50%{opacity:1;transform:rotate(45deg) scale(1.25)}}
+@media(prefers-reduced-motion:reduce){.node svg,.node::before,.node-sparkle{animation:none}}
+
+  </style></head><body><aside class="desktop-controls"><div class="intro"><p class="eyebrow">CHAPTER 03 / 第三乐章</p><h1>让回忆，沿路慢慢出现。</h1><p>上滑走一步，下滑回看。先走过空白，再遇见第一段回忆。</p></div><div class="controls"><div class="card"><div id="status" aria-live="polite"></div><input id="position" type="range" min="0" max="12" step="1" value="0" aria-label="行走步数"><div id="coordinate"></div><div class="buttons"><button id="previous">上一步</button><button id="next">走一步</button><button id="reset">回到起点</button></div><div class="buttons"><button data-step="4">加班 · 右</button><button data-step="8">和妈妈吃漂亮饭 · 左</button><button data-step="12">红灯遇鹅 · 右</button></div></div><div class="card"><label>人物动作<select id="pose"><option value="auto">随行走自动切换</option><option value="idle">待机</option><option value="stepLeft">左迈步</option><option value="stepRight">右迈步</option><option value="curious">疑惑</option><option value="expect">期待收勋章</option><option value="bagOpen">背包打开</option><option value="wink">wink</option></select></label><label>疑惑朝向<select id="facing"><option value="auto">跟随节点左右</option><option value="left">看左</option><option value="right">看右</option></select></label><label>显示独立角色<input id="show-girl" type="checkbox" checked></label><label>显示独立节点<input id="show-marker" type="checkbox" checked></label></div><div class="asset-links"><a class="download" href="../?v=18">打开完整绘本</a><a class="download" href="../assets/maps/chapter3/chapter3_scroll_v2.png?v=18" target="_blank">查看完整长图</a><a class="download" href="../assets/maps/chapter3/chapter3_nodes_v2.json?v=18" target="_blank">节点坐标</a></div><p class="footnote">仅第三乐章的行走地图预览。画面与角色、节点各自独立；人物动作均沿用现有素材。</p></div></aside><main class="stage-wrap"><section id="stage" class="phone" aria-label="第三乐章滚动地图"><img id="map" class="map" src="../assets/maps/chapter3/chapter3_scroll_v2.jpg?v=18" alt="第三乐章：加班、和妈妈吃漂亮饭、红灯遇鹅" draggable="false"><header class="heading"><p>第三乐章</p><h2 id="event"></h2></header><span id="beat" class="step-caption"></span><div id="character" class="character"><img id="girl" src="../assets/idle.png" alt="行走的小姑娘" draggable="false"></div><div id="marker" class="node" hidden><svg viewBox="0 0 60 60" aria-hidden="true"><defs><radialGradient id="beacon-gold"><stop stop-color="#fffef3"/><stop offset=".55" stop-color="#fff0b4"/><stop offset="1" stop-color="#eac06b"/></radialGradient></defs><path d="M30 5C32 23 37 28 55 30C37 32 32 37 30 55C28 37 23 32 5 30C23 28 28 23 30 5Z" fill="url(#beacon-gold)" stroke="#bf934b" stroke-width="1.5"/></svg><span class="node-sparkle node-sparkle-a" aria-hidden="true"></span><span class="node-sparkle node-sparkle-b" aria-hidden="true"></span><span class="node-sparkle node-sparkle-c" aria-hidden="true"></span></div><div id="direction" class="direction"></div></section></main><script id="map-config" type="application/json">{"version":2,"title":"第三乐章","width":720,"height":9600,"viewport":{"width":720,"height":1280},"stepPixels":640,"stepsPerEvent":4,"lastStep":12,"sceneAnchorY":640,"roadWidth":174,"road":[[360,0,369.6395061728395,213.33333333333334,379.15046875112836,426.66666666666663,384.8551479420537,640],[384.8551479420537,640,390.559827132979,853.3333333333334,392.3153864286317,1066.6666666666667,389.64976600608514,1280],[389.64976600608514,1280,386.9841455835386,1493.3333333333333,379.995299588442,1706.6666666666667,371.77566432430956,1920],[371.77566432430956,1920,363.55602906017714,2133.3333333333335,354.3560910104068,2346.6666666666665,348.03798790636216,2560],[348.03798790636216,2560,341.71988480231755,2773.3333333333335,338.4626089243454,2986.6666666666665,339.45401631422465,3200],[339.45401631422465,3200,340.4454237041039,3413.3333333333335,345.6334556479027,3626.6666666666665,352.514550288852,3840],[352.514550288852,3840,359.3956449298013,4053.3333333333335,367.73410323573756,4266.666666666667,373.6438156645862,4480],[373.6438156645862,4480,379.55352809343486,4693.333333333333,382.82696954840367,4906.666666666667,381.7512833046134,5120],[381.7512833046134,5120,380.6755970608232,5333.333333333333,375.2581040466976,5546.666666666667,367.56603376224797,5760],[367.56603376224797,5760,359.8739634777983,5973.333333333333,350.1239272075759,6186.666666666667,342.36838750638736,6400],[342.36838750638736,6400,334.61284780519884,6613.333333333333,329.08467001177587,6826.666666666667,328.217371914179,7040],[328.217371914179,7040,327.35007381658215,7253.333333333333,331.1846435285493,7466.666666666667,338.33916168126535,7680],[338.33916168126535,7680,345.4936798339814,7893.333333333333,355.7800317676075,8106.666666666667,365.1797248055353,8320],[365.1797248055353,8320,374.57941784346303,8533.333333333334,382.84231243671593,8746.666666666666,386.8264573065154,8960],[386.8264573065154,8960,390.8106021763149,9173.333333333334,390.4261345590977,9386.666666666666,386.1327669861293,9600]],"decorations":[{"kind":"flowers","side":"left","x":66,"y":155,"width":120,"height":120,"opacity":0.72,"flip":false},{"kind":"bluebells","side":"right","x":570,"y":670,"width":104,"height":104,"opacity":0.58,"flip":true},{"kind":"silver-leaves","side":"left","x":92,"y":1185,"width":92,"height":92,"opacity":0.66,"flip":false},{"kind":"flowers","side":"right","x":532,"y":1565,"width":112,"height":112,"opacity":0.62,"flip":false},{"kind":"bluebells","side":"left","x":110,"y":2080,"width":120,"height":120,"opacity":0.72,"flip":true},{"kind":"silver-leaves","side":"right","x":522,"y":2595,"width":104,"height":104,"opacity":0.58,"flip":false},{"kind":"silver-leaves","side":"left","x":92,"y":4005,"width":120,"height":120,"opacity":0.72,"flip":false},{"kind":"flowers","side":"right","x":532,"y":4385,"width":104,"height":104,"opacity":0.58,"flip":false},{"kind":"bluebells","side":"left","x":112,"y":4900,"width":92,"height":92,"opacity":0.66,"flip":true},{"kind":"bluebells","side":"right","x":570,"y":6310,"width":104,"height":104,"opacity":0.58,"flip":true},{"kind":"silver-leaves","side":"left","x":92,"y":6825,"width":92,"height":92,"opacity":0.66,"flip":false},{"kind":"flowers","side":"right","x":532,"y":7205,"width":112,"height":112,"opacity":0.62,"flip":false},{"kind":"bluebells","side":"left","x":110,"y":7720,"width":120,"height":120,"opacity":0.72,"flip":true},{"kind":"bluebells","side":"right","x":570,"y":9130,"width":112,"height":112,"opacity":0.62,"flip":true},{"kind":"petals","side":"left","x":154,"y":2410,"width":66,"height":66,"opacity":0.58,"flip":false},{"kind":"petals","side":"left","x":128,"y":3670,"width":72,"height":72,"opacity":0.58,"flip":false},{"kind":"petals","side":"left","x":154,"y":6190,"width":66,"height":66,"opacity":0.58,"flip":false},{"kind":"petals","side":"right","x":626,"y":6820,"width":84,"height":84,"opacity":0.58,"flip":true},{"kind":"petals","side":"left","x":128,"y":7450,"width":72,"height":72,"opacity":0.58,"flip":false},{"kind":"petals","side":"left","x":34,"y":8710,"width":84,"height":84,"opacity":0.58,"flip":false}],"background":{"left":"#f1edf8","right":"#edf2fa","road":"#e1e7f4","edge":"#bec9df","highlight":"#f1f5fc","shadow":"#d6deed"},"direction":"top-to-bottom","advanceGesture":"swipe-up","scenes":[{"id":"overtime","title":"加班","side":"right","curiousScaleX":1,"centerY":3200,"centerRatio":0.3333333333333333,"triggerCameraY":2560,"triggerStep":4,"art":{"x":442,"y":2975,"width":300,"height":450},"marker":{"x":584,"y":3130},"cameraStops":[0,640,1280,1920,2560]},{"id":"dinner-with-mom","title":"和妈妈吃漂亮饭","side":"left","curiousScaleX":-1,"centerY":5760,"centerRatio":0.6,"triggerCameraY":5120,"triggerStep":8,"art":{"x":-22,"y":5535,"width":300,"height":450},"marker":{"x":136,"y":5690},"cameraStops":[2560,3200,3840,4480,5120]},{"id":"red-light-goose","title":"红灯遇鹅","side":"right","curiousScaleX":1,"centerY":8320,"centerRatio":0.8666666666666667,"triggerCameraY":7680,"triggerStep":12,"art":{"x":442,"y":8095,"width":300,"height":450},"marker":{"x":584,"y":8250},"cameraStops":[5120,5760,6400,7040,7680]}],"number":3,"theme":"雾蓝紫与银白暮色","exitSteps":0,"assets":{"background":"chapter3_scroll_v2.jpg?v=18","fullResolution":"chapter3_scroll_v2.png?v=18"}}</script><script>function chapter1Frame(step,layout=createChapter1Layout()){
+  const value=Math.max(0,Math.min(layout.lastStep,Math.round(step)));
+  const eventSteps=layout.scenes.length*4;
+  const arrived=value>0&&value<=eventSteps&&value%4===0;
+  const index=Math.min(layout.scenes.length-1,Math.max(0,Math.ceil(value/4)-1));
+  const scene=layout.scenes[index];
+  const beat=value>eventSteps?`乐章退场 · ${value-eventSteps} / 4 步`:value===0?'起点 · 纯行走区':arrived?'到达场景中心':value%4===1?(value<4?'纯行走区一':'离开当前场景'):value%4===2?'纯行走区二':'下个场景局部出现';
+  return {step:value,cameraY:value*layout.stepPixels,arrived,scene,beat,
+    pose:arrived?'curious':'idle',curiousScaleX:arrived?scene.curiousScaleX:1,
+    marker:arrived?{x:scene.marker.x,y:scene.marker.y-value*layout.stepPixels,side:scene.side}:null};
+}
+function createChapter1PoseLoader({baseURL,poses,Image=globalThis.Image,timeoutMs=20000,setTimeout=globalThis.setTimeout,clearTimeout=globalThis.clearTimeout}){
+  const cache=new Map();
+  function load(name,{priority='high'}={}){
+    const existing=cache.get(name);
+    if(existing){if(priority==='high')existing.image.fetchPriority='high';return existing.promise;}
+    const image=new Image();image.decoding='async';image.fetchPriority=priority;
+    const entry={image,ready:false,promise:null};let settled=false,timer;
+    entry.promise=new Promise(resolve=>{
+      const finish=ok=>{if(settled)return;settled=true;clearTimeout(timer);image.onload=null;image.onerror=null;entry.ready=ok;if(!ok&&cache.get(name)===entry)cache.delete(name);resolve(ok);};
+      image.onload=async()=>{try{if(image.decode)await image.decode();finish(true);}catch{finish(false);}};
+      image.onerror=()=>finish(false);timer=setTimeout(()=>finish(false),timeoutMs);
+    });
+    cache.set(name,entry);
+    try{image.src=baseURL+poses[name];}catch{image.onerror();}
+    return entry.promise;
+  }
+  async function prepare(names){return (await Promise.all([...new Set(names)].map(name=>load(name)))).every(Boolean);}
+  async function warm(names){let next=0;await Promise.all([0,1].map(async()=>{while(next<names.length)await load(names[next++],{priority:'low'});}));}
+  return {prepare,warm,isReady:names=>names.every(name=>cache.get(name)?.ready)};
+}
+(() => {
+  const layout=JSON.parse(document.getElementById('map-config').textContent);
+  const poses={idle:'idle.png',stepLeft:'step-left.png',stepRight:'step-right.png',curious:'curious.png',expect:'expect.png',bagOpen:'expect-bag-open.png',wink:'wink.png'};
+  const $=id=>document.getElementById(id),stage=$('stage'),map=$('map'),girl=$('girl'),marker=$('marker');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const poseBase='../assets/';
+  const poseLoader=createChapter1PoseLoader({baseURL:poseBase,poses});
+  let step=0,busy=false,queued=0,timers=[],wheel=0,wheelAt=0,pointer=null,generation=0,walkingNow=false;
+  const clear=()=>{generation++;for(const timer of timers)clearTimeout(timer);timers=[];busy=false;walkingNow=false;$('character').classList.toggle('walking',false);};
+  const later=(fn,time)=>timers.push(setTimeout(fn,time));
+  const setPose=name=>{girl.src=poseBase+poses[name];girl.dataset.pose=name;};
+  function paint(walking=walkingNow){
+    const frame=chapter1Frame(step,layout),scale=stage.clientWidth/layout.width;
+    map.style.transform=`translateY(${-frame.cameraY*scale}px)`;
+    const selected=$('pose').value,pose=walking?'stepLeft':selected==='auto'?frame.pose:selected;
+    setPose(pose);$('character').classList.toggle('walking',walking&&!reduce);
+    const side=$('facing').value==='auto'?frame.scene.side:$('facing').value;
+    girl.style.transform=pose==='curious'&&side==='left'?'scaleX(-1)':'scaleX(1)';
+    $('character').hidden=!$('show-girl').checked;
+    marker.hidden=!$('show-marker').checked||!frame.arrived||walking;
+    marker.style.left=(frame.scene.marker.x/layout.width*100)+'%';
+    marker.style.top=((frame.scene.marker.y-frame.cameraY)/layout.viewport.height*100)+'%';
+    marker.dataset.side=frame.scene.side;
+    $('event').textContent=frame.arrived?frame.scene.title:step===0?'回忆还在前方':step%4===1&&step>4?'把刚才的回忆留在身后':'沿着日子，慢慢走';
+    $('beat').textContent=frame.beat;
+    $('status').textContent=`${String(step).padStart(2,'0')} / ${layout.lastStep} 步 · ${frame.beat}`;
+    $('coordinate').textContent=`镜头 ${frame.cameraY}px · ${frame.scene.title}在${frame.scene.side==='left'?'左':'右'}侧`;
+    $('position').value=step;$('previous').disabled=step===0;$('next').disabled=step===layout.lastStep;
+    $('direction').textContent=frame.arrived?`疑惑立绘看${side==='left'?'左':'右'} · 节点在${frame.scene.side==='left'?'左':'右'}`:'上滑前进 · 下滑回看';
+    for(const button of document.querySelectorAll('[data-step]'))button.classList.toggle('selected',Number(button.dataset.step)===step);
+  }
+  async function go(target,animate=true){
+    const next=Math.max(0,Math.min(layout.lastStep,target));
+    if(next===step)return;
+    if(busy){queued=Math.sign(next-step);return;}
+    if(!animate){step=next;map.style.transition='none';paint();return;}
+    const token=++generation;busy=true;
+    const destination=chapter1Frame(next,layout),selected=$('pose').value;
+    const required=['idle','stepLeft','stepRight',selected==='auto'?destination.pose:selected];
+    if(!poseLoader.isReady(required)){$('status').textContent='正在准备迈步动作…';$('direction').textContent='首次需要加载动作图片，准备好后会继续走';}
+    const ready=await poseLoader.prepare(required);
+    if(token!==generation)return;
+    if(!ready){busy=false;queued=0;paint();$('status').textContent='动作图片暂未载入，请点击“走一步”重试。';return;}
+    step=next;walkingNow=true;
+    map.style.transition=reduce?'none':'transform .92s cubic-bezier(.3,.1,.25,1)';
+    paint(true);
+    const beat=reduce?100:230;
+    later(()=>setPose('idle'),beat);
+    later(()=>setPose('stepRight'),beat*2);
+    later(()=>setPose('idle'),beat*3);
+    later(()=>{busy=false;walkingNow=false;paint();if(queued){const direction=queued;queued=0;void go(step+direction);}},beat*4+20);
+  }
+  $('next').onclick=()=>go(step+1);$('previous').onclick=()=>go(step-1);
+  $('reset').onclick=()=>{clear();queued=0;step=0;map.style.transition='none';paint();};
+  $('position').oninput=event=>{clear();queued=0;go(Number(event.target.value),false);};
+  for(const id of ['pose','facing','show-girl','show-marker'])$(id).onchange=()=>{clear();queued=0;paint();};
+  for(const button of document.querySelectorAll('[data-step]'))button.onclick=()=>{clear();queued=0;go(Number(button.dataset.step),false);};
+  stage.addEventListener('pointerdown',event=>{pointer={id:event.pointerId,x:event.clientX,y:event.clientY};try{stage.setPointerCapture?.(event.pointerId);}catch{}});
+  stage.addEventListener('pointerup',event=>{if(!pointer||pointer.id!==event.pointerId)return;const dy=event.clientY-pointer.y,dx=event.clientX-pointer.x;pointer=null;if(Math.abs(dy)>28&&Math.abs(dy)>Math.abs(dx)*1.2)go(step+(dy<0?1:-1));});
+  stage.addEventListener('pointercancel',()=>{pointer=null;});
+  stage.addEventListener('wheel',event=>{event.preventDefault();const now=Date.now();if(now-wheelAt>200)wheel=0;wheelAt=now;wheel+=event.deltaY;if(Math.abs(wheel)>45){go(step+(wheel>0?1:-1));wheel=0;}},{passive:false});
+  addEventListener('keydown',event=>{if(/INPUT|SELECT|BUTTON/.test(event.target.tagName))return;if(['ArrowDown','ArrowRight','ArrowUp','ArrowLeft'].includes(event.key)){event.preventDefault();go(step+(['ArrowDown','ArrowRight'].includes(event.key)?1:-1));}});
+  addEventListener('resize',()=>{map.style.transition='none';paint();});
+  map.addEventListener('error',()=>{$('status').textContent='长图暂时未能载入，请保持联网后刷新重试。';});
+  window.chapter1Preview={go:step=>{clear();queued=0;go(step,false);},get frame(){return chapter1Frame(step,layout);}};
+  paint();
+  void poseLoader.warm(['stepLeft','stepRight','curious']);
+})();
+</script></body></html>
