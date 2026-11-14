@@ -14,6 +14,7 @@ export const events=[
   {id:'red-light-goose',title:'红灯遇鹅',badge:'wings',exit:'finale',panels:panels('red-light-goose',['黄昏路口','差点闯红灯','大鹅拦住了她','大鹅与她，会心一笑'])},
 ];
 export const finale={title:'乘风去往回忆里',panels:panels('finale',['最后一枚勋章','打开包，回忆飞来','一路收藏的星光','大鹅的邀请','带着回忆，继续向前。'])};
+finale.panels.at(-1).video='assets/stories/finale/05.mp4';
 export const badges=Object.fromEntries([...events.map(e=>[e.badge,{title:e.title==='红灯遇鹅'?'乘风之翼':e.title,image:`assets/badges/${e.badge}.png`}]),['paper-plane',{title:'童年的纸飞机',image:'assets/badges/paper-plane.png'}]]);
 export const character={idle:'assets/idle.png',stepLeft:'assets/step-left.png',stepRight:'assets/step-right.png',curious:'assets/curious.png',expect:'assets/expect.png',bagOpen:'assets/expect-bag-open.png',wink:'assets/wink.png',bagMouth:{x:.354,y:.46},openBagMouth:{x:.354,y:.474}};
 export const eventFor=state=>events[state.eventIndex]||events[0];

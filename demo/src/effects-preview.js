@@ -3,14 +3,17 @@ import {renderFinale,FINALE_GATHER_START_MS} from './finale.js';
 import {presentBadge} from './badge-presentation.js';
 import {flyBadge} from './badge-animation.js';
 import {createAudioSystem} from './audio-system.js';
+import {createFinaleVideo} from './finale-video.js';
 const $=id=>document.getElementById(id),book=$('preview-stage'),image=$('preview-art'),overlay=$('preview-overlay'),badge=$('preview-badge'),audio=createAudioSystem();
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));let token=0,paused=false;
 audio.bindUnlock();void audio.prime();
 const requestedScene=new URLSearchParams(location.search).get('scene');
 const memoryIds=()=>[...events.slice(0,9).map(e=>e.badge),...($('with-if').checked?['paper-plane']:[]),'wings'];
+const video=$('preview-video'),videoPlayer=createFinaleVideo({video,button:$('play-finale-video'),document,src:finale.panels.at(-1).video,poster:finale.panels.at(-1).image});
 if(['badge','0','1','2','4'].includes(requestedScene))$('scene').value=requestedScene;
 audio.subscribe(state=>{$('mute').textContent=state.muted?'开启声音':'静音';});
 async function show(sound=false){
+  videoPlayer.setActive(false);
   const current=++token;audio.stopEffects();for(const animation of book.getAnimations({subtree:true}))animation.cancel();paused=false;$('pause').textContent='暂停';overlay.innerHTML='';overlay._finaleRenderKey=null;badge.hidden=true;badge.classList.remove('badge-presenting');
   const scene=$('scene').value;book.classList.toggle('badge-scene',scene==='badge');image.hidden=scene==='badge';overlay.hidden=scene==='badge';
   $('pause').disabled=scene==='badge';
@@ -28,14 +31,16 @@ async function show(sound=false){
   if(image.getAttribute('src')!==src){await new Promise(resolve=>{image.onload=resolve;image.onerror=resolve;image.src=src;});}
   if(current!==token)return;
   const ids=memoryIds();
-  renderFinale({book,image,overlay,state:{panelIndex,badges:ids},reduced});
+  videoPlayer.setActive(panelIndex===4);
+  renderFinale({book,image:video.hidden?image:video,overlay,state:{panelIndex,badges:ids},reduced});
   if(sound&&panelIndex!==4){if(panelIndex===0)audio.play('badge-shimmer');else{if(panelIndex===2)await delay(reduced?0:FINALE_GATHER_START_MS);if(current===token&&!paused)audio.play('finale-sparkle');}}
 }
 async function replay(){await audio.unlock();void show(true);}
 $('replay').addEventListener('click',replay);$('scene').addEventListener('change',replay);$('with-if').addEventListener('change',replay);
 $('mute').addEventListener('click',()=>audio.setMuted(!audio.state.muted));
-$('pause').addEventListener('click',()=>{paused=!paused;for(const animation of book.getAnimations({subtree:true}))paused?animation.pause():animation.play();if(paused)audio.stopEffects();$('pause').textContent=paused?'继续':'暂停';});
+$('pause').addEventListener('click',()=>{paused=!paused;videoPlayer.setPaused(paused);for(const animation of book.getAnimations({subtree:true}))paused?animation.pause():animation.play();if(paused)audio.stopEffects();$('pause').textContent=paused?'继续':'暂停';});
+video.addEventListener('loadedmetadata',()=>{if(videoPlayer.active)renderFinale({book,image:video,overlay,state:{panelIndex:4,badges:memoryIds()},reduced});});
 window.addEventListener('resize',()=>{
-  if($('scene').value==='4')renderFinale({book,image,overlay,state:{panelIndex:4,badges:memoryIds()},reduced});
+  if($('scene').value==='4')renderFinale({book,image:video.hidden?image:video,overlay,state:{panelIndex:4,badges:memoryIds()},reduced});
   else void show(false);
 });void show();
