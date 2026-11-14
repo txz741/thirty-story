@@ -38,4 +38,4 @@
 
 .ending-badge-flight{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0;transform:translate(var(--ending-bag-x),var(--ending-bag-y)) scale(var(--ending-bag-scale,1));opacity:var(--ending-bag-opacity,1);will-change:transform,opacity;pointer-events:none}.ending-in-flight .ending-badge-flight .memory-badge{animation-play-state:paused!important}
 
-.ending-badge-ribbon [data-ribbon-svg]{position:absolute;overflow:visible;pointer-events:none}.ending-badge-ribbon .memory-badge{animation:none!important}.ending-badge-ribbon .memory-placement{will-change:left,top}
+.ending-badge-ribbon .memory-badge{animation:none!important}.ending-badge-ribbon .memory-placement{will-change:left,top}

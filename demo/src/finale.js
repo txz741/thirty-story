@@ -50,7 +50,7 @@ export function renderFinale({book,image,overlay,state,reduced}){
   overlay._finaleRenderKey=key;
   if(state.panelIndex===4){
     const formation=endingBadgeFormation(items.map(item=>item.id),overlay._endingFrameIndex??-1,overlay._endingRibbonClock);
-    overlay.innerHTML='<div class="ending-badge-flight ending-badge-ribbon" aria-label="从包口延伸、串着回忆勋章的柔软光线"><svg data-ribbon-svg aria-hidden="true" focusable="false" fill="none" stroke-linecap="round" stroke-linejoin="round"><path data-ribbon-path stroke="#f5d58c" stroke-width="12" opacity=".16"/><path data-ribbon-path stroke="#bfa06e" stroke-width="4.5" opacity=".45"/><path data-ribbon-path stroke="#fff2bf" stroke-width="2.8" opacity=".9"/></svg>'+formation.map(item=>`<div class="memory-placement" data-ribbon-bead style="left:${item.dx/941*20}em;top:${item.dy/941*20}em"><img class="memory-badge" data-badge="${item.id}" data-origin="companion" src="${badges[item.id].image}" alt="${escape(badges[item.id].title)}" style="width:${item.size/941*20}em;height:${item.size/941*20}em"></div>`).join('')+'</div>'+endingCreditsMarkup();
+    overlay.innerHTML='<div class="ending-badge-flight ending-badge-ribbon" aria-label="从包口迎风飘起、如丝带般波动的回忆勋章">'+formation.map(item=>`<div class="memory-placement" data-ribbon-bead style="left:${item.dx/941*20}em;top:${item.dy/941*20}em"><img class="memory-badge" data-badge="${item.id}" data-origin="companion" src="${badges[item.id].image}" alt="${escape(badges[item.id].title)}" style="width:${item.size/941*20}em;height:${item.size/941*20}em"></div>`).join('')+'</div>'+endingCreditsMarkup();
     positionEndingBadges(overlay,overlay._endingFrameIndex??-1);
     return items;
   }
