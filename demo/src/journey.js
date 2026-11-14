@@ -6,6 +6,7 @@ import {presentBadge} from './badge-presentation.js';
 import {renderFinale,FINALE_GATHER_START_MS} from './finale.js';
 import {createAssetLoader} from './asset-loader.js';
 import {createChapterRoad} from './chapter-road.js';
+import {createChapterTransition} from './chapter-transition.js';
 import {chapterForEvent,CHAPTER_TRANSITION} from './chapter-config.js';
 
 export function mountStorybook({document=globalThis.document,window=globalThis.window,location=globalThis.location,Image=globalThis.Image,requestAnimationFrame=globalThis.requestAnimationFrame,delay=ms=>new Promise(resolve=>setTimeout(resolve,ms)),audio={play(){},stopGroup(){},stopEffects(){}},onStateChange=()=>{},assetLoader}={}){
@@ -15,6 +16,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   let state=initialState(),generation=0,flipLock=false,shownKey='',shownLayer='',overlayKey='',activeMotion=false,finaleSoundToken=0,waitingAssets=false,queuedAction=null,failedAction=null;
   const assets=assetLoader||createAssetLoader({Image,concurrency:window.navigator?.connection?.saveData?2:3});
   const chapterRoad=createChapterRoad({document,book});
+  const chapterTransition=createChapterTransition({document,window,book});
   const isFinale=s=>['finale','finished'].includes(s.phase);
   const pose=name=>{$('character').src=character[name]||character.idle;};
   const announce=text=>{$('announcement').textContent=text;};
@@ -29,6 +31,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   function positionGlow(){const p=bagPosition(book,$('character'),state.collectionStage==='bag-open'?character.openBagMouth:character.bagMouth);$('bag-glow').style.left=p.x+'px';$('bag-glow').style.top=p.y+'px';}
   function drawFinale(){if(isFinale(state))renderFinale({book,image:$('panel-image'),overlay:$('finale-overlay'),state,reduced});}
   function render(){
+    chapterTransition(state);
     const event=eventFor(state),list=panelsFor(state),final=isFinale(state);
     const roadFrame=chapterRoad(state);
     const storyVisible=['story','branchChoice','finale','finished'].includes(state.phase);
@@ -126,8 +129,6 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
       }
       if(state.phase==='chapterTransition'){
         for(let remaining=CHAPTER_TRANSITION.fadeOutMs;remaining>0;){const hidden=!!document.hidden;await delay(100);if(token!==generation)return;if(!hidden&&!document.hidden)remaining-=100;}
-        const background=chapterForEvent(state.eventIndex+1).background;
-        if(background&&!await requireAssets([background])){$('asset-error').hidden=false;return;}
         if(token!==generation)return;commit({type:'CHAPTER_FADE_DONE'});
         for(let remaining=CHAPTER_TRANSITION.fadeInMs;remaining>0;){const hidden=!!document.hidden;await delay(100);if(token!==generation)return;if(!hidden&&!document.hidden)remaining-=100;}
         commit({type:'CHAPTER_ENTER_DONE'});announce(chapterForEvent(state.eventIndex).title);
@@ -144,6 +145,10 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
     if(['story','branchChoice','finale','finished'].includes(next.phase))required=[panelsFor(next)[next.panelIndex].image];
     if(next.phase==='roadIdle')required=[character.idle,chapterForEvent(next.eventIndex).background].filter(Boolean);
     if(next.phase==='walking')required=[character.stepLeft,character.stepRight,character.idle,character.curious];
+    // Finish loading the next map before the fourth exit step, so white-out lasts 2s.
+    if(next.phase==='walking'&&next.chapterExit&&next.distance===CHAPTER_TRANSITION.exitSteps-1){
+      const background=chapterForEvent(next.eventIndex+1).background;if(background)required.push(background);
+    }
     if(next.phase==='collecting')required=[character.expect,character.bagOpen,character.wink,...pendingBadges(next).map(id=>badges[id].image)];
     if(isFinale(next))required.push(...next.badges.map(id=>badges[id].image));
     if(required.length){
@@ -164,7 +169,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   });
   window.addEventListener('resize',()=>{chapterRoad(state);if(state.phase==='collecting')positionGlow();drawFinale();});
   $('debug').hidden=!debug;
-  function reset(){generation++;finaleSoundToken++;activeMotion=false;flipLock=false;waitingAssets=false;queuedAction=null;failedAction=null;shownKey='';overlayKey='';
+  function reset(){if(['chapterTransition','chapterEntering'].includes(state.phase))return;generation++;finaleSoundToken++;activeMotion=false;flipLock=false;waitingAssets=false;queuedAction=null;failedAction=null;shownKey='';overlayKey='';
     audio.stopEffects();
     $('gesture-hint').classList.remove('loading');
     $('flying-badge').getAnimations().forEach(a=>a.cancel());$('flying-badge').classList.remove('badge-presenting');$('flying-badge').hidden=true;$('bag-glow').classList.remove('visible');$('asset-error').hidden=true;

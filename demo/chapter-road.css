@@ -7,8 +7,12 @@
 .road.chapter-map .beacon.near{transform:translate(-50%,-50%)}
 .road.chapter-map .beacon-halo{inset:-35%;border-radius:50%;background:radial-gradient(circle,#fff4c6b8 0 20%,#f3d38e70 43%,#edc8751c 61%,transparent 74%);animation:chapter-beacon-halo 2.6s ease-in-out infinite}
 .road.chapter-map .beacon svg{filter:drop-shadow(0 0 4px #fff8db) drop-shadow(0 0 11px #eac07199);animation:chapter-beacon-core 2.6s ease-in-out infinite}
-.road{transition:opacity 2s ease}.road.chapter-fading{opacity:0;animation:none;pointer-events:none}.road.chapter-entering{animation:chapter-road-in 1s ease both}
-@keyframes chapter-road-in{from{opacity:0}to{opacity:1}}
+.road.chapter-fading,.road.chapter-entering{animation:none;pointer-events:none}
+.chapter-transition{position:fixed;inset:0;z-index:1000;background:#fff;opacity:0;pointer-events:auto;touch-action:none;overscroll-behavior:none;will-change:opacity}
+.chapter-transition.chapter-white-out{animation:chapter-white-out 2s cubic-bezier(.37,0,.63,1) both}
+.chapter-transition.chapter-white-in{animation:chapter-white-in 1s cubic-bezier(.37,0,.63,1) both}
+@keyframes chapter-white-out{from{opacity:0}to{opacity:1}}
+@keyframes chapter-white-in{from{opacity:1}to{opacity:0}}
 @keyframes chapter-road-step{25%{transform:translate(calc(-50% - 2px),-3px)}75%{transform:translate(calc(-50% + 2px),-3px)}}
 @keyframes chapter-beacon-core{0%,100%{opacity:.8;transform:scale(.94)}50%{opacity:1;transform:scale(1.1);filter:brightness(1.12) drop-shadow(0 0 6px #fffbea) drop-shadow(0 0 17px #edc56ecc)}}
 @keyframes chapter-beacon-halo{0%,100%{opacity:.32;transform:scale(.88)}50%{opacity:.9;transform:scale(1.18)}}
