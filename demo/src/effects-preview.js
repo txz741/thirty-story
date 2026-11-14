@@ -7,7 +7,8 @@ const $=id=>document.getElementById(id),book=$('preview-stage'),image=$('preview
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));let token=0,paused=false;
 audio.bindUnlock();void audio.prime();
 const requestedScene=new URLSearchParams(location.search).get('scene');
-if(['badge','0','1','2'].includes(requestedScene))$('scene').value=requestedScene;
+const memoryIds=()=>[...events.slice(0,9).map(e=>e.badge),...($('with-if').checked?['paper-plane']:[]),'wings'];
+if(['badge','0','1','2','4'].includes(requestedScene))$('scene').value=requestedScene;
 audio.subscribe(state=>{$('mute').textContent=state.muted?'开启声音':'静音';});
 async function show(sound=false){
   const current=++token;audio.stopEffects();for(const animation of book.getAnimations({subtree:true}))animation.cancel();paused=false;$('pause').textContent='暂停';overlay.innerHTML='';overlay._finaleRenderKey=null;badge.hidden=true;badge.classList.remove('badge-presenting');
@@ -23,14 +24,18 @@ async function show(sound=false){
     if(arrived&&current===token){$('preview-character').src=character.wink;if(sound)audio.play('badge-collect');}return;
   }
   const panelIndex=Number(scene),src=finale.panels[panelIndex].image;
+  if(panelIndex===4)$('preview-note').textContent='演职员表缓缓上滚，结束后 Still On The Way ... 升至中央，柔和呼吸。可暂停或重新播放。';
   if(image.getAttribute('src')!==src){await new Promise(resolve=>{image.onload=resolve;image.onerror=resolve;image.src=src;});}
   if(current!==token)return;
-  const ids=[...events.slice(0,9).map(e=>e.badge),...($('with-if').checked?['paper-plane']:[]),'wings'];
+  const ids=memoryIds();
   renderFinale({book,image,overlay,state:{panelIndex,badges:ids},reduced});
-  if(sound){if(panelIndex===0)audio.play('badge-shimmer');else{if(panelIndex===2)await delay(reduced?0:FINALE_GATHER_START_MS);if(current===token&&!paused)audio.play('finale-sparkle');}}
+  if(sound&&panelIndex!==4){if(panelIndex===0)audio.play('badge-shimmer');else{if(panelIndex===2)await delay(reduced?0:FINALE_GATHER_START_MS);if(current===token&&!paused)audio.play('finale-sparkle');}}
 }
 async function replay(){await audio.unlock();void show(true);}
 $('replay').addEventListener('click',replay);$('scene').addEventListener('change',replay);$('with-if').addEventListener('change',replay);
 $('mute').addEventListener('click',()=>audio.setMuted(!audio.state.muted));
 $('pause').addEventListener('click',()=>{paused=!paused;for(const animation of book.getAnimations({subtree:true}))paused?animation.pause():animation.play();if(paused)audio.stopEffects();$('pause').textContent=paused?'继续':'暂停';});
-window.addEventListener('resize',()=>void show(false));void show();
+window.addEventListener('resize',()=>{
+  if($('scene').value==='4')renderFinale({book,image,overlay,state:{panelIndex:4,badges:memoryIds()},reduced});
+  else void show(false);
+});void show();
