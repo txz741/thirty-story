@@ -33,5 +33,3 @@
 .reduced .ending-credits-travel{display:grid;place-items:center;animation:ending-credits-still var(--credits-roll-duration) ease var(--credits-delay) both;will-change:auto}.reduced .ending-credits-list{position:static;animation:none;will-change:auto}.reduced .ending-title-position{animation:ending-title-still 1.5s ease var(--ending-title-at) both;will-change:opacity}.reduced .ending-title span{animation:none}
 @keyframes ending-credits-still{0%,100%{opacity:0}8%,90%{opacity:1}}
 @keyframes ending-title-still{from{opacity:0}to{opacity:1}}
-
-.panel-video{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 6px 15px #78627b12);pointer-events:none}.play-finale-video{position:absolute;left:50%;bottom:16%;z-index:8;transform:translateX(-50%);padding:9px 15px;border:1px solid #e0d0e5;border-radius:20px;background:#fffaf2e8;color:#81678d;font:12px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;white-space:nowrap}

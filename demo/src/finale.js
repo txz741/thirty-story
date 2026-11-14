@@ -10,7 +10,7 @@ export const collectedMemories=ids=>[...new Set(ids)].filter(id=>id!=='wings'&&O
 export const finaleOrbitStart=count=>FINALE_GATHER_START_MS+Math.max(0,count-1)*FINALE_STAGGER_MS+FINALE_GATHER_DURATION_MS+150;
 export function artBounds(book,image){
   const stage=book.getBoundingClientRect(),box=image.getBoundingClientRect();
-  const iw=image.videoWidth||image.naturalWidth||900,ih=image.videoHeight||image.naturalHeight||1600,scale=Math.min(box.width/iw,box.height/ih);
+  const iw=image.naturalWidth||900,ih=image.naturalHeight||1600,scale=Math.min(box.width/iw,box.height/ih);
   return {left:box.left-stage.left+(box.width-iw*scale)/2,top:box.top-stage.top+(box.height-ih*scale)/2,width:iw*scale,height:ih*scale};
 }
 export function finaleLayout(panelIndex,ids,width,height){
