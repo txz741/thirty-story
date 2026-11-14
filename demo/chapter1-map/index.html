@@ -2,6 +2,9 @@
   :root{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#65516d;background:#f1ebf3}*{box-sizing:border-box}body{margin:0;min-height:100svh;display:grid;grid-template-columns:300px minmax(0,1fr);gap:40px;padding:32px;align-items:center;max-width:1120px;margin:auto}h1{font:400 28px/1.6 "Songti SC",SimSun,serif;margin:6px 0 18px}p{line-height:1.9;font-size:13px;color:#927f9c}.eyebrow{letter-spacing:.14em;font-size:11px;color:#9a7cac}.card{padding:20px;border:1px solid #e0d2e7;border-radius:20px;background:#fffcf6d9;margin-top:18px}.card p{margin:10px 0}label{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;line-height:2}select{max-width:165px;padding:7px;border:1px solid #d8c5e1;border-radius:8px;background:#fffaf4;color:#745b80}button,a.download{font:inherit;font-size:12px;color:#715480;border:1px solid #d8c5e1;background:#fffaf4;border-radius:10px;padding:10px 12px;cursor:pointer;text-decoration:none}button:disabled{opacity:.35;cursor:default}button.selected{background:#e9dbf1;border-color:#b69ac6}.buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}#position{width:100%;accent-color:#ad8ac2;margin:15px 0 7px}#status{font-size:12px;color:#73577f}#coordinate{font-size:10px;color:#a18aaa}.stage-wrap{display:grid;place-items:center}.phone{position:relative;overflow:hidden;isolation:isolate;width:min(100%,calc((100svh - 64px)*9/16));aspect-ratio:9/16;max-width:440px;background:#f8f3f5;border-radius:24px;box-shadow:0 20px 70px #6d50752b;touch-action:none;user-select:none}.map{position:absolute;left:0;top:0;width:100%;height:auto;display:block;will-change:transform;pointer-events:none}.heading{position:absolute;top:5%;left:8%;z-index:4;pointer-events:none}.heading p{font-size:9px;letter-spacing:.15em;margin:0 0 7px;color:#ac95b4}.heading h2{font:400 18px/1.6 "Songti SC",SimSun,serif;margin:0;color:#7a6287}.character{position:absolute;left:50%;bottom:8%;height:35%;aspect-ratio:2/3;transform:translateX(-50%);z-index:3;pointer-events:none}.character img{display:block;width:100%;height:100%;object-fit:contain}.node{position:absolute;z-index:2;width:32px;height:32px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(#fff5c4a0,transparent 70%);pointer-events:none;filter:drop-shadow(0 0 7px #ead187)}.node::before{content:"";position:absolute;inset:-12px;background:radial-gradient(#fff2b260,transparent 68%)}.node svg{position:absolute;inset:3px;width:26px;height:26px;animation:breath 2.7s ease-in-out infinite}.direction{position:absolute;bottom:3.5%;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.05em;color:#947a9f;pointer-events:none}.step-caption{position:absolute;top:13%;left:8%;font-size:9px;color:#aa96b1;z-index:4;pointer-events:none}.asset-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.footnote{font-size:11px;line-height:1.8;color:#a18ba8}input[type=checkbox]{accent-color:#a07bb7}@keyframes breath{50%{transform:scale(1.12);opacity:.65}}@media(prefers-reduced-motion:reduce){.node svg{animation:none}.map{transition:none!important}}@media(max-width:720px){body{display:flex;flex-direction:column;padding:16px;gap:16px;align-items:stretch}.intro h1{font-size:21px;margin:3px 0}.intro>p:not(.eyebrow){margin:5px 0}.intro .eyebrow{font-size:9px;margin:0}.stage-wrap{order:2}.controls{order:3}.phone{width:min(100%,calc(76svh*9/16));border-radius:18px}.card{margin-top:0;padding:16px}.desktop-controls{display:contents}.intro{order:1}.footnote{margin:10px 0 0}}
   /* Scene center is at 50% of the viewport. Keep the girl's center just 6% lower. */
 .character{top:38.5%;bottom:auto;height:35%}
+.character.walking{animation:chapter1-walk .92s ease-in-out both}
+@keyframes chapter1-walk{0%,50%,100%{transform:translateX(-50%)}25%{transform:translate(calc(-50% - 2px),-3px)}75%{transform:translate(calc(-50% + 2px),-3px)}}
+@media(prefers-reduced-motion:reduce){.character.walking{animation:none}}
 
 /* A luminous backing and a gold edge keep the star readable over pale scenery. */
 .node{z-index:6;width:14%;height:auto;aspect-ratio:1;min-width:40px;max-width:64px;isolation:isolate;filter:none;background:radial-gradient(circle,#fffdf5f5 0 19%,#fff2c6db 37%,#f5d38f66 58%,transparent 74%)}
@@ -26,19 +29,42 @@
     pose:arrived?'curious':'idle',curiousScaleX:arrived?scene.curiousScaleX:1,
     marker:arrived?{x:scene.marker.x,y:scene.marker.y-value*layout.stepPixels,side:scene.side}:null};
 }
+function createChapter1PoseLoader({baseURL,poses,Image=globalThis.Image,timeoutMs=20000,setTimeout=globalThis.setTimeout,clearTimeout=globalThis.clearTimeout}){
+  const cache=new Map();
+  function load(name,{priority='high'}={}){
+    const existing=cache.get(name);
+    if(existing){if(priority==='high')existing.image.fetchPriority='high';return existing.promise;}
+    const image=new Image();image.decoding='async';image.fetchPriority=priority;
+    const entry={image,ready:false,promise:null};let settled=false,timer;
+    entry.promise=new Promise(resolve=>{
+      const finish=ok=>{if(settled)return;settled=true;clearTimeout(timer);image.onload=null;image.onerror=null;entry.ready=ok;if(!ok&&cache.get(name)===entry)cache.delete(name);resolve(ok);};
+      image.onload=async()=>{try{if(image.decode)await image.decode();finish(true);}catch{finish(false);}};
+      image.onerror=()=>finish(false);timer=setTimeout(()=>finish(false),timeoutMs);
+    });
+    cache.set(name,entry);
+    try{image.src=baseURL+poses[name];}catch{image.onerror();}
+    return entry.promise;
+  }
+  async function prepare(names){return (await Promise.all([...new Set(names)].map(name=>load(name)))).every(Boolean);}
+  async function warm(names){let next=0;await Promise.all([0,1].map(async()=>{while(next<names.length)await load(names[next++],{priority:'low'});}));}
+  return {prepare,warm,isReady:names=>names.every(name=>cache.get(name)?.ready)};
+}
 (() => {
   const layout=JSON.parse(document.getElementById('map-config').textContent);
   const poses={idle:'idle.png',stepLeft:'step-left.png',stepRight:'step-right.png',curious:'curious.png',expect:'expect.png',bagOpen:'expect-bag-open.png',wink:'wink.png'};
   const $=id=>document.getElementById(id),stage=$('stage'),map=$('map'),girl=$('girl'),marker=$('marker');
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let step=0,busy=false,queued=0,timers=[],wheel=0,wheelAt=0,pointer=null;
-  const clear=()=>{for(const timer of timers)clearTimeout(timer);timers=[];busy=false;};
+  const poseBase='../assets/';
+  const poseLoader=createChapter1PoseLoader({baseURL:poseBase,poses});
+  let step=0,busy=false,queued=0,timers=[],wheel=0,wheelAt=0,pointer=null,generation=0,walkingNow=false;
+  const clear=()=>{generation++;for(const timer of timers)clearTimeout(timer);timers=[];busy=false;walkingNow=false;$('character').classList.toggle('walking',false);};
   const later=(fn,time)=>timers.push(setTimeout(fn,time));
-  function paint(walking=false){
+  const setPose=name=>{girl.src=poseBase+poses[name];girl.dataset.pose=name;};
+  function paint(walking=walkingNow){
     const frame=chapter1Frame(step,layout),scale=stage.clientWidth/layout.width;
     map.style.transform=`translateY(${-frame.cameraY*scale}px)`;
-    const selected=$('pose').value,pose=selected==='auto'?(walking?'stepLeft':frame.pose):selected;
-    girl.src='../assets/'+poses[pose];
+    const selected=$('pose').value,pose=walking?'stepLeft':selected==='auto'?frame.pose:selected;
+    setPose(pose);$('character').classList.toggle('walking',walking&&!reduce);
     const side=$('facing').value==='auto'?frame.scene.side:$('facing').value;
     girl.style.transform=pose==='curious'&&side==='left'?'scaleX(-1)':'scaleX(1)';
     $('character').hidden=!$('show-girl').checked;
@@ -54,20 +80,33 @@
     $('direction').textContent=frame.arrived?`疑惑立绘看${side==='left'?'左':'右'} · 节点在${frame.scene.side==='left'?'左':'右'}`:'上滑前进 · 下滑回看';
     for(const button of document.querySelectorAll('[data-step]'))button.classList.toggle('selected',Number(button.dataset.step)===step);
   }
-  function go(target,animate=true){
+  async function go(target,animate=true){
     const next=Math.max(0,Math.min(16,target));
     if(next===step)return;
     if(busy){queued=Math.sign(next-step);return;}
-    step=next;map.style.transition=animate&&!reduce?'transform .75s cubic-bezier(.3,.1,.25,1)':'none';
-    const walking=animate&&!reduce&&$('pose').value==='auto';busy=walking;paint(walking);
-    if(walking){later(()=>{girl.src='../assets/idle.png';},180);later(()=>{girl.src='../assets/step-right.png';},350);later(()=>{girl.src='../assets/idle.png';},530);later(()=>{busy=false;paint();if(queued){const direction=queued;queued=0;go(step+direction);}},760);}
+    if(!animate){step=next;map.style.transition='none';paint();return;}
+    const token=++generation;busy=true;
+    const destination=chapter1Frame(next,layout),selected=$('pose').value;
+    const required=['idle','stepLeft','stepRight',selected==='auto'?destination.pose:selected];
+    if(!poseLoader.isReady(required)){$('status').textContent='正在准备迈步动作…';$('direction').textContent='首次需要加载动作图片，准备好后会继续走';}
+    const ready=await poseLoader.prepare(required);
+    if(token!==generation)return;
+    if(!ready){busy=false;queued=0;paint();$('status').textContent='动作图片暂未载入，请点击“走一步”重试。';return;}
+    step=next;walkingNow=true;
+    map.style.transition=reduce?'none':'transform .92s cubic-bezier(.3,.1,.25,1)';
+    paint(true);
+    const beat=reduce?100:230;
+    later(()=>setPose('idle'),beat);
+    later(()=>setPose('stepRight'),beat*2);
+    later(()=>setPose('idle'),beat*3);
+    later(()=>{busy=false;walkingNow=false;paint();if(queued){const direction=queued;queued=0;void go(step+direction);}},beat*4+20);
   }
   $('next').onclick=()=>go(step+1);$('previous').onclick=()=>go(step-1);
   $('reset').onclick=()=>{clear();queued=0;step=0;map.style.transition='none';paint();};
   $('position').oninput=event=>{clear();queued=0;go(Number(event.target.value),false);};
   for(const id of ['pose','facing','show-girl','show-marker'])$(id).onchange=()=>{clear();queued=0;paint();};
   for(const button of document.querySelectorAll('[data-step]'))button.onclick=()=>{clear();queued=0;go(Number(button.dataset.step),false);};
-  stage.addEventListener('pointerdown',event=>{pointer={id:event.pointerId,x:event.clientX,y:event.clientY};stage.setPointerCapture(event.pointerId);});
+  stage.addEventListener('pointerdown',event=>{pointer={id:event.pointerId,x:event.clientX,y:event.clientY};try{stage.setPointerCapture?.(event.pointerId);}catch{}});
   stage.addEventListener('pointerup',event=>{if(!pointer||pointer.id!==event.pointerId)return;const dy=event.clientY-pointer.y,dx=event.clientX-pointer.x;pointer=null;if(Math.abs(dy)>28&&Math.abs(dy)>Math.abs(dx)*1.2)go(step+(dy<0?1:-1));});
   stage.addEventListener('pointercancel',()=>{pointer=null;});
   stage.addEventListener('wheel',event=>{event.preventDefault();const now=Date.now();if(now-wheelAt>200)wheel=0;wheelAt=now;wheel+=event.deltaY;if(Math.abs(wheel)>45){go(step+(wheel>0?1:-1));wheel=0;}},{passive:false});
@@ -76,5 +115,6 @@
   map.addEventListener('error',()=>{$('status').textContent='长图暂时未能载入，请保持联网后刷新重试。';});
   window.chapter1Preview={go:step=>{clear();queued=0;go(step,false);},get frame(){return chapter1Frame(step,layout);}};
   paint();
+  void poseLoader.warm(['stepLeft','stepRight','curious']);
 })();
 </script></body></html>
