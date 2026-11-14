@@ -7,6 +7,7 @@ import {renderFinale,FINALE_GATHER_START_MS} from './finale.js';
 import {createAssetLoader} from './asset-loader.js';
 import {createChapterRoad} from './chapter-road.js';
 import {createChapterTransition} from './chapter-transition.js';
+import {createEndingFrames} from './ending-frames.js';
 import {chapterForEvent,CHAPTER_TRANSITION} from './chapter-config.js';
 
 export function mountStorybook({document=globalThis.document,window=globalThis.window,location=globalThis.location,Image=globalThis.Image,requestAnimationFrame=globalThis.requestAnimationFrame,delay=ms=>new Promise(resolve=>setTimeout(resolve,ms)),audio={play(){},stopGroup(){},stopEffects(){}},onStateChange=()=>{},assetLoader}={}){
@@ -17,6 +18,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   const assets=assetLoader||createAssetLoader({Image,concurrency:window.navigator?.connection?.saveData?2:3});
   const chapterRoad=createChapterRoad({document,book});
   const chapterTransition=createChapterTransition({document,window,book});
+  const endingFrames=createEndingFrames({canvas:$('ending-frames'),button:$('retry-ending-frames'),document,music:()=>audio.state?.bgm,requestFrame:requestAnimationFrame,onShow:drawFinale});
   const isFinale=s=>['finale','finished'].includes(s.phase);
   const pose=name=>{$('character').src=character[name]||character.idle;};
   const announce=text=>{$('announcement').textContent=text;};
@@ -29,12 +31,13 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
     finally{if(token===generation){waitingAssets=false;$('gesture-hint').classList.remove('loading');}}
   }
   function positionGlow(){const p=bagPosition(book,$('character'),state.collectionStage==='bag-open'?character.openBagMouth:character.bagMouth);$('bag-glow').style.left=p.x+'px';$('bag-glow').style.top=p.y+'px';}
-  function drawFinale(){if(isFinale(state))renderFinale({book,image:$('panel-image'),overlay:$('finale-overlay'),state,reduced});}
+  function drawFinale(){if(isFinale(state))renderFinale({book,image:$('ending-frames').hidden?$('panel-image'):$('ending-frames'),overlay:$('finale-overlay'),state,reduced});}
   function render(){
     chapterTransition(state);
     const event=eventFor(state),list=panelsFor(state),final=isFinale(state);
     const roadFrame=chapterRoad(state);
     const storyVisible=['story','branchChoice','finale','finished'].includes(state.phase);
+    endingFrames.setActive(final&&state.panelIndex===4);
     const layer=state.phase==='cover'?'cover':storyVisible?'story':'road';
     for(const id of ['cover','road','story'])$(id).hidden=id!==layer;
     if(layer!==shownLayer){$(layer).classList.remove('enter');void $(layer).offsetWidth;$(layer).classList.add('enter');shownLayer=layer;}
