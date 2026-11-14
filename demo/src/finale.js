@@ -1,4 +1,5 @@
 import {badges} from './journey-data.js';
+import {ENDING_BAG_REST,endingBadgeFormation,positionEndingBadges} from './ending-badges.js';
 export const FINALE_GATHER_START_MS=1000;
 export const FINALE_GATHER_DURATION_MS=1450;
 export const FINALE_STAGGER_MS=90;
@@ -17,6 +18,7 @@ export function finaleLayout(panelIndex,ids,width,height){
   const unique=[...new Set(ids)].filter(id=>Object.hasOwn(badges,id)),outer=collectedMemories(ids);
   if(panelIndex===0)return [{id:'wings',x:width*.66,y:height*.2,size:width*.24,role:'center'}];
   if(panelIndex===3)return [];
+  if(panelIndex===4)return endingBadgeFormation(unique).map(item=>({id:item.id,x:(ENDING_BAG_REST.x+item.dx)/941*width,y:(ENDING_BAG_REST.y+item.dy)/1672*height,size:item.size/941*width,delay:item.delay,role:'companion'}));
   if(panelIndex===2){
     const radius=Math.min(width*.34,height*.27),cx=width*.5,cy=height*.4;
     return [{id:'wings',x:cx,y:cy,size:width*.25,role:'center'},...outer.map((id,i)=>{const angle=-Math.PI/2+i*2*Math.PI/outer.length;return {id,x:cx+Math.cos(angle)*radius,y:cy+Math.sin(angle)*radius,size:width*.155,role:'orbit',delay:(FINALE_GATHER_START_MS+i*FINALE_STAGGER_MS)/1000};})];
@@ -40,11 +42,17 @@ export function renderFinale({book,image,overlay,state,reduced}){
   const document=book.ownerDocument;
   if(document&&!overlay._finaleVisibilityBound){document.addEventListener('visibilitychange',()=>overlay.classList.toggle('finale-paused',document.hidden));overlay._finaleVisibilityBound=true;}
   overlay.className=`finale-overlay scene-${state.panelIndex}${reduced?' reduced':''}${document?.hidden?' finale-paused':''}`;
+  if(state.panelIndex===4)positionEndingBadges(overlay,overlay._endingFrameIndex??-1);
   // Repeated image-load notifications must not restart the same choreography.
   // The final scene uses relative positions so resizing also preserves the credit roll.
   const key=`${state.panelIndex}:${state.badges.join(',')}:${state.panelIndex===4?'responsive':bounds.width+':'+bounds.height}:${reduced}`;
   if(overlay._finaleRenderKey===key&&overlay.innerHTML)return items;
   overlay._finaleRenderKey=key;
+  if(state.panelIndex===4){
+    const formation=endingBadgeFormation(items.map(item=>item.id));
+    overlay.innerHTML='<div class="ending-badge-flight" aria-label="随背包飞行的回忆勋章">'+formation.map(item=>`<div class="memory-placement" style="left:${item.dx/941*20}em;top:${item.dy/941*20}em;--delay:${item.delay}s"><img class="memory-badge" data-badge="${item.id}" data-origin="companion" src="${badges[item.id].image}" alt="${escape(badges[item.id].title)}" style="width:${item.size/941*20}em;height:${item.size/941*20}em"></div>`).join('')+'</div>'+endingCreditsMarkup();
+    return items;
+  }
   const orbitAt=finaleOrbitStart(items.filter(item=>item.role==='orbit').length)/1000;
   const ring=state.panelIndex===2?`<div class="memory-ring" style="left:50%;top:40%;width:${Math.min(bounds.width*.68,bounds.height*.54)}px;--orbit-at:${orbitAt}s"></div>`:'';
   const trail=state.panelIndex===4?'<svg class="memory-trail" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M38 43Q14 56 13 86" fill="none" stroke="#fff0b8" stroke-width=".7"/></svg>':'';

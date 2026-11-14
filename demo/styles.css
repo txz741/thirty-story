@@ -35,3 +35,7 @@
 @keyframes ending-title-still{from{opacity:0}to{opacity:1}}
 
 .ending-frames{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}.retry-ending-frames{position:absolute;left:50%;bottom:12%;transform:translateX(-50%);z-index:8;border:1px solid #dfcfe4;border-radius:18px;background:#fffaf3ed;color:#81678c;padding:8px 14px;font:12px/1.5 sans-serif;white-space:nowrap}
+
+.ending-badge-flight{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0;transform:translate(var(--ending-bag-x),var(--ending-bag-y)) scale(var(--ending-bag-scale,1));opacity:var(--ending-bag-opacity,1);will-change:transform,opacity;pointer-events:none}.ending-in-flight .ending-badge-flight .memory-badge{animation-play-state:paused!important}
+
+@media(prefers-reduced-motion:no-preference){.scene-4:not(.reduced) .ending-badge-flight .memory-badge{animation-name:ending-badge-hover;animation-duration:5.6s}@keyframes ending-badge-hover{50%{transform:translate(-50%,calc(-50% - 1.4px))}}}
