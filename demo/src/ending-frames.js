@@ -16,17 +16,28 @@ export function unpackFrameZip(buffer){
   }
   return frames.sort((a,b)=>a.name.localeCompare(b.name));
 }
+export function createEndingTimeline({now=()=>globalThis.performance?.now?.()??Date.now(),tailSeconds=2.5}={}){
+  let key='',extra=0,last=null;
+  return {pause(){last=null;},sample(clock,{ready=false,visible=true,allowed=true}={}){
+    const at=now(),identity=clock?.id+':'+clock?.duration,ended=clock?.id==='finale'&&clock?.ended&&Number.isFinite(clock.duration);
+    if(identity!==key||!ended){key=identity;extra=0;last=null;return {...clock,animationTime:clock?.currentTime||0};}
+    if(ready&&visible&&allowed){if(last!==null)extra=Math.min(tailSeconds,extra+Math.max(0,(at-last)/1000));last=at;}else last=null;
+    return {...clock,animationTime:clock.duration+extra};
+  }};
+}
 async function decodeFrame(blob){
   if(globalThis.createImageBitmap)return createImageBitmap(blob);
   const url=URL.createObjectURL(blob),image=new Image();
   try{await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=reject;image.src=url;});return image;}finally{URL.revokeObjectURL(url);}
 }
-export function createEndingFrames({canvas,button,music,document,requestFrame=globalThis.requestAnimationFrame,fetcher=globalThis.fetch,decode=decodeFrame,onShow=()=>{},onFrame=()=>{},onStill=()=>{},source=ENDING_FRAME_SOURCE}){
+export function createEndingFrames({canvas,button,music,document,requestFrame=globalThis.requestAnimationFrame,fetcher=globalThis.fetch,decode=decodeFrame,onShow=()=>{},onFrame=()=>{},onStill=()=>{},onMotion=()=>{},canAnimate=()=>true,now,source=ENDING_FRAME_SOURCE}){
   const context=canvas.getContext?.('2d');if(!context)return {setActive(){},warm:()=>Promise.resolve(false)};
   canvas.width=source.width;canvas.height=source.height;canvas.hidden=true;button.hidden=true;
-  let active=false,epoch=0,manifest=null,download=null,failed=false,target=0,drawn=-1,decoding=0,stillSample=null;
+  let active=false,epoch=0,manifest=null,download=null,failed=false,target=0,drawn=-1,decoding=0,stillSample=null,motionSample=null;
   const frames=Array(source.count).fill(null);
   const cache=new Map(),pending=new Set(),queue=[];
+  const timeline=createEndingTimeline({now});
+  document.addEventListener?.('visibilitychange',()=>timeline.pause());
   function trim(){for(const [index,bitmap] of cache)if(index<target||index>=target+6){bitmap.close?.();cache.delete(index);}}
   function pump(){
     while(decoding<2&&queue.length){
@@ -53,19 +64,23 @@ export function createEndingFrames({canvas,button,music,document,requestFrame=gl
   }
   function tick(token){
     if(!active||token!==epoch)return;
+    const clock=music();
+    const motionClock=timeline.sample(clock,{ready:drawn===source.count-1,visible:!document.hidden,allowed:canAnimate()});
     if(!document.hidden){
-      const clock=music(),index=frameForMusic(clock,source.count,source.seconds);prepare(Math.max(0,index));
-      if(index<0){const changed=drawn!==-1||!canvas.hidden;canvas.hidden=true;button.hidden=true;drawn=-1;if(changed)onFrame(-1,clock);const sample=Math.floor((clock?.currentTime||0)*24);if(sample!==stillSample){stillSample=sample;onStill(clock);}}
+      const index=frameForMusic(clock,source.count,source.seconds);prepare(Math.max(0,index));
+      if(index<0){const changed=drawn!==-1||!canvas.hidden;canvas.hidden=true;button.hidden=true;drawn=-1;if(changed)onFrame(-1,clock);const sample=Math.floor((clock?.currentTime||0)*60);if(sample!==stillSample){stillSample=sample;onStill(clock);}}
       else{
         stillSample=null;
         button.hidden=!failed;
         const bitmap=cache.get(index);
         if(bitmap&&drawn!==index){context.drawImage(bitmap,0,0,source.width,source.height);drawn=index;onFrame(index,clock);if(canvas.hidden){canvas.hidden=false;onShow();}}
+        // Interpolate medal motion between visible video frames, but never lead a missing bitmap.
+        if(drawn===index){const at=Math.min(source.count-1,Math.max(0,(clock.currentTime-clock.duration+source.seconds)/source.seconds*source.count));if(motionClock.animationTime!==motionSample){motionSample=motionClock.animationTime;onMotion(at,motionClock);}}
       }
     }
     requestFrame(()=>tick(token));
   }
   button.addEventListener('click',()=>void warm());
   void warm();
-  return {warm,setActive(value){value=!!value;if(value===active)return;active=value;epoch++;stillSample=null;button.hidden=true;if(!active){canvas.hidden=true;drawn=-1;onFrame(-1);return;}void warm();tick(epoch);}};
+  return {warm,setActive(value){value=!!value;if(value===active)return;active=value;epoch++;timeline.pause();stillSample=null;motionSample=null;button.hidden=true;if(!active){canvas.hidden=true;drawn=-1;onFrame(-1);return;}void warm();tick(epoch);}};
 }

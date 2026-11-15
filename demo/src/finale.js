@@ -1,12 +1,12 @@
 import {badges} from './journey-data.js';
-import {endingMouthPose,endingBadgeFormation,positionEndingBadges} from './ending-badges.js';
+import {endingBadgeFormation,positionEndingBadges} from './ending-badges.js';
 export const FINALE_GATHER_START_MS=1000;
 export const FINALE_GATHER_DURATION_MS=1450;
 export const FINALE_STAGGER_MS=90;
 export const FINALE_ORBIT_SECONDS=32;
 export const ENDING_CREDITS=[['导演',['文邹邹']],['编剧',['文邹邹']],['主演',['文邹邹']],['客串',['妈妈','大鹅']]];
 export const ENDING_TIMING={delayMs:1000,rollMs:18000,gapMs:500,riseMs:3200,breatheMs:4600};
-export const ENDING_LINE='Still On The Way ...';
+export const ENDING_LINE='To the wonders yet to come...';
 export const collectedMemories=ids=>[...new Set(ids)].filter(id=>id!=='wings'&&Object.hasOwn(badges,id));
 export const finaleOrbitStart=count=>FINALE_GATHER_START_MS+Math.max(0,count-1)*FINALE_STAGGER_MS+FINALE_GATHER_DURATION_MS+150;
 export function artBounds(book,image){
@@ -18,7 +18,7 @@ export function finaleLayout(panelIndex,ids,width,height){
   const unique=[...new Set(ids)].filter(id=>Object.hasOwn(badges,id)),outer=collectedMemories(ids);
   if(panelIndex===0)return [{id:'wings',x:width*.66,y:height*.2,size:width*.24,role:'center'}];
   if(panelIndex===3)return [];
-  if(panelIndex===4){const mouth=endingMouthPose();return endingBadgeFormation(unique).map(item=>({id:item.id,x:(mouth.x+item.dx)/941*width,y:(mouth.y+item.dy)/1672*height,size:item.size/941*width,delay:item.delay,role:'companion'}));}
+  if(panelIndex===4)return endingBadgeFormation(unique).map(item=>({id:item.id,x:item.dx/941*width,y:item.dy/1672*height,size:item.size/941*width,delay:item.delay,role:'companion'}));
   if(panelIndex===2){
     const radius=Math.min(width*.34,height*.27),cx=width*.5,cy=height*.4;
     return [{id:'wings',x:cx,y:cy,size:width*.25,role:'center'},...outer.map((id,i)=>{const angle=-Math.PI/2+i*2*Math.PI/outer.length;return {id,x:cx+Math.cos(angle)*radius,y:cy+Math.sin(angle)*radius,size:width*.155,role:'orbit',delay:(FINALE_GATHER_START_MS+i*FINALE_STAGGER_MS)/1000};})];
@@ -50,7 +50,8 @@ export function renderFinale({book,image,overlay,state,reduced}){
   overlay._finaleRenderKey=key;
   if(state.panelIndex===4){
     const formation=endingBadgeFormation(items.map(item=>item.id),overlay._endingFrameIndex??-1,overlay._endingRibbonClock);
-    overlay.innerHTML='<div class="ending-badge-flight ending-badge-ribbon" aria-label="从包口迎风飘起、如丝带般波动的回忆勋章">'+formation.map(item=>`<div class="memory-placement" data-ribbon-bead style="left:${item.dx/941*20}em;top:${item.dy/941*20}em"><img class="memory-badge" data-badge="${item.id}" data-origin="companion" src="${badges[item.id].image}" alt="${escape(badges[item.id].title)}" style="width:${item.size/941*20}em;height:${item.size/941*20}em"></div>`).join('')+'</div>'+endingCreditsMarkup();
+    const traces='<svg class="memory-flow-trails" data-memory-flow-trails viewBox="0 0 941 1672" preserveAspectRatio="none" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round">'+formation.map(()=>'<path data-flow-halo stroke="#ffe0a0" opacity="0"/><path data-flow-trail stroke="#ffedbd" opacity="0"/>').join('')+'</svg>';
+    overlay.innerHTML='<div class="ending-badge-flight ending-badge-ribbon" data-memory-stars aria-label="随晚风逐枚飞向夕阳的回忆勋章">'+traces+formation.map(item=>`<div class="memory-placement" data-ribbon-bead style="left:${item.dx/941*20}em;top:${item.dy/941*20}em"><span class="memory-star" aria-hidden="true"></span><img class="memory-badge" data-badge="${item.id}" data-origin="companion" src="${badges[item.id].image}" alt="${escape(badges[item.id].title)}" style="width:${item.size/941*20}em;height:${item.size/941*20}em"></div>`).join('')+'</div>'+endingCreditsMarkup();
     positionEndingBadges(overlay,overlay._endingFrameIndex??-1);
     return items;
   }

@@ -19,7 +19,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   const assets=assetLoader||createAssetLoader({Image,concurrency:window.navigator?.connection?.saveData?2:3});
   const chapterRoad=createChapterRoad({document,book});
   const chapterTransition=createChapterTransition({document,window,book});
-  const endingFrames=createEndingFrames({canvas:$('ending-frames'),button:$('retry-ending-frames'),document,music:()=>audio.state?.bgm,requestFrame:requestAnimationFrame,onShow:drawFinale,onFrame:syncEndingBadges,onStill:clock=>syncEndingBadges(-1,clock)});
+  const endingFrames=createEndingFrames({canvas:$('ending-frames'),button:$('retry-ending-frames'),document,music:()=>audio.state?.bgm,canAnimate:()=>!audio.state?.muted&&audio.state?.ready!==false,requestFrame:requestAnimationFrame,onShow:drawFinale,onFrame:syncEndingBadges,onMotion:syncEndingBadges,onStill:clock=>syncEndingBadges(-1,clock)});
   const isFinale=s=>['finale','finished'].includes(s.phase);
   const pose=name=>{$('character').src=character[name]||character.idle;};
   const announce=text=>{$('announcement').textContent=text;};
@@ -27,7 +27,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   async function requireAssets(sources){
     const token=generation;
     const missing=sources.some(src=>!assets.isReady(src));
-    if(missing){waitingAssets=true;book.setAttribute('aria-busy','true');$('hint-copy').textContent='正在准备下一幕，请稍等，不必重复滑动…';$('gesture-hint').classList.add('loading');}
+    if(missing){waitingAssets=true;book.setAttribute('aria-busy','true');$('hint-copy').textContent='正在准备下一幕，请稍等，不必重复滑动…';$('gesture-hint').hidden=false;$('gesture-hint').classList.add('loading');}
     try{return (await Promise.all(sources.map(src=>assets.load(src,{urgent:true})))).every(Boolean);}
     finally{if(token===generation){waitingAssets=false;$('gesture-hint').classList.remove('loading');}}
   }
@@ -49,8 +49,8 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
     if(layer!==shownLayer){$(layer).classList.remove('enter');void $(layer).offsetWidth;$(layer).classList.add('enter');shownLayer=layer;}
     $('road').classList.toggle('walking',state.phase==='walking');$('character-box').classList.toggle('walking',state.phase==='walking');
     $('beacon').classList.toggle('near',state.phase==='discovered');$('beacon').classList.toggle('spent',state.phase==='collecting');
-    $('road-title').textContent=state.chapterExit?'带着回忆，继续向前':state.phase==='chapterEntering'?roadFrame.chapter.title:state.phase==='discovered'?event.title:state.phase==='collecting'?'把这一刻，好好收藏':'沿着日子，慢慢走';
-    $('road-copy').textContent=state.chapterExit?`再走 ${Math.max(0,4-state.distance)} 步，去往下一段旅程。`:state.phase==='discovered'?`她停下来，望向${roadFrame.side==='left'?'左':'右'}侧的一束金光。`:state.phase==='collecting'?'把这一刻，轻轻收进包里。':'每一小步，都离回忆近一点。';
+    $('road-title').textContent=state.phase==='chapterEntering'?roadFrame.chapter.title:state.phase==='discovered'?event.title:'';
+    $('road-copy').textContent='';
     if(state.phase==='discovered')pose('curious');
     else if(state.phase==='collecting')pose(state.collectionStage==='wink'?'wink':state.collectionStage==='idle'?'idle':state.collectionStage==='bag-open'?'bagOpen':'expect');
     else if(state.phase!=='walking')pose('idle');
@@ -59,11 +59,12 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
       shownKey=key;const panel=list[state.panelIndex];$('panel-image').src=panel.image;
       $('panel-image').alt=`${final?'终章':event.title}第 ${state.panelIndex+1} 幕：${panel.caption}`;
       $('story-wash').style.backgroundImage=`url("${panel.image}")`;
-      $('caption').textContent=panel.caption;$('caption').classList.remove('reveal');void $('caption').offsetWidth;$('caption').classList.add('reveal');
-      $('panel-number').textContent=`${String(state.panelIndex+1).padStart(2,'0')} / ${String(list.length).padStart(2,'0')}`;
+      $('caption').textContent=panel.caption;$('caption').hidden=!panel.caption;$('caption').classList.toggle('caption-goose',panel.speaker==='goose');$('caption').classList.remove('reveal');void $('caption').offsetWidth;$('caption').classList.add('reveal');
+      const isLastStory=state.eventIndex===events.length-1,panelPosition=state.panelIndex+1+(final?events.at(-1).panels.length:0),panelTotal=isLastStory?events.at(-1).panels.length+finale.panels.length:list.length;
+      $('panel-number').textContent=`${String(panelPosition).padStart(2,'0')} / ${String(panelTotal).padStart(2,'0')}`;
       announce(panel.caption);if(state.panelIndex<list.length-1)preload(list[state.panelIndex+1].image);
     }
-    $('story-title').textContent=final?'终章 · 乘风去往回忆里':`${String(state.eventIndex+1).padStart(2,'0')} · ${event.title}`;
+    $('story-title').textContent=`${String(state.eventIndex+1).padStart(2,'0')} · ${event.title}`;
     $('story').setAttribute('aria-label',final?'终章五幕':event.title+'回忆分镜');
     $('branch-choice').hidden=state.phase!=='branchChoice';
     if(state.phase==='branchChoice')$('branch-title').textContent=event.branch.title;
@@ -76,16 +77,16 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
     const forward=touch?'上划':'向下滚动',back=touch?'下划':'向上滚动';
     let hint=touch?'手指向上划，继续前进':'滚轮向下，继续前进';
     if(state.phase==='cover')hint=touch?'手指向上划，开启回忆':'滚轮向下，开启回忆';
-    if(state.phase==='discovered')hint=touch?'再向上划，走进这段回忆':'再向下滚，走进这段回忆';
-    if(state.phase==='story')hint=state.panelIndex===list.length-1?(event.exit==='finale'?`${forward}，迎接最后的惊喜`:`${back}回看 · ${forward}收藏这段回忆`):`${forward}翻页 · ${back}回看`;
-    if(final)hint=state.panelIndex===finale.panels.length-1?`带着回忆，继续向前 · ${back}可回看`:`${forward}翻页 · ${back}回看`;
-    if(state.phase==='walking')hint='她正在向前走…';
-    if(state.chapterExit&&state.phase==='roadIdle')hint=`${forward}，继续走向下一乐章 · ${state.distance}/4`;
-    if(state.phase==='chapterTransition')hint='这一段回忆，慢慢收进心里…';
-    if(state.phase==='chapterEntering')hint=roadFrame.chapter.title;
-    if(state.phase==='collecting')hint=state.collectionStage==='wink'?'又收藏了一份快乐':state.collectionStage==='showcase'?'让这一刻，闪闪发光':'让快乐，成为一枚纪念';
-    if(state.phase==='branchChoice')hint='这一次，想走进哪一种可能？';
-    $('hint-copy').textContent=hint;
+    if(state.phase==='discovered')hint='';
+    if(state.phase==='story')hint=state.panelIndex===list.length-1?'':`${forward}翻页 · ${back}回看`;
+    if(final)hint=state.panelIndex===finale.panels.length-1?'':`${forward}翻页 · ${back}回看`;
+    if(state.phase==='walking')hint='';
+    if(state.chapterExit&&state.phase==='roadIdle')hint='';
+    if(state.phase==='chapterTransition')hint='';
+    if(state.phase==='chapterEntering')hint='';
+    if(state.phase==='collecting')hint='';
+    if(state.phase==='branchChoice')hint='';
+    $('hint-copy').textContent=hint;$('gesture-hint').hidden=!hint;
     $('debug-state').textContent=`${state.phase} · 故事${state.eventIndex+1}/10 · ${state.distance}步 · 幕${state.panelIndex+1} · 勋章${state.badges.length}`;
     if(['roadIdle','discovered'].includes(state.phase))preload(event.panels[0].image);
     if(state.phase==='collecting')requestAnimationFrame(positionGlow);
@@ -174,7 +175,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   const warming=assets.warm([...initialAssets,...allAssets]);
   assets.subscribe(progress=>{
     const percent=progress.total?Math.round(progress.loaded/progress.total*100):0;
-    $('preload-status').textContent=progress.loaded===progress.total?'回忆已准备好，向上划开启':progress.active===0&&progress.queued===0?'大部分回忆已准备好，可向上划开始':`正在提前准备回忆 ${percent}% · 可以上划开始`;
+    $('preload-status').textContent=`旅程加载中${percent}%`;
   });
   window.addEventListener('resize',()=>{chapterRoad(state);if(state.phase==='collecting')positionGlow();drawFinale();});
   $('debug').hidden=!debug;

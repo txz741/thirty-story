@@ -24,7 +24,7 @@ async function show(sound=false){
     if(arrived&&current===token){$('preview-character').src=character.wink;if(sound)audio.play('badge-collect');}return;
   }
   const panelIndex=Number(scene),src=finale.panels[panelIndex].image;
-  if(panelIndex===4)$('preview-note').textContent='演职员表缓缓上滚，结束后 Still On The Way ... 升至中央，柔和呼吸。可暂停或重新播放。';
+  if(panelIndex===4)$('preview-note').textContent='演职员表缓缓上滚，结束后 To the wonders yet to come... 升至中央，柔和呼吸。可暂停或重新播放。';
   if(image.getAttribute('src')!==src){await new Promise(resolve=>{image.onload=resolve;image.onerror=resolve;image.src=src;});}
   if(current!==token)return;
   const ids=memoryIds();

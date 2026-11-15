@@ -6,18 +6,18 @@
   <meta name="theme-color" content="#f3edf7">
   <meta name="robots" content="noindex,nofollow">
   <meta name="description" content="走过十段日常，收藏一路回忆。一本可以滑动翻阅的生活绘本。">
-  <title>乘风去往回忆里</title>
-  <link rel="stylesheet" href="styles.css?v=26">
-  <link rel="stylesheet" href="chapter-road.css?v=26">
+  <title>邂逅一整包美好</title>
+  <link rel="stylesheet" href="styles.css?v=37">
+  <link rel="stylesheet" href="chapter-road.css?v=37">
   <link rel="preload" href="assets/cover.jpg" as="image">
 </head>
 <body>
-  <main id="book" class="book" aria-label="乘风去往回忆里，滑动翻页绘本">
+  <main id="book" class="book" aria-label="邂逅一整包美好，滑动翻页绘本">
     <section id="cover" class="cover layer">
       <div class="cover-wash" aria-hidden="true"></div>
-      <header class="cover-heading"><p>一本关于日子与回忆的绘本</p><h1>乘风去往回忆里</h1></header>
+      <header class="cover-heading"><h1>邂逅一整包美好</h1><p class="cover-subtitle" lang="en">A Pocketful of Wonders</p></header>
       <img class="cover-art" src="assets/cover.jpg" alt="女孩骑着大白鹅，飞过河流、桥和小镇" draggable="false">
-      <p id="preload-status" class="preload-status" aria-live="polite">正在提前准备回忆，可以上划开始</p>
+      <p id="preload-status" class="preload-status" aria-live="polite">旅程加载中0%</p>
     </section>
     <section id="road" class="road layer" hidden aria-label="回忆之间的小路">
       <div id="road-scenery" class="road-scenery" aria-hidden="true"><img id="chapter-map-image" class="chapter-map-image" alt="" hidden draggable="false">
@@ -30,12 +30,12 @@
           <circle cx="53" cy="415" r="4" fill="#d7c3e7"/><circle cx="345" cy="633" r="4" fill="#d7c3e7"/>
         </svg>
       </div>
-      <header class="road-heading"><p>乘风去往回忆里</p><h2 id="road-title">沿着日子，慢慢走</h2></header>
+      <header class="road-heading"><p>邂逅一整包美好</p><h2 id="road-title"></h2></header>
       <div id="beacon" class="beacon" aria-hidden="true"><span class="beacon-halo"></span><svg viewBox="0 0 60 60" aria-hidden="true"><defs><radialGradient id="beacon-gold"><stop stop-color="#fffef3"/><stop offset=".55" stop-color="#fff0b4"/><stop offset="1" stop-color="#eac06b"/></radialGradient></defs><path d="M30 5C32 23 37 28 55 30C37 32 32 37 30 55C28 37 23 32 5 30C23 28 28 23 30 5Z" fill="url(#beacon-gold)" stroke="#bf934b" stroke-width="1.5"/></svg><span class="node-sparkle node-sparkle-a" aria-hidden="true"></span><span class="node-sparkle node-sparkle-b" aria-hidden="true"></span><span class="node-sparkle node-sparkle-c" aria-hidden="true"></span></div>
       <div id="character-box" class="character-box"><img id="character" src="assets/idle.png" alt="淡紫色上衣、深色长裤的小姑娘" draggable="false"></div>
       <div id="bag-glow" class="bag-glow" aria-hidden="true"></div>
       <img id="flying-badge" class="flying-badge" src="assets/badminton-badge.png" alt="羽毛球纪念勋章" hidden draggable="false">
-      <p id="road-copy" class="road-copy">每一小步，都离回忆近一点。</p>
+      <p id="road-copy" class="road-copy"></p>
     </section>
     <section id="story" class="story layer" hidden aria-label="回忆分镜">
       <div id="story-wash" class="story-wash" aria-hidden="true"></div>
@@ -45,8 +45,8 @@
     </section>
     <div id="finale-overlay" class="finale-overlay" hidden aria-label="收藏的回忆勋章"></div>
     <section id="branch-choice" class="branch-choice" hidden aria-labelledby="branch-title">
-      <div class="branch-card"><p class="branch-eyebrow">夜深了，留一点时间给自己</p><h2 id="branch-title">如果今天，可以早点下班呢？</h2>
-        <button id="choose-if" type="button">走进童年的回忆</button><button id="choose-reality" type="button">继续现实中的这一晚</button>
+      <div class="branch-card"><h2 id="branch-title">你有一条新邀请</h2>
+        <button id="choose-if" type="button">查看</button><button id="choose-reality" type="button">还是先写完代码吧</button>
       </div>
     </section>
     <p id="gesture-hint" class="gesture-hint"><span class="gesture-arrow" aria-hidden="true">⌃</span><span id="hint-copy">手指向上划，开启回忆</span></p>
@@ -68,29 +68,29 @@
   <script type="importmap">
 {
   "imports": {
-    "./src/journey.js": "./src/journey.js?v=26",
-    "./src/journey-data.js": "./src/journey-data.js?v=26",
-    "./src/journey-state.js": "./src/journey-state.js?v=26",
-    "./src/finale.js": "./src/finale.js?v=26",
-    "./src/ending-badges.js": "./src/ending-badges.js?v=26",
-    "./src/ending-frames.js": "./src/ending-frames.js?v=26",
-    "./src/input.js": "./src/input.js?v=26",
-    "./src/badge-animation.js": "./src/badge-animation.js?v=26",
-    "./src/badge-presentation.js": "./src/badge-presentation.js?v=26",
-    "./src/audio-system.js": "./src/audio-system.js?v=26",
-    "./src/audio-config.js": "./src/audio-config.js?v=26",
-    "./src/audio-controls.js": "./src/audio-controls.js?v=26",
-    "./src/bgm-player.js": "./src/bgm-player.js?v=26",
-    "./src/music-manager.js": "./src/music-manager.js?v=26",
-    "./src/music-config.js": "./src/music-config.js?v=26",
-    "./src/asset-loader.js": "./src/asset-loader.js?v=26",
-    "./src/chapter-config.js": "./src/chapter-config.js?v=26",
-    "./src/chapter-road.js": "./src/chapter-road.js?v=26",
-    "./src/chapter-transition.js": "./src/chapter-transition.js?v=26",
-    "./src/retire-offline.js": "./src/retire-offline.js?v=26"
+    "./src/journey.js": "./src/journey.js?v=37",
+    "./src/journey-data.js": "./src/journey-data.js?v=37",
+    "./src/journey-state.js": "./src/journey-state.js?v=37",
+    "./src/finale.js": "./src/finale.js?v=37",
+    "./src/ending-badges.js": "./src/ending-badges.js?v=37",
+    "./src/ending-frames.js": "./src/ending-frames.js?v=37",
+    "./src/input.js": "./src/input.js?v=37",
+    "./src/badge-animation.js": "./src/badge-animation.js?v=37",
+    "./src/badge-presentation.js": "./src/badge-presentation.js?v=37",
+    "./src/audio-system.js": "./src/audio-system.js?v=37",
+    "./src/audio-config.js": "./src/audio-config.js?v=37",
+    "./src/audio-controls.js": "./src/audio-controls.js?v=37",
+    "./src/bgm-player.js": "./src/bgm-player.js?v=37",
+    "./src/music-manager.js": "./src/music-manager.js?v=37",
+    "./src/music-config.js": "./src/music-config.js?v=37",
+    "./src/asset-loader.js": "./src/asset-loader.js?v=37",
+    "./src/chapter-config.js": "./src/chapter-config.js?v=37",
+    "./src/chapter-road.js": "./src/chapter-road.js?v=37",
+    "./src/chapter-transition.js": "./src/chapter-transition.js?v=37",
+    "./src/retire-offline.js": "./src/retire-offline.js?v=37"
   }
 }
 </script>
-  <script type="module" src="src/main.js?v=26"></script>
+  <script type="module" src="src/main.js?v=37"></script>
 </body>
 </html>

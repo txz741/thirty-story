@@ -7,7 +7,7 @@ const $=id=>document.getElementById(id),book=$('preview-stage'),image=$('preview
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,state={panelIndex:4,badges:[...events.slice(0,9).map(e=>e.badge),'wings']};
 function draw(){renderFinale({book,image:canvas.hidden?image:canvas,overlay,state,reduced});}
 const musicClock=()=>({id:'finale',currentTime:audio.currentTime,duration:audio.duration,ended:audio.ended});
-const player=createEndingFrames({canvas,button:$('retry-ending-frames'),document,music:musicClock,onShow:draw,onFrame:(frame,clock)=>positionEndingBadges(overlay,frame,clock),onStill:clock=>positionEndingBadges(overlay,-1,clock)});
+const player=createEndingFrames({canvas,button:$('retry-ending-frames'),document,music:musicClock,canAnimate:()=>!audio.muted,onShow:draw,onFrame:(frame,clock)=>positionEndingBadges(overlay,frame,clock),onMotion:(frame,clock)=>positionEndingBadges(overlay,frame,clock),onStill:clock=>positionEndingBadges(overlay,-1,clock)});
 let ready=false,wasPlaying=false;
 audio.src=MUSIC_TRACKS[3].src;audio.volume=.22;
 function readyNote(){const ok=ready&&Number.isFinite(audio.duration);$('play-ending').disabled=!ok;$('ready-note').textContent=ok?'音乐还剩10秒时开始飞向远方，字幕保持原来的节奏。':'正在准备谢幕画面…';}

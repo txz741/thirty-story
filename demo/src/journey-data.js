@@ -1,20 +1,20 @@
 import {CHAPTERS} from './chapter-config.js';
-const panels=(id,captions)=>captions.map((caption,index)=>({image:`assets/stories/${id}/${String(index+1).padStart(2,'0')}.jpg`,caption}));
+const panels=(id,captions)=>captions.map((entry,index)=>({image:`assets/stories/${id}/${String(index+1).padStart(2,'0')}.jpg`,...(typeof entry==='string'?{caption:entry}:entry)}));
 export const events=[
-  {id:'graduation',title:'毕业',badge:'graduation',panels:panels('graduation',['校园草坪','树荫下的时光','走向校门','从校园出发'])},
-  {id:'bow',title:'买蝴蝶结',badge:'bow',panels:panels('bow',['橱窗里的蝴蝶结','选中你啦','镜前扎起马尾','今日份漂亮'])},
-  {id:'badminton',title:'羽毛球',badge:'badminton',panels:panels('badminton',['隔网准备','击球','网口特写','快乐，比输赢更重要。'])},
-  {id:'karaoke',title:'唱 K',badge:'karaoke',panels:panels('karaoke',['尽情唱歌','好像哪里不对','MV 里的另一个自己','幻想中的舞台','回到包间，笑起来'])},
-  {id:'market-goose',title:'集市遇大鹅',badge:'market-goose',panels:panels('market-goose',['阳光下的集市','遇见一只大白鹅','和大鹅对视','集市里的小奇遇'])},
-  {id:'crabs',title:'又是一年螃蟹季',badge:'crabs',panels:panels('crabs',['湖边准备下网','用力拉网','满载收获','揭锅，熟蟹变红','又是一年螃蟹季'])},
-  {id:'cooking',title:'自己做饭',badge:'cooking',panels:panels('cooking',['下厨准备','锅里的好味道','糖醋排骨装盘','金色的厨房','尝一口自己的手艺'])},
-  {id:'overtime',title:'加班',badge:'overtime',panels:panels('overtime',['落日后的办公室','夜深了','伏在桌上的片刻','伸一个懒腰','走进夜色']),
-    branch:{afterPanel:1,resumePanel:3,title:'如果今天，可以早点下班呢？',hiddenBadge:'paper-plane',panels:panels('overtime-if',['童年向我伸出手','童年的纸飞机','我一直都在'])}},
-  {id:'dinner-with-mom',title:'和妈妈吃漂亮饭',badge:'dinner-with-mom',panels:panels('dinner-with-mom',['母女相聚','漂亮饭上桌','边吃边聊','记录这一刻'])},
-  {id:'red-light-goose',title:'红灯遇鹅',badge:'wings',exit:'finale',panels:panels('red-light-goose',['黄昏路口','差点闯红灯','大鹅拦住了她','大鹅与她，会心一笑'])},
+  {id:'graduation',title:'夏天',badge:'graduation',panels:panels('graduation',['','夏天又到了','该出发了','再看一眼吧'])},
+  {id:'bow',title:'蝴蝶',badge:'bow',panels:panels('bow',['','好可爱','浅浅试一下','嘿嘿嘿'])},
+  {id:'badminton',title:'LUCKY',badge:'badminton',panels:panels('badminton',['放马过来！','好险','快翻过去！','LUCKY!'])},
+  {id:'karaoke',title:'我来看我的演唱会',badge:'karaoke',panels:panels('karaoke',['啦🎵啦🎵啦🎵','咦？','和我好像😳','一起唱！','(/ω＼)'])},
+  {id:'market-goose',title:'不许动！',badge:'market-goose',panels:panels('market-goose',['逛逛集市','好神气！','一二三木头人','你输了，你被我收服了！'])},
+  {id:'crabs',title:'螃蟹季',badge:'crabs',panels:panels('crabs',['看看今天的收获','好沉！','噫，好，中大奖！','时间到','😋'])},
+  {id:'cooking',title:'金色小厨娘',badge:'cooking',panels:panels('cooking',['今天我掌勺','滋啦滋啦~','出锅！','金黄色！','无需低调'])},
+  {id:'overtime',title:'今天有点忙',badge:'overtime',panels:panels('overtime',['SELECT * FROM users;','都这么晚了啊','','终于写完了','今晚月色真美']),
+    branch:{afterPanel:1,resumePanel:3,title:'你有一条新邀请',hiddenBadge:'paper-plane',panels:panels('overtime-if',['你是？','童年的纸飞机',''])}},
+  {id:'dinner-with-mom',title:'漂亮饭',badge:'dinner-with-mom',panels:panels('dinner-with-mom',['就是这一家！','哇！','','手机先吃'])},
+  {id:'red-light-goose',title:'你也不许动！',badge:'wings',exit:'finale',panels:panels('red-light-goose',['要变灯了','快点快点',{caption:'慢！',speaker:'goose'},'差点又闯红灯了 (≧▽≦)'])},
 ];
-export const finale={title:'乘风去往回忆里',panels:panels('finale',['最后一枚勋章','打开包，回忆飞来','一路收藏的星光','大鹅的邀请','带着回忆，继续向前。'])};
-export const badges=Object.fromEntries([...events.map(e=>[e.badge,{title:e.title==='红灯遇鹅'?'乘风之翼':e.title,image:`assets/badges/${e.badge}.png`}]),['paper-plane',{title:'童年的纸飞机',image:'assets/badges/paper-plane.png'}]]);
+export const finale={title:'邂逅一整包美好',panels:panels('finale',['这是？','包包在发光','',{caption:'别等红灯了，本嘎送你一程',speaker:'goose'},''])};
+export const badges=Object.fromEntries([...events.map(e=>[e.badge,{title:e.badge==='wings'?'乘风之翼':e.title,image:`assets/badges/${e.badge}.png`}]),['paper-plane',{title:'童年的纸飞机',image:'assets/badges/paper-plane.png'}]]);
 export const character={idle:'assets/idle.png',stepLeft:'assets/step-left.png',stepRight:'assets/step-right.png',curious:'assets/curious.png',expect:'assets/expect.png',bagOpen:'assets/expect-bag-open.png',wink:'assets/wink.png',bagMouth:{x:.354,y:.46},openBagMouth:{x:.354,y:.474}};
 export const eventFor=state=>events[state.eventIndex]||events[0];
 export function panelsFor(state){

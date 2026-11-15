@@ -23,7 +23,7 @@
 .ending-credits-list{position:absolute;left:8%;top:0;width:84%;margin:0;padding:0;animation:ending-credits-list var(--credits-roll-duration) linear var(--credits-delay) both;will-change:transform}
 .ending-credit{display:flex;flex-direction:column;align-items:center;gap:.7em;margin:0 0 2.2em}.ending-credit:last-child{margin-bottom:0}.ending-credit dt{font-size:.72em;line-height:1.5;letter-spacing:.28em;color:#f5e3cd}.ending-credit dd{display:flex;justify-content:center;gap:1.45em;margin:0;font-size:1.2em;line-height:1.6;letter-spacing:.13em}
 .ending-title-position{position:absolute;inset:0;animation:ending-title-rise var(--ending-title-rise) cubic-bezier(.2,.6,.25,1) var(--ending-title-at) both;will-change:transform,opacity}
-.ending-title{position:absolute;left:0;top:var(--ending-center,50%);width:100%;margin:0;transform:translateY(-50%);font-family:Georgia,"Times New Roman",serif;font-size:1.28em;font-weight:400;font-style:italic;line-height:1.5;letter-spacing:.035em;white-space:nowrap}
+.ending-title{position:absolute;left:0;top:var(--ending-center,50%);width:100%;margin:0;transform:translateY(-50%);font-family:Georgia,"Times New Roman",serif;font-size:1.16em;font-weight:400;font-style:italic;line-height:1.5;letter-spacing:.035em;white-space:nowrap}
 .ending-title span{display:inline-block;animation:ending-title-breathe var(--ending-breathe-duration) ease-in-out var(--ending-breathe-at) infinite both}
 .finale-paused .ending-credits *{animation-play-state:paused!important}
 @keyframes ending-credits-travel{from{transform:translateY(100%)}to{transform:translateY(0)}}
@@ -38,4 +38,9 @@
 
 .ending-badge-flight{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0;transform:translate(var(--ending-bag-x),var(--ending-bag-y)) scale(var(--ending-bag-scale,1));opacity:var(--ending-bag-opacity,1);will-change:transform,opacity;pointer-events:none}.ending-in-flight .ending-badge-flight .memory-badge{animation-play-state:paused!important}
 
-.ending-badge-ribbon .memory-badge{animation:none!important}.ending-badge-ribbon .memory-placement{will-change:left,top}
+.ending-badge-ribbon .memory-badge{animation:none!important}.ending-badge-ribbon .memory-placement{will-change:transform}
+.memory-flow-trails{position:absolute;left:0;top:0;width:20em;height:35.536663em;overflow:visible;pointer-events:none}
+[data-memory-stars] .memory-badge{opacity:var(--memory-image-alpha,1);filter:blur(var(--memory-soften,0em)) drop-shadow(0 0 .08em rgba(255,218,143,var(--memory-star-glow,.55)))}[data-memory-stars] .memory-star{position:absolute;left:0;top:0;width:var(--memory-star-size,.9em);height:var(--memory-star-size,.9em);transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;opacity:var(--memory-star-alpha,0);background:radial-gradient(circle,#fffdf1 0 7%,#ffe39a 12%,#f6c57599 27%,#f7c36a22 50%,transparent 72%);filter:drop-shadow(0 0 .12em rgba(255,222,140,var(--memory-star-glow,.55)))}
+
+/* Cover subtitle and the goose’s voice from script.md. */
+.cover-heading .cover-subtitle{margin:10px 0 0;font-family:Georgia,"Times New Roman",serif;font-size:12px;line-height:1.5;letter-spacing:.065em}.caption.caption-goose{color:#a66a32}
