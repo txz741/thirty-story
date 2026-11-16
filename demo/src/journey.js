@@ -173,7 +173,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
       try{
         const complete=await finaleEntry.run({isCurrent:()=>token===generation,
           onFadeOut:()=>{onStateChange(state,{type:'FINALE_EXIT_START'},state);$('gesture-hint').hidden=true;},
-          onPresent:()=>audio.play('badge-shimmer',{group:'final-badge',replace:true,maxDuration:3}),
+          onPresent:()=>{$('story-title').textContent='';audio.play('badge-shimmer',{group:'final-badge',replace:true,maxDuration:3});},
           onReveal:async()=>{const image=$('panel-image');image.src=panelsFor(next)[0].image;if(image.decode)await image.decode();if(token===generation){commit(action,{skipFinaleBadgeSound:true});$('gesture-hint').hidden=true;}}
         });
         if(!complete)return;render();
