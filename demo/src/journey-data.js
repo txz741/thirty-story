@@ -1,7 +1,7 @@
 import {CHAPTERS} from './chapter-config.js';
 const panels=(id,captions)=>captions.map((entry,index)=>({image:`assets/stories/${id}/${String(index+1).padStart(2,'0')}.jpg`,...(typeof entry==='string'?{caption:entry}:entry)}));
 export const events=[
-  {id:'graduation',title:'夏天',badge:'graduation',panels:panels('graduation',['','夏天又到了','该出发了','再看一眼吧'])},
+  {id:'graduation',title:'夏天',badge:'graduation',panels:panels('graduation',['终于还是到这一天了啊','感觉像做梦一样','该出发了','再看一眼这里的夏天吧'])},
   {id:'bow',title:'蝴蝶',badge:'bow',panels:panels('bow',['来看看这家店','好可爱 (✧ω✧)','浅浅试一下','嘿嘿嘿'])},
   {id:'badminton',title:'LUCKY',badge:'badminton',panels:panels('badminton',['放马过来！','好险','能过去吗','LUCKY!'])},
   {id:'karaoke',title:'我来看我的演唱会',badge:'karaoke',panels:panels('karaoke',['还记得 你说家是唯一的城堡🎵','咦？','和我好像😳','童年的纸飞机🎵','(/ω＼)'])},
@@ -14,7 +14,7 @@ export const events=[
   {id:'red-light-goose',title:'你也不许动！',badge:'wings',exit:'finale',panels:panels('red-light-goose',['要变灯了','快点快点',{caption:'慢！',speaker:'goose'},'差点又闯红灯了 (≧▽≦)'])},
 ];
 // Keep unchanged pictures cached, and refresh only the replaced panels.
-const imageRevisions={'market-goose':{0:46,1:46,2:46,3:46},overtime:{3:46,4:45}};
+const imageRevisions={graduation:{1:47,3:47},'market-goose':{0:46,1:46,2:46,3:46},overtime:{3:46,4:45}};
 for(const event of events)for(const [index,revision] of Object.entries(imageRevisions[event.id]||{}))event.panels[index].image+=`?v=${revision}`;
 export const finale={title:'奇遇漫游',panels:panels('finale',['这是？','包包在发光','',{caption:'别等红灯了，本嘎送你一程',speaker:'goose'},''])};
 export const badges=Object.fromEntries([...events.map(e=>[e.badge,{title:e.badge==='wings'?'乘风之翼':e.title,image:`assets/badges/${e.badge}.png`}]),['paper-plane',{title:'童年的纸飞机',image:'assets/badges/paper-plane.png'}]]);
