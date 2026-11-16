@@ -1,9 +1,9 @@
 // Times are BGM 4 media seconds, not time spent viewing each illustration.
 export const FINALE_PAGE_WINDOWS=Object.freeze([
   Object.freeze({panelIndex:0,open:5,close:7}),
-  Object.freeze({panelIndex:1,open:14,close:16}),
+  Object.freeze({panelIndex:1,open:13,close:14}),
   Object.freeze({panelIndex:2,open:24,close:26}),
-  Object.freeze({panelIndex:3,open:30.5,close:31.5}),
+  Object.freeze({panelIndex:3,open:31,close:32}),
 ]);
 
 export function createFinalePlayback({getState,music,advance,document,canTick=()=>true,onWindowChange=()=>{},available=()=>true,setInterval=globalThis.setInterval,clearInterval=globalThis.clearInterval}){
