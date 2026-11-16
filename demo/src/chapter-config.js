@@ -1,8 +1,8 @@
 export const CHAPTER_TRANSITION={exitSteps:4,fadeOutMs:2000,fadeInMs:1000};
 export const CHAPTERS=[
-  {id:'chapter1',number:1,title:'Pocketful Wonders Wandering',firstEvent:0,lastEvent:3,background:'assets/maps/chapter1/chapter1_scroll_v2.jpg?v=25',map:{width:720,viewportHeight:1280,step:640,sceneAnchor:640}},
-  {id:'chapter2',number:2,title:'Pocketful Wonders Wandering',firstEvent:4,lastEvent:6,background:'assets/maps/chapter2/chapter2_scroll_v2.jpg?v=25',map:{width:720,viewportHeight:1280,step:640,sceneAnchor:640}},
-  {id:'chapter3',number:3,title:'Pocketful Wonders Wandering',firstEvent:7,lastEvent:9,background:'assets/maps/chapter3/chapter3_scroll_v2.jpg?v=25',map:{width:720,viewportHeight:1280,step:640,sceneAnchor:640}},
+  {id:'chapter1',number:1,title:'A Pocketful of Wonders, Wandering On',firstEvent:0,lastEvent:3,background:'assets/maps/chapter1/chapter1_scroll_v2.jpg?v=25',map:{width:720,viewportHeight:1280,step:640,sceneAnchor:640}},
+  {id:'chapter2',number:2,title:'A Pocketful of Wonders, Wandering On',firstEvent:4,lastEvent:6,background:'assets/maps/chapter2/chapter2_scroll_v2.jpg?v=25',map:{width:720,viewportHeight:1280,step:640,sceneAnchor:640}},
+  {id:'chapter3',number:3,title:'A Pocketful of Wonders, Wandering On',firstEvent:7,lastEvent:9,background:'assets/maps/chapter3/chapter3_scroll_v2.jpg?v=25',map:{width:720,viewportHeight:1280,step:640,sceneAnchor:640}},
 ];
 export const chapterForEvent=index=>CHAPTERS.find(c=>index>=c.firstEvent&&index<=c.lastEvent)||CHAPTERS[0];
 export const endsChapter=index=>CHAPTERS.some(c=>c.lastEvent===index&&c.number<3);
