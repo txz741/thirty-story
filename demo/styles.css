@@ -44,3 +44,7 @@
 
 /* Cover subtitle and the goose’s voice from script.md. */
 .cover-heading .cover-subtitle{margin:10px 0 0;font-family:Georgia,"Times New Roman",serif;font-size:12px;line-height:1.5;letter-spacing:.065em}.caption.caption-goose{color:#a66a32}
+
+/* The last story's fourth-to-fifth panel ceremony. */
+.finale-entry{position:absolute;z-index:7;background:#fff;opacity:1;overflow:hidden;pointer-events:none}.finale-entry-out{animation:finale-entry-out 2s cubic-bezier(.45,0,.55,1) both}.finale-entry-in{animation:finale-entry-in 1s cubic-bezier(.45,0,.55,1) both}.finale-caption-out{animation:finale-entry-in 2s cubic-bezier(.45,0,.55,1) both}.finale-caption-in{animation:finale-entry-out 1s cubic-bezier(.45,0,.55,1) both}
+@keyframes finale-entry-out{from{opacity:0}to{opacity:1}}@keyframes finale-entry-in{from{opacity:1}to{opacity:0}}

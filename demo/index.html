@@ -7,8 +7,8 @@
   <meta name="robots" content="noindex,nofollow">
   <meta name="description" content="走过十段日常，收藏一路回忆。一本可以滑动翻阅的生活绘本。">
   <title>邂逅一整包美好</title>
-  <link rel="stylesheet" href="styles.css?v=37">
-  <link rel="stylesheet" href="chapter-road.css?v=37">
+  <link rel="stylesheet" href="styles.css?v=38">
+  <link rel="stylesheet" href="chapter-road.css?v=38">
   <link rel="preload" href="assets/cover.jpg" as="image">
 </head>
 <body>
@@ -41,8 +41,9 @@
       <div id="story-wash" class="story-wash" aria-hidden="true"></div>
       <header class="story-heading"><p id="story-title">记忆里的时光</p><span id="panel-number">01 / 04</span></header>
       <div class="panel-art"><img id="panel-image" alt="羽毛球分镜" draggable="false"><canvas id="ending-frames" class="ending-frames" width="941" height="1672" hidden aria-hidden="true"></canvas><button id="retry-ending-frames" class="retry-ending-frames" type="button" data-ui hidden>重试画面</button></div>
-      <div class="caption-wrap"><p id="caption" class="caption"></p></div>
+      <div id="caption-wrap" class="caption-wrap"><p id="caption" class="caption"></p></div>
     </section>
+    <div id="finale-entry" class="finale-entry" hidden aria-hidden="true"><img id="finale-entry-badge" class="flying-badge" src="assets/badges/wings.png" alt="乘风之翼" hidden draggable="false"></div>
     <div id="finale-overlay" class="finale-overlay" hidden aria-label="收藏的回忆勋章"></div>
     <section id="branch-choice" class="branch-choice" hidden aria-labelledby="branch-title">
       <div class="branch-card"><h2 id="branch-title">你有一条新邀请</h2>
@@ -68,29 +69,30 @@
   <script type="importmap">
 {
   "imports": {
-    "./src/journey.js": "./src/journey.js?v=37",
-    "./src/journey-data.js": "./src/journey-data.js?v=37",
-    "./src/journey-state.js": "./src/journey-state.js?v=37",
-    "./src/finale.js": "./src/finale.js?v=37",
-    "./src/ending-badges.js": "./src/ending-badges.js?v=37",
-    "./src/ending-frames.js": "./src/ending-frames.js?v=37",
-    "./src/input.js": "./src/input.js?v=37",
-    "./src/badge-animation.js": "./src/badge-animation.js?v=37",
-    "./src/badge-presentation.js": "./src/badge-presentation.js?v=37",
-    "./src/audio-system.js": "./src/audio-system.js?v=37",
-    "./src/audio-config.js": "./src/audio-config.js?v=37",
-    "./src/audio-controls.js": "./src/audio-controls.js?v=37",
-    "./src/bgm-player.js": "./src/bgm-player.js?v=37",
-    "./src/music-manager.js": "./src/music-manager.js?v=37",
-    "./src/music-config.js": "./src/music-config.js?v=37",
-    "./src/asset-loader.js": "./src/asset-loader.js?v=37",
-    "./src/chapter-config.js": "./src/chapter-config.js?v=37",
-    "./src/chapter-road.js": "./src/chapter-road.js?v=37",
-    "./src/chapter-transition.js": "./src/chapter-transition.js?v=37",
-    "./src/retire-offline.js": "./src/retire-offline.js?v=37"
+    "./src/journey.js": "./src/journey.js?v=38",
+    "./src/journey-data.js": "./src/journey-data.js?v=38",
+    "./src/journey-state.js": "./src/journey-state.js?v=38",
+    "./src/finale.js": "./src/finale.js?v=38",
+    "./src/finale-entry.js": "./src/finale-entry.js?v=38",
+    "./src/ending-badges.js": "./src/ending-badges.js?v=38",
+    "./src/ending-frames.js": "./src/ending-frames.js?v=38",
+    "./src/input.js": "./src/input.js?v=38",
+    "./src/badge-animation.js": "./src/badge-animation.js?v=38",
+    "./src/badge-presentation.js": "./src/badge-presentation.js?v=38",
+    "./src/audio-system.js": "./src/audio-system.js?v=38",
+    "./src/audio-config.js": "./src/audio-config.js?v=38",
+    "./src/audio-controls.js": "./src/audio-controls.js?v=38",
+    "./src/bgm-player.js": "./src/bgm-player.js?v=38",
+    "./src/music-manager.js": "./src/music-manager.js?v=38",
+    "./src/music-config.js": "./src/music-config.js?v=38",
+    "./src/asset-loader.js": "./src/asset-loader.js?v=38",
+    "./src/chapter-config.js": "./src/chapter-config.js?v=38",
+    "./src/chapter-road.js": "./src/chapter-road.js?v=38",
+    "./src/chapter-transition.js": "./src/chapter-transition.js?v=38",
+    "./src/retire-offline.js": "./src/retire-offline.js?v=38"
   }
 }
 </script>
-  <script type="module" src="src/main.js?v=37"></script>
+  <script type="module" src="src/main.js?v=38"></script>
 </body>
 </html>

@@ -7,6 +7,7 @@ import {renderFinale,FINALE_GATHER_START_MS} from './finale.js';
 import {createAssetLoader} from './asset-loader.js';
 import {createChapterRoad} from './chapter-road.js';
 import {createChapterTransition} from './chapter-transition.js';
+import {createFinaleEntry} from './finale-entry.js';
 import {createEndingFrames} from './ending-frames.js';
 import {positionEndingBadges} from './ending-badges.js';
 import {chapterForEvent,CHAPTER_TRANSITION} from './chapter-config.js';
@@ -20,6 +21,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   const chapterRoad=createChapterRoad({document,book});
   const chapterTransition=createChapterTransition({document,window,book});
   const endingFrames=createEndingFrames({canvas:$('ending-frames'),button:$('retry-ending-frames'),document,music:()=>audio.state?.bgm,canAnimate:()=>!audio.state?.muted&&audio.state?.ready!==false,requestFrame:requestAnimationFrame,onShow:drawFinale,onFrame:syncEndingBadges,onMotion:syncEndingBadges,onStill:clock=>syncEndingBadges(-1,clock)});
+  const finaleEntry=createFinaleEntry({document,window,book,image:$('panel-image'),layer:$('finale-entry'),medal:$('finale-entry-badge'),caption:$('caption-wrap'),delay});
   const isFinale=s=>['finale','finished'].includes(s.phase);
   const pose=name=>{$('character').src=character[name]||character.idle;};
   const announce=text=>{$('announcement').textContent=text;};
@@ -64,7 +66,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
       $('panel-number').textContent=`${String(panelPosition).padStart(2,'0')} / ${String(panelTotal).padStart(2,'0')}`;
       announce(panel.caption);if(state.panelIndex<list.length-1)preload(list[state.panelIndex+1].image);
     }
-    $('story-title').textContent=`${String(state.eventIndex+1).padStart(2,'0')} · ${event.title}`;
+    $('story-title').textContent=final?'':`${String(state.eventIndex+1).padStart(2,'0')} · ${event.title}`;
     $('story').setAttribute('aria-label',final?'终章五幕':event.title+'回忆分镜');
     $('branch-choice').hidden=state.phase!=='branchChoice';
     if(state.phase==='branchChoice')$('branch-title').textContent=event.branch.title;
@@ -91,7 +93,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
     if(['roadIdle','discovered'].includes(state.phase))preload(event.panels[0].image);
     if(state.phase==='collecting')requestAnimationFrame(positionGlow);
   }
-  function commit(action){
+  function commit(action,{skipFinaleBadgeSound=false}={}){
     const previous=state;state=transition(state,action);render();
     onStateChange(state,action,previous);
     if(previous.phase==='walking'&&state.phase==='discovered')audio.play('discovery',{group:'discovery',replace:true});
@@ -99,7 +101,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
     if(action.type==='SELECT_BRANCH'&&state.phase==='story')audio.play('memory-enter',{group:'memory-enter',replace:true});
     if((isFinale(state)||isFinale(previous))&&(state.phase!==previous.phase||state.panelIndex!==previous.panelIndex)){
       const token=++finaleSoundToken;audio.stopGroup('finale');audio.stopGroup('final-badge');
-      if(isFinale(state)&&state.panelIndex===0)audio.play('badge-shimmer',{group:'final-badge',replace:true});
+      if(isFinale(state)&&state.panelIndex===0&&!skipFinaleBadgeSound)audio.play('badge-shimmer',{group:'final-badge',replace:true});
       if(isFinale(state)&&state.panelIndex===1)audio.play('finale-sparkle',{group:'finale',replace:true});
       if(isFinale(state)&&state.panelIndex===2){
         void delay(reduced?0:FINALE_GATHER_START_MS).then(()=>{
@@ -146,7 +148,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
     }finally{if(token===generation)activeMotion=false;}
   }
   async function perform(action){
-    if(activeMotion||['walking','collecting','chapterTransition','chapterEntering'].includes(state.phase))return;
+    if(finaleEntry.active||activeMotion||['walking','collecting','chapterTransition','chapterEntering'].includes(state.phase))return;
     if(flipLock){if(!waitingAssets&&state.phase!=='branchChoice'&&['ADVANCE','BACK'].includes(action.type))queuedAction=action;return;}
     if(state.phase==='branchChoice'&&action.type!=='SELECT_BRANCH')return;
     const next=transition(state,action);
@@ -165,7 +167,21 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
       const ready=await requireAssets(required);
       if(token!==generation)return;if(!ready){failedAction=action;queuedAction=null;render();$('asset-error').hidden=false;book.setAttribute('aria-busy','false');flipLock=false;return;}
     }
-    failedAction=null;$('asset-error').hidden=true;commit(action);motion();await delay(reduced?70:300);
+    failedAction=null;$('asset-error').hidden=true;
+    const enteringFinale=state.phase==='story'&&eventFor(state).exit==='finale'&&next.phase==='finale'&&next.panelIndex===0;
+    if(enteringFinale){
+      try{
+        const complete=await finaleEntry.run({isCurrent:()=>token===generation,
+          onFadeOut:()=>{onStateChange(state,{type:'FINALE_EXIT_START'},state);$('gesture-hint').hidden=true;},
+          onPresent:()=>audio.play('badge-shimmer',{group:'final-badge',replace:true,maxDuration:3}),
+          onReveal:async()=>{const image=$('panel-image');image.src=panelsFor(next)[0].image;if(image.decode)await image.decode();if(token===generation){commit(action,{skipFinaleBadgeSound:true});$('gesture-hint').hidden=true;}}
+        });
+        if(!complete)return;render();
+      }catch{failedAction=action;shownKey='';render();$('asset-error').hidden=false;}
+      finally{if(token===generation){flipLock=false;queuedAction=null;}}
+      return;
+    }
+    commit(action);motion();await delay(reduced?70:300);
     if(token===generation){flipLock=false;const queued=queuedAction;queuedAction=null;if(queued)void perform(queued);}
   }
   bindInput(book,type=>perform({type}));
@@ -179,7 +195,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
   });
   window.addEventListener('resize',()=>{chapterRoad(state);if(state.phase==='collecting')positionGlow();drawFinale();});
   $('debug').hidden=!debug;
-  function reset(){if(['chapterTransition','chapterEntering'].includes(state.phase))return;generation++;finaleSoundToken++;activeMotion=false;flipLock=false;waitingAssets=false;queuedAction=null;failedAction=null;shownKey='';overlayKey='';
+  function reset(){if(finaleEntry.active||['chapterTransition','chapterEntering'].includes(state.phase))return;generation++;finaleSoundToken++;activeMotion=false;flipLock=false;waitingAssets=false;queuedAction=null;failedAction=null;shownKey='';overlayKey='';
     audio.stopEffects();
     $('gesture-hint').classList.remove('loading');
     $('flying-badge').getAnimations().forEach(a=>a.cancel());$('flying-badge').classList.remove('badge-presenting');$('flying-badge').hidden=true;$('bag-glow').classList.remove('visible');$('asset-error').hidden=true;

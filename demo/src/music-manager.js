@@ -12,7 +12,7 @@ export function createMusicManager({audio,tracks=MUSIC_TRACKS,settings=MUSIC_SET
       if(chapter===stage&&!fadedChapters.has(chapter)){fadedChapters.add(chapter);audio.fadeOutBgm(settings.fadeOutSeconds);return true;}
       return false;
     }
-    if(action.type==='ADVANCE'&&state.phase==='story'&&state.eventIndex===9&&state.panelIndex===3&&stage===3&&!finalePrepared){
+    if(action.type==='FINALE_EXIT_START'&&state.phase==='story'&&state.eventIndex===9&&state.panelIndex===3&&stage===3&&!finalePrepared){
       finalePrepared=true;audio.fadeOutBgm(settings.fadeOutSeconds);return true;
     }
     let next=stage;

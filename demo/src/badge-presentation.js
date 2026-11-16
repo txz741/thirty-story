@@ -4,9 +4,9 @@ export function badgeGeometry(book){
   const size=Math.min(180,rect.width*.42,rect.height*.22);
   return {size,start:{x:rect.width*.72-size/2,y:rect.height*.24-size/2}};
 }
-export async function presentBadge({book,badge,delay=ms=>new Promise(resolve=>setTimeout(resolve,ms)),isCurrent=()=>true,onPresent=()=>{}}){
+export async function presentBadge({book,badge,delay=ms=>new Promise(resolve=>setTimeout(resolve,ms)),isCurrent=()=>true,onPresent=()=>{},placement=null}){
   if(!isCurrent())return false;
-  const {size,start}=badgeGeometry(book);
+  const {size,start}=placement||badgeGeometry(book);
   badge.style.width=`${size}px`;badge.style.height=`${size}px`;
   badge.style.transform=`translate(${start.x}px,${start.y}px) rotate(0deg) scale(1)`;
   badge.style.opacity='1';badge.hidden=false;badge.classList.add('badge-presenting');
