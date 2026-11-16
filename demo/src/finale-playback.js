@@ -2,7 +2,7 @@
 export const FINALE_PAGE_WINDOWS=Object.freeze([
   Object.freeze({panelIndex:0,open:5,close:7}),
   Object.freeze({panelIndex:1,open:14,close:16}),
-  Object.freeze({panelIndex:2,open:22,close:24}),
+  Object.freeze({panelIndex:2,open:24,close:26}),
   Object.freeze({panelIndex:3,open:30.5,close:31.5}),
 ]);
 
