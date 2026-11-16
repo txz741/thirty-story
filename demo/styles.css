@@ -48,3 +48,14 @@
 /* The last story's fourth-to-fifth panel ceremony. */
 .finale-entry{position:absolute;z-index:7;background:#fff;opacity:1;overflow:hidden;pointer-events:none}.finale-entry-out{animation:finale-entry-out 2s cubic-bezier(.45,0,.55,1) both}.finale-entry-in{animation:finale-entry-in 1s cubic-bezier(.45,0,.55,1) both}.finale-caption-out{animation:finale-entry-in 2s cubic-bezier(.45,0,.55,1) both}.finale-caption-in{animation:finale-entry-out 1s cubic-bezier(.45,0,.55,1) both}
 @keyframes finale-entry-out{from{opacity:0}to{opacity:1}}@keyframes finale-entry-in{from{opacity:1}to{opacity:0}}
+
+/* Keep the bilingual road heading in place while the map and discovery title change. */
+.road-heading .road-book-title{margin:0;font-family:"Songti SC",SimSun,serif;font-size:clamp(17px,4.4vw,21px);line-height:1.45;letter-spacing:.1em;font-weight:500;color:#66536e}
+.road-heading .road-subtitle{margin:6px 0 14px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(10px,2.7vw,12px);line-height:1.5;letter-spacing:.035em;color:#927b9c;white-space:nowrap}
+.road-heading h2:empty{display:none}
+@media(max-height:620px){.road-heading .road-subtitle{margin-bottom:10px}}
+
+/* Only the final white-frame medal fades in; its edge sparkle keeps playing. */
+#finale-entry-badge.badge-presenting{animation:finale-medal-in .8s cubic-bezier(.37,0,.63,1) both,badge-edge-sparkle 3s cubic-bezier(.45,0,.55,1) 1}
+@keyframes finale-medal-in{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){#finale-entry-badge.badge-presenting{animation:finale-medal-in .45s ease-out both}}

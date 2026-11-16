@@ -60,7 +60,7 @@ export function mountStorybook({document=globalThis.document,window=globalThis.w
     if(layer!==shownLayer){$(layer).classList.remove('enter');void $(layer).offsetWidth;$(layer).classList.add('enter');shownLayer=layer;}
     $('road').classList.toggle('walking',state.phase==='walking');$('character-box').classList.toggle('walking',state.phase==='walking');
     $('beacon').classList.toggle('near',state.phase==='discovered');$('beacon').classList.toggle('spent',state.phase==='collecting');
-    $('road-title').textContent=state.phase==='chapterEntering'||(state.phase==='roadIdle'&&state.eventIndex===0&&state.distance===0)?roadFrame.chapter.title:state.phase==='discovered'?event.title:'';
+    $('road-title').textContent=state.phase==='discovered'?event.title:'';
     $('road-copy').textContent='';
     if(state.phase==='discovered')pose('curious');
     else if(state.phase==='collecting')pose(state.collectionStage==='wink'?'wink':state.collectionStage==='idle'?'idle':state.collectionStage==='bag-open'?'bagOpen':'expect');

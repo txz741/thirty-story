@@ -6,11 +6,11 @@ export const events=[
   {id:'badminton',title:'LUCKY',badge:'badminton',panels:panels('badminton',['放马过来！','好险','能过去吗','LUCKY!'])},
   {id:'karaoke',title:'我来看我的演唱会',badge:'karaoke',panels:panels('karaoke',['还记得 你说家是唯一的城堡🎵','咦？','和我好像😳','童年的纸飞机🎵','(/ω＼)'])},
   {id:'market-goose',title:'不许动！',badge:'market-goose',panels:panels('market-goose',['今天集市有什么好玩的呢','我们来玩个游戏吧','一二三木头人','你输了，你被我收服了！'])},
-  {id:'crabs',title:'螃蟹季',badge:'crabs',panels:panels('crabs',['看看今天的收获','好沉！','噫，好，中大奖！','时间到','😋'])},
+  {id:'crabs',title:'螃蟹季',badge:'crabs',panels:panels('crabs',['看看今天的收获','好沉！','哇！今天也很LUCKY!','时间差不多了','😋'])},
   {id:'cooking',title:'金色小厨娘',badge:'cooking',panels:panels('cooking',['今天我掌勺','滋啦滋啦~','出锅！','金黄色！','无需低调'])},
   {id:'overtime',title:'今天有点忙',badge:'overtime',panels:panels('overtime',['SELECT * FROM users;','都这么晚了啊','','终于写完了','今晚月色真美']),
     branch:{afterPanel:1,resumePanel:3,title:'你有一条新邀请',hiddenBadge:'paper-plane',panels:panels('overtime-if',['你是？','现在终于飞回我手里🎵',''])}},
-  {id:'dinner-with-mom',title:'漂亮饭',badge:'dinner-with-mom',panels:panels('dinner-with-mom',['就是这一家！','哇！','','手机先吃'])},
+  {id:'dinner-with-mom',title:'漂亮饭',badge:'dinner-with-mom',panels:panels('dinner-with-mom',['就是这一家！','哇！','','让手机也尝尝'])},
   {id:'red-light-goose',title:'你也不许动！',badge:'wings',exit:'finale',panels:panels('red-light-goose',['要变灯了','快点快点',{caption:'慢！',speaker:'goose'},'差点又闯红灯了 (≧▽≦)'])},
 ];
 export const finale={title:'奇遇漫游',panels:panels('finale',['这是？','包包在发光','',{caption:'别等红灯了，本嘎送你一程',speaker:'goose'},''])};
