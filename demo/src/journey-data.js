@@ -16,7 +16,7 @@ export const events=[
 // Keep unchanged pictures cached, and refresh only the replaced panels.
 const imageRevisions={graduation:{1:47,3:47},'market-goose':{0:46,1:46,2:46,3:46},overtime:{3:46,4:45}};
 for(const event of events)for(const [index,revision] of Object.entries(imageRevisions[event.id]||{}))event.panels[index].image+=`?v=${revision}`;
-export const finale={title:'奇遇漫游',panels:panels('finale',['这是？','包包在发光','',{caption:'别等红灯了，本嘎送你一程',speaker:'goose'},''])};
+export const finale={title:'装满奇遇趣漫游',panels:panels('finale',['这是？','包包在发光','',{caption:'别等红灯了，本嘎送你一程',speaker:'goose'},''])};
 export const badges=Object.fromEntries([...events.map(e=>[e.badge,{title:e.badge==='wings'?'乘风之翼':e.title,image:`assets/badges/${e.badge}.png`}]),['paper-plane',{title:'童年的纸飞机',image:'assets/badges/paper-plane.png'}]]);
 export const character={idle:'assets/idle.png',stepLeft:'assets/step-left.png',stepRight:'assets/step-right.png',curious:'assets/curious.png',expect:'assets/expect.png',bagOpen:'assets/expect-bag-open.png',wink:'assets/wink.png',bagMouth:{x:.354,y:.46},openBagMouth:{x:.354,y:.474}};
 export const eventFor=state=>events[state.eventIndex]||events[0];
